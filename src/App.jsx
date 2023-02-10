@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { developmentBaseUrl } from "../mock/conf.js";
 import SwaggerClient from "swagger-client";
 import spec from "@berufsbildung-basel/parkit-spec/api.yml";
@@ -6,7 +6,8 @@ import spec from "@berufsbildung-basel/parkit-spec/api.yml";
 export const SwaggerClientContext = React.createContext();
 
 function App() {
-  
+  const [serverMessage, setServerMessage] = useState(null);
+
   const client = new SwaggerClient({
     spec: {
       ...spec,
