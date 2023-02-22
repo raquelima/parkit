@@ -4,6 +4,7 @@ import { OpenAPIBackend } from "openapi-backend";
 import path, { dirname } from "path";
 import { fileURLToPath } from "node:url";
 import { developmentBaseUrl } from "./conf.js";
+import { users, parkingSpots, reservations, vehicles } from "./data.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -60,13 +61,154 @@ api.register("unauthorizedHandler", (c, res, ctx) => {
   return res(ctx.status(401, "unauthorized"));
 });
 
+//User Endpoints
 api.register({
-  listReservations: (c, res, ctx) => {
+  listUsers: (c, res, ctx) => {
+    const { status, mock } = api.mockResponseForOperation(
+      c.operation.operationId
+    );
+    if (c.request.headers["x-test-empty-response"]) {
+      ctx.status(200);
+      return res(ctx.json([]));
+    } else {
+      const returnObject = {
+        ...mock,
+        users: [...mock.users, ...users],
+      };
+      return res(ctx.json(returnObject));
+    }
+  },
+  //Hannes Review
+  getUser: (c, res, ctx) => {
+    const id = c.request.params.id;
+    const user = users.find((user) => user.id === id);
+
+    if (user) {
+      ctx.status(200);
+      return res(ctx.json(user));
+    } else {
+      return res(ctx.status(404));
+    }
+  },
+});
+
+//Parking Spot Endpoints
+api.register({
+  listParkingSpots: (c, res, ctx) => {
+    const { status, mock } = api.mockResponseForOperation(
+      c.operation.operationId
+    );
+    if (c.request.headers["x-test-empty-response"]) {
+      ctx.status(200);
+      return res(ctx.json([]));
+    } else {
+      //send array
+      return sendMockResponse(c.operation.operationId, res, ctx);
+    }
+  },
+  //TODO
+  checkParkingSpotAvailability: () => {},
+  listParkingSpotsToday: (c, res, ctx) => {
+    const { status, mock } = api.mockResponseForOperation(
+      c.operation.operationId
+    );
     if (c.request.headers["x-test-empty-response"]) {
       ctx.status(200);
       return res(ctx.json([]));
     } else {
       return sendMockResponse(c.operation.operationId, res, ctx);
+    }
+  },
+});
+
+//Reservation Endpoints
+api.register({
+  listReservations: (c, res, ctx) => {
+    const { status, mock } = api.mockResponseForOperation(
+      c.operation.operationId
+    );
+    if (c.request.headers["x-test-empty-response"]) {
+      ctx.status(200);
+      return res(ctx.json([]));
+    } else {
+      const returnObject = {
+        ...mock,
+        reservations: [...mock.reservations, ...reservations],
+      };
+      return res(ctx.json(returnObject));
+    }
+  },
+  //Hannes review
+  createReservation: (c, res, ctx) => {
+    const vehicle = vehicles.find(
+      (vehicle) => vehicle.id === c.request.body.vehicle_id
+    );
+
+    if (c.request.headers["x-test-too-many-reservations"]) {
+      return res(ctx.status(409, "Conflict"));
+    }
+    reservations.push({
+      ...c.request.body,
+      id: `item-${reservations.length}`,
+      created_at: "2021-01-30T10:30:00Z",
+      created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
+      cancelled: false,
+      start_time: "2021-01-30T08:30:00Z",
+      end_time: "2021-01-30T10:30:00Z",
+      vehicle: vehicle,
+    });
+    return res(ctx.status(200));
+  },
+  //Hannes Review
+  cancelReservation: (c, res, ctx) => {
+    const id = c.request.params.id;
+    const index = reservations.findIndex(
+      (reservation) => reservation.id === id
+    );
+
+    if (index !== -1) {
+      reservations[index].cancelled = true;
+      return res(ctx.status(200));
+    } else {
+      return res(ctx.status(404));
+    }
+  },
+});
+
+//Vehicle Endpoints
+api.register({
+  listVehicles: (c, res, ctx) => {
+    const { status, mock } = api.mockResponseForOperation(
+      c.operation.operationId
+    );
+    if (c.request.headers["x-test-empty-response"]) {
+      ctx.status(200);
+      return res(ctx.json([]));
+    } else {
+      const returnObject = {
+        ...mock,
+        vehicles: [...mock.vehicles, ...vehicles],
+      };
+      return res(ctx.json(returnObject));
+    }
+  },
+  createVehicle: (c, res, ctx) => {
+    vehicles.push({
+      ...c.request.body,
+      id: `item-${vehicles.length}`,
+    });
+    return res(ctx.status(200));
+  },
+  //Hannes Review
+  removeVehicle: (c, res, ctx) => {
+    const id = c.request.params.id;
+    const index = vehicles.findIndex((vehicle) => vehicle.id === id);
+
+    if (index !== -1) {
+      vehicles.splice(index, 1);
+      return res(ctx.status(200));
+    } else {
+      return res(ctx.status(404));
     }
   },
 });
