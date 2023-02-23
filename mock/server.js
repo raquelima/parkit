@@ -106,8 +106,53 @@ api.register({
       return sendMockResponse(c.operation.operationId, res, ctx);
     }
   },
-  //TODO
-  checkParkingSpotAvailability: () => {},
+  checkParkingSpotAvailability: (c, res, ctx) => {
+    const startTime = new Date(Date.parse(c.request.query.date)).setHours(
+      0,
+      0,
+      0,
+      0
+    );
+    const endTime = new Date(Date.parse(c.request.query.date)).setHours(
+      23,
+      59,
+      59,
+      999
+    );
+
+    const availableParkingSpots = parkingSpots.filter((parkingSpot) => {
+      return (
+        reservations
+          .filter(
+            (reservation) => reservation.parking_spot_id === parkingSpot.id
+          )
+          .filter((reservation) => {
+            const reservationStartTime = new Date(
+              Date.parse(reservation.start_time)
+            );
+            const reservationEndTime = new Date(
+              Date.parse(reservation.end_time)
+            );
+            // check if reservation overlaps with start and end time
+            return (
+              (startTime >= reservationStartTime &&
+                startTime <= reservationEndTime) ||
+              (endTime >= reservationStartTime &&
+                endTime <= reservationEndTime) ||
+              (startTime <= reservationStartTime &&
+                endTime >= reservationEndTime)
+            );
+          }).length === 0
+      );
+    });
+
+    ctx.status(200);
+    return res(
+      ctx.json({
+        available_parking_spots: availableParkingSpots,
+      })
+    );
+  },
   listParkingSpotsToday: (c, res, ctx) => {
     const { status, mock } = api.mockResponseForOperation(
       c.operation.operationId
