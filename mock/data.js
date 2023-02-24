@@ -122,6 +122,22 @@ export const parkingSpots = [
   },
 ];
 
+export const vehicles = [
+  {
+    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be624",
+    created_at: "2021-01-30T10:30:00Z",
+    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
+    updated_at: "2021-01-30T10:30:00Z",
+    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
+    user_id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
+    ev: true,
+    license_plate_number: "TEST1234",
+    make: "Test",
+    model: "Test",
+    vehicle_type: "car",
+  },
+];
+
 export const reservations = [
   {
     id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be624",
@@ -140,21 +156,6 @@ export const reservations = [
     am: true,
     cancelled_at: "2021-01-30T10:30:00Z",
     cancelled_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-  },
-];
-
-export const vehicles = [
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be624",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    user_id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    ev: true,
-    license_plate_number: "TEST1234",
-    make: "Test",
-    model: "Test",
-    vehicle_type: "car",
+    vehicle: vehicles[0],
   },
 ];

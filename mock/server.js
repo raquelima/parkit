@@ -4,7 +4,7 @@ import { OpenAPIBackend } from "openapi-backend";
 import path, { dirname } from "path";
 import { fileURLToPath } from "node:url";
 import { developmentBaseUrl } from "./conf.js";
-import { users, parkingSpots, reservations, vehicles } from "./data.js";
+import { parkingSpots, reservations, users, vehicles } from "./data.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -106,8 +106,50 @@ api.register({
       return sendMockResponse(c.operation.operationId, res, ctx);
     }
   },
-  //TODO
-  checkParkingSpotAvailability: () => {},
+  checkParkingSpotAvailability: (c, res, ctx) => {
+    const isHalfDay = c.request.query.half_day === "true";
+    const isMorning = isHalfDay && c.request.query.am === "true";
+
+    const startTime = new Date(Date.parse(c.request.query.date));
+    const endTime = new Date(Date.parse(c.request.query.date));
+
+    startTime.setHours(isMorning || !isHalfDay ? 0 : 12, 0, 0, 0);
+
+    endTime.setHours(isMorning ? 11 : 23, 59, 59, 999);
+
+    const availableParkingSpots = parkingSpots.filter(
+      (parkingSpot) =>
+        reservations
+          .filter(
+            (reservation) => reservation.parking_spot_id === parkingSpot.id
+          )
+          .filter((reservation) => {
+            const reservationStartTime = new Date(
+              Date.parse(reservation.start_time)
+            );
+            const reservationEndTime = new Date(
+              Date.parse(reservation.end_time)
+            );
+
+            // check if reservation overlaps with start and end time
+            return (
+              (startTime >= reservationStartTime &&
+                startTime <= reservationEndTime) ||
+              (endTime >= reservationStartTime &&
+                endTime <= reservationEndTime) ||
+              (startTime <= reservationStartTime &&
+                endTime >= reservationEndTime)
+            );
+          }).length === 0
+    );
+
+    ctx.status(200);
+    return res(
+      ctx.json({
+        available_parking_spots: availableParkingSpots,
+      })
+    );
+  },
   listParkingSpotsToday: (c, res, ctx) => {
     const { status, mock } = api.mockResponseForOperation(
       c.operation.operationId
