@@ -4,7 +4,7 @@ import { OpenAPIBackend } from "openapi-backend";
 import path, { dirname } from "path";
 import { fileURLToPath } from "node:url";
 import { developmentBaseUrl } from "./conf.js";
-import { users, parkingSpots, reservations, vehicles } from "./data.js";
+import { parkingSpots, reservations, users, vehicles } from "./data.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -107,21 +107,18 @@ api.register({
     }
   },
   checkParkingSpotAvailability: (c, res, ctx) => {
-    const startTime = new Date(Date.parse(c.request.query.date)).setHours(
-      0,
-      0,
-      0,
-      0
-    );
-    const endTime = new Date(Date.parse(c.request.query.date)).setHours(
-      23,
-      59,
-      59,
-      999
-    );
+    const isHalfDay = c.request.query.half_day === "true";
+    const isMorning = isHalfDay && c.request.query.am === "true";
 
-    const availableParkingSpots = parkingSpots.filter((parkingSpot) => {
-      return (
+    const startTime = new Date(Date.parse(c.request.query.date));
+    const endTime = new Date(Date.parse(c.request.query.date));
+
+    startTime.setHours(isMorning || !isHalfDay ? 0 : 12, 0, 0, 0);
+
+    endTime.setHours(isMorning ? 11 : 23, 59, 59, 999);
+
+    const availableParkingSpots = parkingSpots.filter(
+      (parkingSpot) =>
         reservations
           .filter(
             (reservation) => reservation.parking_spot_id === parkingSpot.id
@@ -133,6 +130,7 @@ api.register({
             const reservationEndTime = new Date(
               Date.parse(reservation.end_time)
             );
+
             // check if reservation overlaps with start and end time
             return (
               (startTime >= reservationStartTime &&
@@ -143,8 +141,7 @@ api.register({
                 endTime >= reservationEndTime)
             );
           }).length === 0
-      );
-    });
+    );
 
     ctx.status(200);
     return res(
