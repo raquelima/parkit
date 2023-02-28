@@ -30,6 +30,19 @@ function sendMockResponse(operationId, res, ctx) {
   return res(ctx.json(mock));
 }
 
+function sendListResponse(list, fieldName, res, ctx) {
+  ctx.status(200);
+  return res(
+    ctx.json({
+      limit_per_page: 100,
+      total_count: list.length,
+      current_page: 1,
+      total_pages: 1,
+      [fieldName]: list,
+    })
+  );
+}
+
 api.register("notImplemented", async (c, res, ctx) => {
   const mockStatusCode = c.request.headers["x-test-response-code"];
   const mockStatusText = c.request.headers["x-test-response-text"];
@@ -95,15 +108,12 @@ api.register({
 //Parking Spot Endpoints
 api.register({
   listParkingSpots: (c, res, ctx) => {
-    const { status, mock } = api.mockResponseForOperation(
-      c.operation.operationId
-    );
     if (c.request.headers["x-test-empty-response"]) {
       ctx.status(200);
       return res(ctx.json([]));
     } else {
       //send array
-      return sendMockResponse(c.operation.operationId, res, ctx);
+      return sendListResponse(parkingSpots, "parking_spots", res, ctx);
     }
   },
   checkParkingSpotAvailability: (c, res, ctx) => {
@@ -177,18 +187,11 @@ api.register({
 //Reservation Endpoints
 api.register({
   listReservations: (c, res, ctx) => {
-    const { status, mock } = api.mockResponseForOperation(
-      c.operation.operationId
-    );
     if (c.request.headers["x-test-empty-response"]) {
       ctx.status(200);
       return res(ctx.json([]));
     } else {
-      const returnObject = {
-        ...mock,
-        reservations: [...mock.reservations, ...reservations],
-      };
-      return res(ctx.json(returnObject));
+      return sendListResponse(reservations, "reservations", res, ctx);
     }
   },
   createReservation: (c, res, ctx) => {
@@ -255,18 +258,11 @@ api.register({
 //Vehicle Endpoints
 api.register({
   listVehicles: (c, res, ctx) => {
-    const { status, mock } = api.mockResponseForOperation(
-      c.operation.operationId
-    );
     if (c.request.headers["x-test-empty-response"]) {
       ctx.status(200);
       return res(ctx.json([]));
     } else {
-      const returnObject = {
-        ...mock,
-        vehicles: [...mock.vehicles, ...vehicles],
-      };
-      return res(ctx.json(returnObject));
+      return sendListResponse(vehicles, "vehicles", res, ctx);
     }
   },
   createVehicle: (c, res, ctx) => {
