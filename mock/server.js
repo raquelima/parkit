@@ -272,7 +272,6 @@ api.register({
     });
     return res(ctx.status(200));
   },
-  //Hannes Review
   removeVehicle: (c, res, ctx) => {
     const id = c.request.params.id;
     const index = vehicles.findIndex((vehicle) => vehicle.id === id);
