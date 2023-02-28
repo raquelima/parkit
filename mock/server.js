@@ -5,6 +5,7 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "node:url";
 import { developmentBaseUrl } from "./conf.js";
 import { parkingSpots, reservations, users, vehicles } from "./data.js";
+import { faker } from "@faker-js/faker";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -78,7 +79,6 @@ api.register({
       return res(ctx.json(returnObject));
     }
   },
-  //Hannes Review
   getUser: (c, res, ctx) => {
     const id = c.request.params.id;
     const user = users.find((user) => user.id === id);
@@ -237,7 +237,7 @@ api.register({
   createVehicle: (c, res, ctx) => {
     vehicles.push({
       ...c.request.body,
-      id: `item-${vehicles.length}`,
+      id: faker.datatype.uuid(),
     });
     return res(ctx.status(200));
   },

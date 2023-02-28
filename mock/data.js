@@ -1,161 +1,99 @@
-export const users = [
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be625",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    okta_id: "ABCD1234@AdobeOrg",
-    disabled: false,
-    email: "someuser@adobe.com",
-    first_name: "Jane2",
-    last_name: "Doe2",
-    preferred_language: "en",
-    role: "admin",
-    username: "someuser2",
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be626",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    okta_id: "ABCD1234@AdobeOrg",
-    disabled: false,
-    email: "someuser@adobe.com",
-    first_name: "Jane3",
-    last_name: "Doe3",
-    preferred_language: "en",
-    role: "admin",
-    username: "someuser3",
-  },
-];
+import { faker } from "@faker-js/faker";
 
-export const parkingSpots = [
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be621",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 1,
-    charger_available: false,
-    unavailable: false,
-    unavailability_reason: null,
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be622",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 2,
-    charger_available: false,
-    unavailable: false,
-    unavailability_reason: null,
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 3,
-    charger_available: false,
-    unavailable: false,
-    unavailability_reason: null,
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be624",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 4,
-    charger_available: false,
-    unavailable: false,
-    unavailability_reason: null,
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be625",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 5,
-    charger_available: true,
-    unavailable: false,
-    unavailability_reason: null,
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be626",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 6,
-    charger_available: true,
-    unavailable: false,
-    unavailability_reason: null,
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be627",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 7,
-    charger_available: true,
-    unavailable: false,
-    unavailability_reason: null,
-  },
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be628",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    number: 8,
-    charger_available: true,
-    unavailable: true,
-    unavailability_reason: null,
-  },
-];
+function generateUser() {
+  return {
+    id: faker.datatype.uuid(),
+    created_at: faker.date.past(),
+    created_by: faker.datatype.uuid(),
+    updated_at: faker.date.past(),
+    updated_by: faker.datatype.uuid(),
+    okta_id: faker.datatype.uuid(),
+    disabled: false,
+    email: faker.internet.email(),
+    first_name: faker.name.firstName(),
+    last_name: faker.name.lastName(),
+    preferred_language: faker.random.locale(),
+    role: faker.helpers.arrayElement(["admin", "user"]),
+    username: faker.internet.userName(),
+  };
+}
 
-export const vehicles = [
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be624",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    user_id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    ev: true,
-    license_plate_number: "TEST1234",
-    make: "Test",
-    model: "Test",
+export const users = [generateUser(), generateUser()];
+
+function generateParkingSpot(number) {
+  return {
+    id: faker.datatype.uuid(),
+    created_at: faker.date.past(),
+    created_by: faker.datatype.uuid(),
+    updated_at: faker.date.past(),
+    updated_by: faker.datatype.uuid(),
+    number,
+    charger_available: faker.datatype.boolean(),
+    unavailable: faker.datatype.boolean(),
+    unavailability_reason: faker.random.words(),
+  };
+}
+
+export const parkingSpots = [...Array(8).keys()].map((i) =>
+  generateParkingSpot(i + 1)
+);
+
+function generateVehicle() {
+  return {
+    id: faker.datatype.uuid(),
+    created_at: faker.date.past(),
+    created_by: faker.datatype.uuid(),
+    updated_at: faker.date.past(),
+    updated_by: faker.datatype.uuid(),
+    user_id: faker.helpers.arrayElement(users).id,
+    ev: faker.datatype.boolean(),
+    license_plate_number: faker.vehicle.vin(),
+    make: faker.vehicle.manufacturer(),
+    model: faker.vehicle.model(),
     vehicle_type: "car",
-  },
-];
+  };
+}
 
-export const reservations = [
-  {
-    id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be624",
-    created_at: "2021-01-30T10:30:00Z",
-    created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    updated_at: "2021-01-30T10:30:00Z",
-    updated_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    parking_spot_id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    user_id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    vehicle_id: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    cancelled: false,
-    date: "2021-12-31",
-    start_time: "2021-01-30T08:30:00Z",
-    end_time: "2021-01-30T10:30:00Z",
-    half_day: true,
-    am: true,
-    cancelled_at: "2021-01-30T10:30:00Z",
-    cancelled_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
-    vehicle: vehicles[0],
-  },
-];
+export const vehicles = [...Array(8).keys()].map(() => generateVehicle());
+
+function generateReservation() {
+  const date = new Date(faker.date.soon(10).toISOString());
+
+  const startTime = new Date(date);
+  const endTime = new Date(date);
+
+  const halfDay = faker.datatype.boolean();
+  const am = faker.datatype.boolean();
+
+  startTime.setHours(0, 0, 0, 0);
+  endTime.setHours(23, 59, 59, 999);
+  if (halfDay) {
+    if (am) {
+      endTime.setHours(11, 59, 59, 999);
+    } else {
+      startTime.setHours(12, 0, 0, 0);
+    }
+  }
+
+  return {
+    id: faker.datatype.uuid(),
+    created_at: faker.date.past(),
+    created_by: faker.datatype.uuid(),
+    updated_at: faker.date.past(),
+    updated_by: faker.datatype.uuid(),
+    parking_spot_id: faker.helpers.arrayElement(parkingSpots).id,
+    user_id: faker.helpers.arrayElement(users).id,
+    vehicle_id: faker.helpers.arrayElement(vehicles).id,
+    cancelled: faker.datatype.boolean(),
+    date,
+    start_time: new Date(date).setHours(0, 0, 0, 0),
+    end_time: new Date(date).setHours(0, 0, 0, 0),
+    half_day: halfDay,
+    am,
+    cancelled_at: null,
+    cancelled_by: null,
+    vehicle: faker.helpers.arrayElement(vehicles),
+  };
+}
+
+export const reservations = [generateReservation(), generateReservation()];
