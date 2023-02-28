@@ -75,19 +75,21 @@ function generateReservation() {
     }
   }
 
+  const user = faker.helpers.arrayElement(users).id;
+
   return {
     id: faker.datatype.uuid(),
     created_at: faker.date.past(),
-    created_by: faker.datatype.uuid(),
+    created_by: user,
     updated_at: faker.date.past(),
     updated_by: faker.datatype.uuid(),
     parking_spot_id: faker.helpers.arrayElement(parkingSpots).id,
-    user_id: faker.helpers.arrayElement(users).id,
+    user_id: user,
     vehicle_id: faker.helpers.arrayElement(vehicles).id,
     cancelled: faker.datatype.boolean(),
-    date,
-    start_time: new Date(date).setHours(0, 0, 0, 0),
-    end_time: new Date(date).setHours(0, 0, 0, 0),
+    date: date.toISOString().split("T")[0],
+    start_time: startTime.toISOString(),
+    end_time: endTime.toISOString(),
     half_day: halfDay,
     am,
     cancelled_at: null,

@@ -151,14 +151,25 @@ api.register({
     );
   },
   listParkingSpotsToday: (c, res, ctx) => {
-    const { status, mock } = api.mockResponseForOperation(
-      c.operation.operationId
-    );
+    const enrichedParkingSpots = parkingSpots.map((parkingSpot) => {
+      const reservationsToday = reservations.filter(
+        (reservation) =>
+          reservation.parking_spot_id === parkingSpot.id &&
+          reservation.date === new Date(Date.now()).toISOString().split("T")[0]
+      );
+
+      return {
+        ...parkingSpot,
+        reservations: reservationsToday,
+      };
+    });
+
+    ctx.status(200);
+
     if (c.request.headers["x-test-empty-response"]) {
-      ctx.status(200);
-      return res(ctx.json([]));
+      return res(ctx.json({ parkingSpots: [] }));
     } else {
-      return sendMockResponse(c.operation.operationId, res, ctx);
+      return res(ctx.json({ parkingSpots: enrichedParkingSpots }));
     }
   },
 });
@@ -180,7 +191,6 @@ api.register({
       return res(ctx.json(returnObject));
     }
   },
-  //Hannes review
   createReservation: (c, res, ctx) => {
     const vehicle = vehicles.find(
       (vehicle) => vehicle.id === c.request.body.vehicle_id
@@ -189,19 +199,42 @@ api.register({
     if (c.request.headers["x-test-too-many-reservations"]) {
       return res(ctx.status(409, "Conflict"));
     }
+
+    const date = c.request.body.date;
+
+    const startTime = new Date(date);
+    const endTime = new Date(date);
+
+    const halfDay = c.request.body.half_day ?? false;
+    const am = c.request.body.am;
+
+    startTime.setHours(0, 0, 0, 0);
+    endTime.setHours(23, 59, 59, 999);
+    if (halfDay) {
+      if (am) {
+        endTime.setHours(11, 59, 59, 999);
+      } else {
+        startTime.setHours(12, 0, 0, 0);
+      }
+    }
+
     reservations.push({
-      ...c.request.body,
-      id: `item-${reservations.length}`,
-      created_at: "2021-01-30T10:30:00Z",
-      created_by: "ccf8d1c6-f927-4e51-8de4-4d4a4f4be623",
+      id: faker.datatype.uuid(),
+      created_at: new Date(Date.now()),
+      created_by: c.request.body.user_id,
+      parking_spot_id: c.request.body.parking_spot_id,
+      user_id: c.request.body.user_id,
+      vehicle_id: c.request.body.vehicle_id,
       cancelled: false,
-      start_time: "2021-01-30T08:30:00Z",
-      end_time: "2021-01-30T10:30:00Z",
+      date: date,
+      start_time: startTime,
+      end_time: endTime,
+      half_day: halfDay,
+      am: am,
       vehicle: vehicle,
     });
-    return res(ctx.status(200));
+    return res(ctx.status(201));
   },
-  //Hannes Review
   cancelReservation: (c, res, ctx) => {
     const id = c.request.params.id;
     const index = reservations.findIndex(
@@ -210,6 +243,8 @@ api.register({
 
     if (index !== -1) {
       reservations[index].cancelled = true;
+      reservations[index]["cancelled_at"] = new Date(Date.now());
+      reservations[index]["cancelled_by"] = faker.datatype.uuid();
       return res(ctx.status(200));
     } else {
       return res(ctx.status(404));
