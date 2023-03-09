@@ -266,6 +266,15 @@ api.register({
     }
   },
   createVehicle: (c, res, ctx) => {
+    const possibleVehicle = vehicles.find(
+      (vehicle) =>
+        vehicle.license_plate_number === c.request.body.license_plate_number
+    );
+
+    if (possibleVehicle) {
+      return res(ctx.status(409, "Conflict"));
+    }
+
     vehicles.push({
       ...c.request.body,
       id: faker.datatype.uuid(),
@@ -290,6 +299,11 @@ export function setupMockServer() {
   const mockServer = setupServer(
     rest.all(`${developmentBaseUrl}/*`, async (req, res, ctx) => {
       const rawHeaders = req.headers.raw();
+
+      if (req.headers.get("x-test-internal-server-error")) {
+        return res(ctx.status(500));
+      }
+
       return api.handleRequest(
         {
           path: req.url.pathname.replace(/^\/api/, ""),
