@@ -18,7 +18,20 @@ function generateUser() {
   };
 }
 
-export const users = [generateUser(), generateUser()];
+const usersWithoutTestUser = [generateUser(), generateUser()];
+
+export const users = [
+  ...usersWithoutTestUser,
+  {
+    ...generateUser(),
+    id: Buffer.from("test@adobe.com").toString("base64"),
+    email: "test@adobe.com",
+    first_name: "Test",
+    last_name: "User",
+    role: "user",
+    username: "test@adobe.com",
+  },
+];
 
 function generateParkingSpot(number) {
   return {
@@ -75,7 +88,7 @@ function generateReservation() {
     }
   }
 
-  const user = faker.helpers.arrayElement(users).id;
+  const user = faker.helpers.arrayElement(usersWithoutTestUser).id;
 
   return {
     id: faker.datatype.uuid(),
