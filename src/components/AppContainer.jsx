@@ -3,12 +3,13 @@ import TopBar from "./TopBar";
 import SideNavBar from "./SideNavBar";
 import AppRoutes from "../AppRoutes";
 import LoginRoutes from "../LoginRoutes";
+import { useState } from "react";
 
-function AppContainer() {
-  const isLoggedIn = false;
+function AppContainer({user, setUser}) {
 
-  return !isLoggedIn ? (
-    <LoginRoutes />
+
+  return !user ? (
+    <LoginRoutes setUser={setUser} />
   ) : (
     <Box sx={{ display: "flex" }}>
       <TopBar />

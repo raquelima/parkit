@@ -1,10 +1,42 @@
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Grid, TextField, Button, Box } from "@mui/material";
+import { TextField, Button, Box } from "@mui/material";
 import { themeColor } from "../Constants";
-import logo from "../assets/adobe.png"
+import logo from "../assets/adobe.png";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-function Login() {
+function Login({ setUser }) {
+  const navigate = useNavigate();
+  const [userInput, setUserInput] = useState({});
+  const [error, setError] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleSaveCredentials = (event) => {
+    setUserInput({ ...userInput, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (
+      userInput.username == "test@adobe.com" &&
+      userInput.password == "testPassword"
+    ) {
+        setUser(true);
+      localStorage.setItem("user", JSON.stringify(userInput));
+      navigate("/");
+    } else {
+      setError("Wrong username or password");
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+        setUser(true);
+      navigate("/");
+    }
+  }, []);
+
   return (
     <Box
       sx={{
@@ -24,6 +56,7 @@ function Login() {
             backgroundColor: "white",
           }}
         >
+          {error}
           <Box
             component="form"
             sx={{
@@ -32,16 +65,17 @@ function Login() {
               alignItems: "center",
               padding: 2,
             }}
+            onSubmit={handleSubmit}
           >
-            <img src={logo} width={30} height={25}/>
-        
+            <img src={logo} width={30} height={25} />
+
             <Typography component="h1" variant="h4" mt={3}>
               Login
             </Typography>
             <TextField
               sx={{
                 width: { md: 230 },
-                mt: 2
+                mt: 2,
               }}
               InputLabelProps={{ style: { fontSize: 15, padding: 0 } }}
               inputProps={{
@@ -54,11 +88,12 @@ function Login() {
               variant="standard"
               size="small"
               required
+              onChange={handleSaveCredentials}
             />
             <TextField
               sx={{
                 width: { md: 230 },
-                mt: 1
+                mt: 1,
               }}
               InputLabelProps={{ style: { fontSize: 15, padding: 0 } }}
               inputProps={{
@@ -72,6 +107,7 @@ function Login() {
               variant="standard"
               size="small"
               required
+              onChange={handleSaveCredentials}
             />
             <Button
               variant="contained"
