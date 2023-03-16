@@ -1,14 +1,16 @@
-import { Grid, Box, Typography, Button } from "@mui/material";
+import { Grid, Box, Typography, Button, CircularProgress } from "@mui/material";
 import InfoCard from "../components/InfoCard";
 import UpcomingTable from "../components/UpcomingTable";
 import { THEMECOLOR } from "../Constants";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
-  const {reservations} = useFetchReservations(client);
+  const { reservations, loading } = useFetchReservations(client);
+  const navigate = useNavigate();
 
   return (
     <Box>
@@ -23,15 +25,20 @@ function Dashboard() {
             borderRadius: "4px",
             textTransform: "none",
           }}
+          onClick={() => navigate("/parking_overview")}
         >
           Create reservation +
         </Button>
       </Box>
       <Grid container>
         <Grid container justifyContent="space-between">
-          {[0, 1, 2].map((value) => (
-            <Grid key={value} item>
-              <InfoCard />
+          {[
+            "Available parking spaces",
+            "Upcoming reservations",
+            "Total reservations",
+          ].map((text) => (
+            <Grid key={text} item>
+              <InfoCard text={text} />
             </Grid>
           ))}
         </Grid>
@@ -40,6 +47,8 @@ function Dashboard() {
         <Typography gutterBottom variant="h6" component="div">
           Upcoming reservations
         </Typography>
+
+        {loading && <CircularProgress />}
         {reservations ? (
           <UpcomingTable reservations={reservations} />
         ) : (

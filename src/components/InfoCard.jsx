@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { THEMECOLOR } from "../Constants";
 
-function InfoCard() {
+function InfoCard({text}) {
   return (
     <Card
       sx={{
@@ -17,7 +17,7 @@ function InfoCard() {
     >
       <CardContent>
         <Typography gutterBottom variant="h6" component="div">
-          Available Parking Spaces
+          {text}
         </Typography>
         <Typography gutterBottom variant="h4" component="div">
           3

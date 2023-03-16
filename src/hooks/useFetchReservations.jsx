@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 const useFetchReservations = (client) => {
   const [reservations, setReservations] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchReservations = () => {
     if (client?.apis?.reservations) {
@@ -19,6 +20,7 @@ const useFetchReservations = (client) => {
               })
             ).then(() => {
               setReservations(response.body.reservations);
+              setLoading(false);
             });
           })
           .catch((e) => {
@@ -34,7 +36,7 @@ const useFetchReservations = (client) => {
     fetchReservations();
   }, [client]);
 
-  return { reservations };
+  return { reservations, loading };
 };
 
 export default useFetchReservations;
