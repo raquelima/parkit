@@ -1,13 +1,14 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { format } from "date-fns";
-import { IconButton } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import { IconButton, Box } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 function UpcomingTable({ reservations }) {
   const columns = [
     {
       field: "date",
       headerName: "Date",
+      flex: 1,
       width: 200,
       valueGetter: (reservations) =>
         format(new Date(reservations.row.date), "dd/MM/yyyy"),
@@ -15,6 +16,7 @@ function UpcomingTable({ reservations }) {
     {
       field: "duration",
       headerName: "Duration",
+      flex: 1,
       sortable: false,
       width: 200,
       valueGetter: (reservations) =>
@@ -26,6 +28,7 @@ function UpcomingTable({ reservations }) {
     {
       field: "vehicle",
       headerName: "Vehicle",
+      flex: 1,
       sortable: false,
       width: 200,
       valueGetter: (reservations) =>
@@ -37,10 +40,11 @@ function UpcomingTable({ reservations }) {
       sortable: false,
       width: 200,
     },
-    { field: "status", headerName: "Status", sortable: false, width: 200 },
     {
       field: "cancel",
       headerName: " ",
+      sortable: false,
+      width: 70,
       renderCell: (cellValues) => {
         return (
           <IconButton
@@ -58,15 +62,21 @@ function UpcomingTable({ reservations }) {
   ];
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <Box style={{ height: 400, width: "100%" }}>
       <DataGrid
+        sx={{
+            border: 0,
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "rgb(255,48,48,0.13)",
+          },
+        }}
         rows={reservations}
         columns={columns}
         loading={!reservations}
         pageSize={5}
         rowsPerPageOptions={[5]}
       />
-    </div>
+    </Box>
   );
 }
 

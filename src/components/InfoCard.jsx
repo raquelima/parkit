@@ -11,7 +11,7 @@ function InfoCard({text}) {
       sx={{
         height: 175,
         width: 370,
-        background: "linear-gradient(#303E4D, #C6545A)",
+        background: "linear-gradient(rgb(93,121,152,0.5), rgb(198,84,90,1))",
         borderRadius: "21px",
       }}
     >

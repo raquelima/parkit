@@ -14,7 +14,7 @@ function Dashboard() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}>
         <Typography gutterBottom variant="h6" component="div">
           Today's Information
         </Typography>
@@ -43,7 +43,7 @@ function Dashboard() {
           ))}
         </Grid>
       </Grid>
-      <Box>
+      <Box sx={{ pt: 4 }}>
         <Typography gutterBottom variant="h6" component="div">
           Upcoming reservations
         </Typography>
