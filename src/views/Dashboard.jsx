@@ -2,42 +2,13 @@ import { Grid, Box, Typography, Button } from "@mui/material";
 import InfoCard from "../components/InfoCard";
 import UpcomingTable from "../components/UpcomingTable";
 import { THEMECOLOR } from "../Constants";
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
+import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
-
-  const [reservations, setReservations] = useState(null);
-
-  const fetchReservations = () => {
-    if (client?.apis?.reservations) {
-      (async () => {
-        client.apis.reservations
-          .listReservations()
-          .then((response) => {
-            Promise.all(
-              response.body.reservations.map((element) => {
-                return client.apis["parking-spots"]
-                  .getParkingSpot({ id: element.parking_spot_id })
-                  .then((response) => {
-                    console.log(response);
-                  });
-              })
-            ).then(() => setReservations(response.body.reservations));
-          })
-          .catch((e) => {
-            setServerMessage(
-              `An error occurred: ${e.statusCode} - ${e.response?.statusText}`
-            );
-          });
-      })();
-    }
-  };
-
-  useEffect(() => {
-    fetchReservations();
-  }, [client]);
+  const {reservations} = useFetchReservations(client);
 
   return (
     <Box>
