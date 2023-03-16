@@ -1,6 +1,6 @@
 import { Drawer, Toolbar, Typography, Divider } from "@mui/material";
-import { drawerWidth } from "./Constants";
-import { themeColor } from "./Constants";
+import { drawerWidth } from "../Constants";
+import { themeColor } from "../Constants";
 import SideNavBarList from "./SideNavBarList";
 
 function SideNavBar() {

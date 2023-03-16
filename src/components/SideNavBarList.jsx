@@ -1,16 +1,10 @@
+import { useState } from "react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
 import EventIcon from "@mui/icons-material/Event";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import {
-  List,
-  Divider,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { List, Divider } from "@mui/material";
+import CustomListItem from "./CustomListItem";
 
 const icons = [
   <AssessmentIcon style={{ color: "white" }} />,
@@ -23,16 +17,14 @@ const paths = ["/dashboard", "/reservations", "/parking_overview"];
 
 const views = ["Dashboard", "Reservations", "Parking Overview"];
 
-let CustomListItem = ({ to, primary, icon }) => (
-  <ListItem component={Link} to={to} disablePadding>
-    <ListItemButton>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={primary} />
-    </ListItemButton>
-  </ListItem>
-);
-
 function SideNavBarList() {
+  const [selectedIndex, setSelectedIndex] = useState(1);
+
+  const buttonProps = (value) => ({
+    selected: selectedIndex === value,
+    onClick: () => setSelectedIndex(value),
+  });
+
   return (
     <List>
       <List>
@@ -42,6 +34,7 @@ function SideNavBarList() {
             to={paths[index]}
             primary={text}
             icon={icons[index]}
+            buttonProps={buttonProps(index)}
           />
         ))}
       </List>
