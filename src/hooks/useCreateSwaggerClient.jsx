@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import SwaggerClient from "swagger-client";
-import { developmentBaseUrl } from "../mock/conf.js";
+import { developmentBaseUrl } from "../../mock/conf.js";
 import spec from "@berufsbildung-basel/parkit-spec/api.yml";
 
 function useCreateSwaggerClient() {
@@ -26,7 +26,6 @@ function useCreateSwaggerClient() {
         return request;
       },
     }).then((client) => setSwaggerClient(client));
-
   }, []);
 
   return swaggerClient;

@@ -1,5 +1,5 @@
 import React from "react";
-import useCreateSwaggerClient from "./useCreateSwaggerClient.jsx";
+import useCreateSwaggerClient from "./hooks/useCreateSwaggerClient.jsx";
 import AppContainer from "./components/AppContainer";
 
 export const SwaggerClientContext = React.createContext();
@@ -9,7 +9,7 @@ function App() {
 
   return (
     <SwaggerClientContext.Provider value={client}>
-      <AppContainer/>
+      <AppContainer />
     </SwaggerClientContext.Provider>
   );
 }
