@@ -3,11 +3,8 @@ import TopBar from "./TopBar";
 import SideNavBar from "./SideNavBar";
 import AppRoutes from "../AppRoutes";
 import LoginRoutes from "../LoginRoutes";
-import { useState } from "react";
 
-function AppContainer({user, setUser}) {
-
-
+function RouteContainer({ user, setUser }) {
   return !user ? (
     <LoginRoutes setUser={setUser} />
   ) : (
@@ -25,4 +22,4 @@ function AppContainer({user, setUser}) {
   );
 }
 
-export default AppContainer;
+export default RouteContainer;

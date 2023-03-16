@@ -22,7 +22,7 @@ function Login({ setUser }) {
       userInput.username == "test@adobe.com" &&
       userInput.password == "testPassword"
     ) {
-        setUser(true);
+      setUser(true);
       localStorage.setItem("user", JSON.stringify(userInput));
       navigate("/");
     } else {
@@ -32,7 +32,7 @@ function Login({ setUser }) {
 
   useEffect(() => {
     if (user) {
-        setUser(true);
+      setUser(true);
       navigate("/");
     }
   }, []);

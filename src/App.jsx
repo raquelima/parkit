@@ -1,6 +1,6 @@
 import React from "react";
 import useCreateSwaggerClient from "./hooks/useCreateSwaggerClient.jsx";
-import AppContainer from "./components/AppContainer";
+import RouteContainer from "./components/RouteContainer";
 import { useState } from "react";
 
 export const SwaggerClientContext = React.createContext();
@@ -11,7 +11,7 @@ function App() {
 
   return (
     <SwaggerClientContext.Provider value={client}>
-      <AppContainer user={user} setUser={setUser} />
+      <RouteContainer user={user} setUser={setUser} />
     </SwaggerClientContext.Provider>
   );
 }
