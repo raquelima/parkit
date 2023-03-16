@@ -1,5 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { format } from "date-fns";
+import { IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 function UpcomingTable({ reservations }) {
   const columns = [
@@ -36,6 +38,23 @@ function UpcomingTable({ reservations }) {
       width: 200,
     },
     { field: "status", headerName: "Status", sortable: false, width: 200 },
+    {
+      field: "cancel",
+      headerName: " ",
+      renderCell: (cellValues) => {
+        return (
+          <IconButton
+            aria-label="cancel reservation"
+            color="error"
+            onClick={(event) => {
+              handleClick(event, cellValues);
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        );
+      },
+    },
   ];
 
   return (
