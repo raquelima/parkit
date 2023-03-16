@@ -1,6 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
 import TopBar from "./TopBar";
 import SideNavBar from "./SideNavBar";
+import AppRoutes from "../AppRoutes";
 
 function AppContainer() {
   return (
@@ -10,7 +11,10 @@ function AppContainer() {
       <Box
         component="main"
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-      ></Box>
+      >
+        <Toolbar />
+        <AppRoutes />
+      </Box>
     </Box>
   );
 }

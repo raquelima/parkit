@@ -9,9 +9,10 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
-      <Route path="reservations" element={<Reservations />} />
-      <Route path="parking_overview" element={<ParkingOverview />} />
-      <Route path="vehicles" element={<Vehicles />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/reservations" element={<Reservations />} />
+      <Route path="/parking_overview" element={<ParkingOverview />} />
+      <Route path="/vehicles" element={<Vehicles />} />
     </Routes>
   );
 }
