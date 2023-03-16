@@ -2,9 +2,14 @@ import { Box, Toolbar } from "@mui/material";
 import TopBar from "./TopBar";
 import SideNavBar from "./SideNavBar";
 import AppRoutes from "../AppRoutes";
+import LoginRoutes from "../LoginRoutes";
 
 function AppContainer() {
-  return (
+  const isLoggedIn = false;
+
+  return !isLoggedIn ? (
+    <LoginRoutes />
+  ) : (
     <Box sx={{ display: "flex" }}>
       <TopBar />
       <SideNavBar />

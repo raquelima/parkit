@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./views/Dashboard.jsx";
 import Reservations from "./views/Reservations.jsx";

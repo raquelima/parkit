@@ -45,6 +45,7 @@ function SideNavBarList() {
           to="/vehicles"
           primary="Vehicles"
           icon={icons[3]}
+          buttonProps={buttonProps(3)}
         />
       </List>
     </List>
