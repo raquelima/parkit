@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { TextField, Button, Box } from "@mui/material";
-import { themeColor } from "../Constants";
+import { THEMECOLOR } from "../Constants";
 import logo from "../assets/adobe.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -112,7 +112,7 @@ function Login({ setUser }) {
             <Button
               variant="contained"
               type="submit"
-              sx={{ backgroundColor: themeColor, width: "130px", mt: 5 }}
+              sx={{ backgroundColor: THEMECOLOR, width: "130px", mt: 5 }}
             >
               Login
             </Button>

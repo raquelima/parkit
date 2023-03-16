@@ -1,18 +1,18 @@
 import { Drawer, Toolbar, Typography, Divider } from "@mui/material";
-import { drawerWidth } from "../Constants";
-import { themeColor } from "../Constants";
+import { DRAWERWIDTH } from "../Constants";
+import { THEMECOLOR } from "../Constants";
 import SideNavBarList from "./SideNavBarList";
 
 function SideNavBar() {
   return (
     <Drawer
       sx={{
-        width: drawerWidth,
+        width: DRAWERWIDTH,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
+          width: DRAWERWIDTH,
           boxSizing: "border-box",
-          backgroundColor: themeColor,
+          backgroundColor: THEMECOLOR,
           color: "white",
         },
       }}

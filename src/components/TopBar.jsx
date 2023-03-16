@@ -1,15 +1,15 @@
 import { IconButton, Avatar, AppBar, Toolbar } from "@mui/material";
-import { themeColor } from "../Constants";
-import { drawerWidth } from "../Constants";
+import { THEMECOLOR } from "../Constants";
+import { DRAWERWIDTH } from "../Constants";
 
 function TopBar() {
   return (
     <AppBar
       position="fixed"
       sx={{
-        width: `calc(100% - ${drawerWidth}px)`,
-        ml: `${drawerWidth}px`,
-        backgroundColor: themeColor,
+        width: `calc(100% - ${DRAWERWIDTH}px)`,
+        ml: `${DRAWERWIDTH}px`,
+        backgroundColor: THEMECOLOR,
       }}
     >
       <Toolbar variant="dense" sx={{ justifyContent: "flex-end" }}>
