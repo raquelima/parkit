@@ -19,7 +19,7 @@ function SideNavBar() {
       variant="permanent"
       anchor="left"
     >
-      <Toolbar variant="dense">
+      <Toolbar variant="dense" sx={{ minHeight: 44 }}>
         <Typography>ParkIT</Typography>
       </Toolbar>
       <Divider />
