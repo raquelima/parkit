@@ -8,7 +8,9 @@ import { useEffect, useState } from "react";
 
 function Login({ setUser }) {
   const navigate = useNavigate();
-  const [userInput, setUserInput] = useState({});
+  const [userInput, setUserInput] = useState({
+    userId: "dGVzdEBhZG9iZS5jb20=",
+  });
   const [error, setError] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
 

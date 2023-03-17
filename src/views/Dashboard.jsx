@@ -6,10 +6,13 @@ import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 import { upcomingReservationsColumns } from "../columns";
 import CreateReservationButton from "../components/CreateReservationButton";
+import filterData from "../logic/filterData";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
+  const filteredReservations = filterData(reservations);
+
   const infoCards = [
     "Available parking spaces",
     "Upcoming reservations",
@@ -30,7 +33,11 @@ function Dashboard() {
         <Grid container justifyContent="space-between">
           {infoCards.map((text, index) => (
             <Grid key={text} item>
-              <InfoCard text={text} button={infoCardsButtons[index]} path={infoCardsPaths[index]} />
+              <InfoCard
+                text={text}
+                button={infoCardsButtons[index]}
+                path={infoCardsPaths[index]}
+              />
             </Grid>
           ))}
         </Grid>
@@ -40,10 +47,13 @@ function Dashboard() {
 
         {loading ? (
           <CircularProgress />
-        ) : reservations ? (
-          <Table data={reservations} columns={upcomingReservationsColumns} />
+        ) : filteredReservations ? (
+          <Table
+            data={filteredReservations}
+            columns={upcomingReservationsColumns}
+          />
         ) : (
-          <p>No reservations found</p>
+          <p>No upcoming reservations</p>
         )}
       </Box>
     </Box>
