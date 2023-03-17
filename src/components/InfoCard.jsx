@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { THEMECOLOR } from "../Constants";
 
-function InfoCard({text}) {
+function InfoCard({ text }) {
   return (
     <Card
       sx={{
@@ -16,10 +16,10 @@ function InfoCard({text}) {
       }}
     >
       <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
+        <Typography gutterBottom variant="h6" sx={{ fontWeight: "300" }}>
           {text}
         </Typography>
-        <Typography gutterBottom variant="h4" component="div">
+        <Typography gutterBottom variant="h4" sx={{ color: THEMECOLOR, fontWeight: 'bold' }}>
           3
         </Typography>
       </CardContent>

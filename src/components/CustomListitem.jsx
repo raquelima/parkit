@@ -24,7 +24,7 @@ function CustomListItem({ to, primary, icon, buttonProps }) {
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText
           primary={primary}
-          primaryTypographyProps={{ sx: { color: "white" } }}
+          primaryTypographyProps={{ color: "white", fontWeight: "300" }}
         />
       </ListItemButton>
     </ListItem>
