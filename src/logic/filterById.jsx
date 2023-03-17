@@ -1,5 +1,5 @@
 function filterById(array, userId) {
-  return array?.filter((obj) => obj.userId === userId);
+  return array?.filter((obj) => obj.user_id === userId);
 }
 
 export default filterById;

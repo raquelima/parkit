@@ -64,7 +64,7 @@ export const reservationsColumns = [
 
       cancelled
         ? (status = "cancelled")
-        : now > startTime
+        : now < startTime
         ? (status = "upcoming")
         : (status = "overdue");
 
@@ -78,9 +78,10 @@ export const reservationsColumns = [
     width: 70,
     renderCell: (reservations) => {
       const startTime = reservations.row.start_time;
-      const upcoming = now > startTime ? true : false;
+      const cancelled = reservations.row.cancelled;
+      const upcoming = now < startTime ? true : false;
 
-      if (upcoming) {
+      if (upcoming && !cancelled) {
         return (
           <IconButton aria-label="cancel reservation" color="error">
             <CloseIcon />
