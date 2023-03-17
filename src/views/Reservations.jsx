@@ -1,7 +1,5 @@
-import { Box, Typography, Button, CircularProgress } from "@mui/material";
-import { THEMECOLOR } from "../Constants";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
@@ -11,7 +9,6 @@ import CreateReservationButton from "../components/CreateReservationButton";
 function Reservations() {
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
-  const navigate = useNavigate();
 
   return (
     <Box>

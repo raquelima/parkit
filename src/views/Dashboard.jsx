@@ -10,6 +10,13 @@ import CreateReservationButton from "../components/CreateReservationButton";
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
+  const infoCards = [
+    "Available parking spaces",
+    "Upcoming reservations",
+    "Total reservations",
+  ];
+  const infoCardsPaths = ["/parking_overview", "/reservations"];
+  const infoCardsButtons = ["See overview", "See reservations"];
 
   return (
     <Box>
@@ -17,17 +24,13 @@ function Dashboard() {
         <Typography gutterBottom variant="h6" component="div">
           Today's information
         </Typography>
-       <CreateReservationButton />
+        <CreateReservationButton />
       </Box>
       <Grid container>
         <Grid container justifyContent="space-between">
-          {[
-            "Available parking spaces",
-            "Upcoming reservations",
-            "Total reservations",
-          ].map((text) => (
+          {infoCards.map((text, index) => (
             <Grid key={text} item>
-              <InfoCard text={text} />
+              <InfoCard text={text} button={infoCardsButtons[index]} path={infoCardsPaths[index]} />
             </Grid>
           ))}
         </Grid>
@@ -35,8 +38,9 @@ function Dashboard() {
       <Box sx={{ pt: 4 }}>
         <Typography variant="h6">Upcoming reservations</Typography>
 
-        {loading && <CircularProgress />}
-        {reservations ? (
+        {loading ? (
+          <CircularProgress />
+        ) : reservations ? (
           <Table data={reservations} columns={upcomingReservationsColumns} />
         ) : (
           <p>No reservations found</p>
