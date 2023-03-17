@@ -1,6 +1,5 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
-import { useContext } from "react";
-import useFetchReservations from "../hooks/useFetchReservations";
+import { useContext, useState, useEffect } from "react";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
@@ -9,18 +8,29 @@ import { format } from "date-fns";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import StatusChip from "../components/StatusChip";
+import fetchReservations from "../utils/fetchReservations";
 
 function Reservations() {
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
   const client = useContext(SwaggerClientContext);
-  const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-  const { reservations, loading } = useFetchReservations(client);
+
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
+  const [reservations, setReservations] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const filteredReservations = filterById(reservations, userId);
 
+  const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
   const cancelReservation = (id) => {
-    client?.apis["reservations"]
-      .cancelReservation({ id: id })
-      .then(() => useFetchReservations(client));
+    client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
+      //twice in code
+      fetchReservations(client).then((result) => {
+        setReservations(result?.reservations);
+        setError(result?.error);
+        setLoading(result?.loading);
+      })
+    );
   };
 
   const reservationsColumns = [
@@ -104,9 +114,7 @@ function Reservations() {
             <IconButton
               aria-label="cancel reservation"
               color="error"
-              onClick={() => {
-                cancelReservation(reservations.row.id);
-              }}
+              onClick={() => cancelReservation(reservations.row.id)}
             >
               <CloseIcon />
             </IconButton>
@@ -116,8 +124,17 @@ function Reservations() {
     },
   ];
 
+  useEffect(() => {
+    fetchReservations(client).then((result) => {
+      setReservations(result?.reservations);
+      setError(result?.error);
+      setLoading(result?.loading);
+    });
+  }, [client]);
+
   return (
     <Box>
+      {error}
       <Box
         sx={{
           display: "flex",
@@ -130,7 +147,7 @@ function Reservations() {
 
       {loading ? (
         <CircularProgress />
-      ) : filteredReservations.length ? (
+      ) : filteredReservations?.length ? (
         <Table data={filteredReservations} columns={reservationsColumns} />
       ) : (
         <p>No reservations found</p>

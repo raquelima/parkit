@@ -1,27 +1,32 @@
-import { Grid, Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Typography,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import InfoCard from "../components/InfoCard";
 import Table from "../components/Table";
-import { useContext } from "react";
-import useFetchReservations from "../hooks/useFetchReservations";
-import { SwaggerClientContext } from "../App";
 import CreateReservationButton from "../components/CreateReservationButton";
+import { format } from "date-fns";
+import { useContext, useState, useEffect } from "react";
+import fetchReservations from "../utils/fetchReservations";
+import { SwaggerClientContext } from "../App";
 import filterById from "../utils/filterById";
 import filterUpcoming from "../utils/filterUpcoming";
-import { format } from "date-fns";
-import { IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import cancelReservation from "../utils/cancelReservation";
 
 function Dashboard() {
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
   const client = useContext(SwaggerClientContext);
-  const { reservations, loading } = useFetchReservations(client);
+  const [reservations, setReservations] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
   const filteredReservations = filterById(reservations, userId);
-  const upcomingReservation = filterUpcoming(filteredReservations);
-
+  const upcomingReservations = filterUpcoming(filteredReservations);
   const totalReservations = filteredReservations?.length;
-  const upcomingReservationTotal = upcomingReservation?.length;
+  const upcomingReservationTotal = upcomingReservations?.length;
 
   const infoCardsText = [
     "Available parking spaces",
@@ -31,6 +36,17 @@ function Dashboard() {
   const infoCardsNumbers = [3, upcomingReservationTotal, totalReservations];
   const infoCardsPaths = ["/parking_overview", "/reservations"];
   const infoCardsButtons = ["See overview", "See reservations"];
+
+  const cancelReservation = (id) => {
+    client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
+      //twice in code
+      fetchReservations(client).then((result) => {
+        setReservations(result?.reservations);
+        setError(result?.error);
+        setLoading(result?.loading);
+      })
+    );
+  };
 
   const upcomingReservationsColumns = [
     {
@@ -74,14 +90,12 @@ function Dashboard() {
       headerName: " ",
       sortable: false,
       width: 70,
-      renderCell: () => {
+      renderCell: (reservations) => {
         return (
           <IconButton
             aria-label="cancel reservation"
             color="error"
-            onClick={cancelReservation(reservations.row.id, client).then(
-              useFetchReservations(client)
-            )}
+            onClick={() => cancelReservation(reservations.row.id)}
           >
             <CloseIcon />
           </IconButton>
@@ -90,8 +104,17 @@ function Dashboard() {
     },
   ];
 
+  useEffect(() => {
+    fetchReservations(client).then((result) => {
+      setReservations(result?.reservations);
+      setError(result?.error);
+      setLoading(result?.loading);
+    });
+  }, [client]);
+
   return (
     <Box>
+      {error}
       <Box sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}>
         <Typography gutterBottom variant="h6" component="div">
           Today's information
@@ -117,9 +140,9 @@ function Dashboard() {
 
         {loading ? (
           <CircularProgress />
-        ) : upcomingReservation.length ? (
+        ) : upcomingReservations?.length ? (
           <Table
-            data={upcomingReservation}
+            data={upcomingReservations}
             columns={upcomingReservationsColumns}
           />
         ) : (
