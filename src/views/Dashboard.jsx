@@ -6,12 +6,12 @@ import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 import { upcomingReservationsColumns } from "../columns";
 import CreateReservationButton from "../components/CreateReservationButton";
-import filterData from "../logic/filterData";
+import filterById from "../logic/filterById";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
-  const filteredReservations = filterData(reservations);
+  const filteredReservations = filterById(reservations);
 
   const infoCards = [
     "Available parking spaces",
@@ -47,7 +47,7 @@ function Dashboard() {
 
         {loading ? (
           <CircularProgress />
-        ) : filteredReservations ? (
+        ) : filteredReservations.length ? (
           <Table
             data={filteredReservations}
             columns={upcomingReservationsColumns}

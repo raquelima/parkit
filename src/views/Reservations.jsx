@@ -5,12 +5,12 @@ import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
 import { reservationsColumns } from "../columns";
 import CreateReservationButton from "../components/CreateReservationButton";
-import filterData from "../logic/filterData";
+import filterById from "../logic/filterById";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
-  const filteredReservations = filterData(reservations);
+  const filteredReservations = filterById(reservations);
 
   return (
     <Box>
@@ -21,12 +21,12 @@ function Reservations() {
         }}
       >
         <Typography variant="h6">Your reservations</Typography>
-       <CreateReservationButton />
+        <CreateReservationButton />
       </Box>
 
       {loading ? (
         <CircularProgress />
-      ) : filteredReservations ? (
+      ) : filteredReservations.length ? (
         <Table data={filteredReservations} columns={reservationsColumns} />
       ) : (
         <p>No reservations found</p>
