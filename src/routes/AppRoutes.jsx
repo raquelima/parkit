@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "./views/Dashboard.jsx";
-import Reservations from "./views/Reservations.jsx";
-import ParkingOverview from "./views/ParkingOverview.jsx";
-import Vehicles from "./views/Vehicles.jsx";
+import Dashboard from "../pages/Dashboard.jsx";
+import Reservations from "../pages/Reservations.jsx";
+import ParkingOverview from "../pages/ParkingOverview.jsx";
+import Vehicles from "../pages/Vehicles.jsx";
 
 function AppRoutes() {
   return (

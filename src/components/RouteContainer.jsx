@@ -1,8 +1,8 @@
 import { Box, Toolbar } from "@mui/material";
 import TopBar from "./TopBar";
 import SideNavBar from "./SideNavBar";
-import AppRoutes from "../AppRoutes";
-import LoginRoutes from "../LoginRoutes";
+import AppRoutes from "../routes/AppRoutes";
+import LoginRoutes from "../routes/LoginRoutes";
 
 function RouteContainer({ user, setUser }) {
   return !user ? (

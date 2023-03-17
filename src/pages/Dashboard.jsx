@@ -5,12 +5,12 @@ import { useContext } from "react";
 import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 import CreateReservationButton from "../components/CreateReservationButton";
-import filterById from "../logic/filterById";
-import filterUpcoming from "../logic/filterUpcoming";
+import filterById from "../utils/filterById";
+import filterUpcoming from "../utils/filterUpcoming";
 import { format } from "date-fns";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import cancelReservation from "../logic/cancelReservation";
+import cancelReservation from "../utils/cancelReservation";
 
 function Dashboard() {
   const userId = JSON.parse(localStorage.getItem("user")).userId;

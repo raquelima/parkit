@@ -4,7 +4,7 @@ import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
-import filterById from "../logic/filterById";
+import filterById from "../utils/filterById";
 import { format } from "date-fns";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
