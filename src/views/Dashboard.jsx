@@ -12,6 +12,7 @@ function Dashboard() {
   const userId = JSON.parse(localStorage.getItem("user")).userId;
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
+
   const filteredReservations = filterById(reservations, userId);
 
   const infoCards = [
