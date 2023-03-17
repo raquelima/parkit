@@ -1,12 +1,9 @@
 import { Chip } from "@mui/material";
-import { format } from "date-fns";
 
-function StatusChip({ startTime, cancelled }) {
-  const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-  return cancelled ? (
+function StatusChip({ status }) {
+  return status === "cancelled" ? (
     <Chip
-      label="cancelled"
+      label={status}
       size="small"
       sx={{
         color: "#D83B3B",
@@ -14,15 +11,15 @@ function StatusChip({ startTime, cancelled }) {
         fontWeight: "bold",
       }}
     />
-  ) : now < startTime ? (
+  ) : status === "upcoming" ? (
     <Chip
-      label="upcoming"
+      label={status}
       size="small"
       sx={{ color: "#67CEAD", backgroundColor: "#E5F8F2", fontWeight: "bold" }}
     />
   ) : (
     <Chip
-      label="overdue"
+      label={status}
       size="small"
       sx={{
         color: "#F7C692",
