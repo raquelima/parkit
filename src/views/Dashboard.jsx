@@ -1,17 +1,15 @@
-import { Grid, Box, Typography, Button, CircularProgress } from "@mui/material";
+import { Grid, Box, Typography, CircularProgress } from "@mui/material";
 import InfoCard from "../components/InfoCard";
 import Table from "../components/Table";
-import { THEMECOLOR } from "../Constants";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 import { upcomingReservationsColumns } from "../columns";
+import CreateReservationButton from "../components/CreateReservationButton";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
-  const navigate = useNavigate();
 
   return (
     <Box>
@@ -19,17 +17,7 @@ function Dashboard() {
         <Typography gutterBottom variant="h6" component="div">
           Today's information
         </Typography>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: THEMECOLOR,
-            borderRadius: "4px",
-            textTransform: "none",
-          }}
-          onClick={() => navigate("/parking_overview")}
-        >
-          Create reservation +
-        </Button>
+       <CreateReservationButton />
       </Box>
       <Grid container>
         <Grid container justifyContent="space-between">

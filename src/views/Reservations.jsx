@@ -6,6 +6,7 @@ import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
 import { reservationsColumns } from "../columns";
+import CreateReservationButton from "../components/CreateReservationButton";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
@@ -21,17 +22,7 @@ function Reservations() {
         }}
       >
         <Typography variant="h6">Your reservations</Typography>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: THEMECOLOR,
-            borderRadius: "4px",
-            textTransform: "none",
-          }}
-          onClick={() => navigate("/parking_overview")}
-        >
-          Create reservation +
-        </Button>
+       <CreateReservationButton />
       </Box>
 
       {loading ? (
