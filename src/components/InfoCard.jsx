@@ -27,7 +27,7 @@ function InfoCard({ text, number, button, path }) {
           variant="h4"
           sx={{ color: THEMECOLOR, fontWeight: "bold" }}
         >
-          {number}
+          {number ? number : 0}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end", mr: 1, pb: 2 }}>
