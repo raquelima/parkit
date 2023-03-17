@@ -19,19 +19,17 @@ function generateUser() {
 }
 
 const usersWithoutTestUser = [generateUser(), generateUser()];
+const testUser = {
+  ...generateUser(),
+  id: Buffer.from("test@adobe.com").toString("base64"),
+  email: "test@adobe.com",
+  first_name: "Test",
+  last_name: "User",
+  role: "user",
+  username: "test@adobe.com",
+};
 
-export const users = [
-  ...usersWithoutTestUser,
-  {
-    ...generateUser(),
-    id: Buffer.from("test@adobe.com").toString("base64"),
-    email: "test@adobe.com",
-    first_name: "Test",
-    last_name: "User",
-    role: "user",
-    username: "test@adobe.com",
-  },
-];
+export const users = [...usersWithoutTestUser, testUser];
 
 function generateParkingSpot(number) {
   return {
@@ -51,14 +49,18 @@ export const parkingSpots = [...Array(8).keys()].map((i) =>
   generateParkingSpot(i + 1)
 );
 
-function generateVehicle() {
+function generateVehicle(user = null) {
+  if (!user) {
+    user = faker.helpers.arrayElement(users);
+  }
+
   return {
     id: faker.datatype.uuid(),
     created_at: faker.date.past(),
     created_by: faker.datatype.uuid(),
     updated_at: faker.date.past(),
     updated_by: faker.datatype.uuid(),
-    user_id: faker.helpers.arrayElement(users).id,
+    user_id: user.id,
     ev: faker.datatype.boolean(),
     license_plate_number: faker.vehicle.vin(),
     make: faker.vehicle.manufacturer(),
@@ -67,9 +69,14 @@ function generateVehicle() {
   };
 }
 
-export const vehicles = [...Array(8).keys()].map(() => generateVehicle());
+const testUserVehicle = generateVehicle(testUser);
 
-function generateReservation() {
+export const vehicles = [
+  ...[...Array(4).keys()].map(() => generateVehicle()),
+  testUserVehicle,
+];
+
+function generateReservation(user = null, vehicle = null) {
   const date = new Date(faker.date.soon(10).toISOString());
 
   const startTime = new Date(date);
@@ -88,17 +95,23 @@ function generateReservation() {
     }
   }
 
-  const user = faker.helpers.arrayElement(usersWithoutTestUser).id;
+  if (!user) {
+    user = faker.helpers.arrayElement(usersWithoutTestUser);
+  }
+
+  if (!vehicle) {
+    vehicle = faker.helpers.arrayElement(vehicles);
+  }
 
   return {
     id: faker.datatype.uuid(),
     created_at: faker.date.past(),
-    created_by: user,
+    created_by: user.id,
     updated_at: faker.date.past(),
     updated_by: faker.datatype.uuid(),
     parking_spot_id: faker.helpers.arrayElement(parkingSpots).id,
-    user_id: user,
-    vehicle_id: faker.helpers.arrayElement(vehicles).id,
+    user_id: user.id,
+    vehicle_id: vehicle.id,
     cancelled: faker.datatype.boolean(),
     date: date.toISOString().split("T")[0],
     start_time: startTime.toISOString(),
@@ -107,8 +120,12 @@ function generateReservation() {
     am,
     cancelled_at: null,
     cancelled_by: null,
-    vehicle: faker.helpers.arrayElement(vehicles),
+    vehicle: vehicle,
   };
 }
 
-export const reservations = [generateReservation(), generateReservation()];
+export const reservations = [
+  generateReservation(testUser, testUserVehicle),
+  generateReservation(),
+  generateReservation(),
+];
