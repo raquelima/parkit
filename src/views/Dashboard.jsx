@@ -1,11 +1,12 @@
 import { Grid, Box, Typography, Button, CircularProgress } from "@mui/material";
 import InfoCard from "../components/InfoCard";
-import UpcomingTable from "../components/UpcomingTable";
+import Table from "../components/Table";
 import { THEMECOLOR } from "../Constants";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetchReservations from "../hooks/useFetchReservations";
 import { SwaggerClientContext } from "../App";
+import { upcomingReservationsColumns } from "../columns";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
@@ -16,7 +17,7 @@ function Dashboard() {
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}>
         <Typography gutterBottom variant="h6" component="div">
-          Today's Information
+          Today's information
         </Typography>
         <Button
           variant="contained"
@@ -44,13 +45,11 @@ function Dashboard() {
         </Grid>
       </Grid>
       <Box sx={{ pt: 4 }}>
-        <Typography gutterBottom variant="h6" component="div">
-          Upcoming reservations
-        </Typography>
+        <Typography variant="h6">Upcoming reservations</Typography>
 
         {loading && <CircularProgress />}
         {reservations ? (
-          <UpcomingTable reservations={reservations} />
+          <Table data={reservations} columns={upcomingReservationsColumns} />
         ) : (
           <p>No reservations found</p>
         )}
