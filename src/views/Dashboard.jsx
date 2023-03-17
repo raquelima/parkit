@@ -9,9 +9,10 @@ import CreateReservationButton from "../components/CreateReservationButton";
 import filterById from "../logic/filterById";
 
 function Dashboard() {
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
-  const filteredReservations = filterById(reservations);
+  const filteredReservations = filterById(reservations, userId);
 
   const infoCards = [
     "Available parking spaces",

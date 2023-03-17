@@ -8,9 +8,10 @@ import CreateReservationButton from "../components/CreateReservationButton";
 import filterById from "../logic/filterById";
 
 function Reservations() {
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
   const client = useContext(SwaggerClientContext);
   const { reservations, loading } = useFetchReservations(client);
-  const filteredReservations = filterById(reservations);
+  const filteredReservations = filterById(reservations, userId);
 
   return (
     <Box>
