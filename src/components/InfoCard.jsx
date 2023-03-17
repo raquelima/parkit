@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { THEMECOLOR } from "../Constants";
 import { useNavigate } from "react-router-dom";
 
-function InfoCard({ text, button, path }) {
+function InfoCard({ text, number, button, path }) {
   const navigate = useNavigate();
 
   return (
@@ -27,7 +27,7 @@ function InfoCard({ text, button, path }) {
           variant="h4"
           sx={{ color: THEMECOLOR, fontWeight: "bold" }}
         >
-          3
+          {number}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end", mr: 1, pb: 2 }}>

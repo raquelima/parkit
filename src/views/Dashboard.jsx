@@ -17,11 +17,15 @@ function Dashboard() {
   const filteredReservations = filterById(reservations, userId);
   const upcomingReservation = filterUpcoming(filteredReservations);
 
-  const infoCards = [
+  const totalReservations = filteredReservations?.length;
+  const upcomingReservationTotal = upcomingReservation?.length;
+
+  const infoCardsText = [
     "Available parking spaces",
     "Upcoming reservations",
     "Total reservations",
   ];
+  const infoCardsNumbers = [3, upcomingReservationTotal, totalReservations];
   const infoCardsPaths = ["/parking_overview", "/reservations"];
   const infoCardsButtons = ["See overview", "See reservations"];
 
@@ -35,10 +39,11 @@ function Dashboard() {
       </Box>
       <Grid container>
         <Grid container justifyContent="space-between">
-          {infoCards.map((text, index) => (
+          {infoCardsText.map((text, index) => (
             <Grid key={text} item>
               <InfoCard
                 text={text}
+                number={infoCardsNumbers[index]}
                 button={infoCardsButtons[index]}
                 path={infoCardsPaths[index]}
               />
