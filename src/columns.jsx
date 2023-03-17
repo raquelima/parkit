@@ -113,6 +113,9 @@ export const reservationsColumns = [
     flex: 1,
     sortable: false,
     width: 200,
+    renderCell: (reservations) => {
+      return <StatusChip startTime={reservations.row.start_time} cancelled={reservations.row.cancelled}/>;
+    },
   },
   {
     field: "cancel",
@@ -134,3 +137,4 @@ export const reservationsColumns = [
     },
   },
 ];
+
