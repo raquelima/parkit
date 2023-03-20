@@ -46,7 +46,7 @@ function generateParkingSpot(number) {
 }
 
 export const parkingSpots = [...Array(8).keys()].map((i) =>
-  generateParkingSpot(i + 1)
+  generateParkingSpot(i + 42)
 );
 
 function generateVehicle(user = null) {
@@ -112,7 +112,7 @@ function generateReservation(user = null, vehicle = null) {
     parking_spot_id: faker.helpers.arrayElement(parkingSpots).id,
     user_id: user.id,
     vehicle_id: vehicle.id,
-    cancelled: faker.datatype.boolean(),
+    cancelled: false,
     date: date.toISOString().split("T")[0],
     start_time: startTime.toISOString(),
     end_time: endTime.toISOString(),

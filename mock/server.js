@@ -285,6 +285,16 @@ api.register({
     const id = c.request.params.id;
     const index = vehicles.findIndex((vehicle) => vehicle.id === id);
 
+    // check that there are no active reservations for this vehicle
+    const reservationsForVehicle = reservations
+      .filter((reservation) => !reservation.cancelled)
+      .filter((reservation) => Date.parse(reservation.end_time) > Date.now())
+      .filter((reservation) => reservation.vehicle_id === id);
+
+    if (reservationsForVehicle.length > 0) {
+      return res(ctx.status(409, "Conflict"));
+    }
+
     if (index !== -1) {
       vehicles.splice(index, 1);
       return res(ctx.status(200));
