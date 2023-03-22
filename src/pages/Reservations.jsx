@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import StatusChip from "../components/StatusChip";
-import fetchReservations from "../utils/fetchReservations";
+import fetchReservations from "../api/fetchReservations";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);

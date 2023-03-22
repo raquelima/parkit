@@ -11,7 +11,7 @@ import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
 import { format } from "date-fns";
 import { useContext, useState, useEffect } from "react";
-import fetchReservations from "../utils/fetchReservations";
+import fetchReservations from "../api/fetchReservations";
 import { SwaggerClientContext } from "../App";
 import filterById from "../utils/filterById";
 import filterUpcoming from "../utils/filterUpcoming";
