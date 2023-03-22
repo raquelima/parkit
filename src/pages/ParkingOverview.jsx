@@ -13,19 +13,34 @@ function ParkingOverview() {
   const [time, setTime] = useState("AM");
   const buttons = ["AM", "PM", "FD"];
 
+  const handleDate = (newDate) => {
+    setDate(newDate);
+  };
+  const handleTime = (event, newTime) => {
+    //Enforce value set copy paste from MUI
+    if (newTime !== null) {
+      setTime(newTime);
+    }
+  };
+
+  const handleError = () => {
+    console.log("please enter correct date");
+  };
+
   return (
     <Box overflow="hidden">
       <Box display="flex" justifyItems="center">
         <Box display="inline-grid" justifyItems="center" margin="0 auto">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              label="Date"
               sx={{ mt: 1 }}
+              label="Date"
               format="dd/MM/yyyy"
               disablePast={true}
               maxDate={maxDate}
               value={date}
-              onChange={(newDate) => setDate(newDate)}
+              onChange={handleDate}
+              onError={handleError}
             />
           </LocalizationProvider>
           <ToggleButtonGroup
@@ -33,7 +48,7 @@ function ParkingOverview() {
             size="small"
             exclusive
             value={time}
-            onChange={(event, newTime) => setTime(newTime)}
+            onChange={handleTime}
           >
             {buttons.map((time) => (
               <ToggleButton key={time} value={time} aria-label={time}>
