@@ -2,7 +2,9 @@ import { Box } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
+import fetchVehicles from "../api/fetchVehicles";
 import { SwaggerClientContext } from "../App";
+import CreateReservationPanel from "../components/CreateReservationPanel";
 import DateTimePicker from "../components/DateTimePicker";
 import ParkingSpotOverview from "../components/ParkingSpotOverview";
 
@@ -16,6 +18,7 @@ function ParkingOverview() {
   const [parkingSpots, setParkingSpots] = useState(null);
   const [availableParkingSpots, setAvailableParkingSpots] = useState(null);
   const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
+  const [openPanel, setOpenPanel] = useState(false);
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,11 +45,22 @@ function ParkingOverview() {
         setDate={setDate}
         setTime={setTime}
         setSelectedParkingSpot={setSelectedParkingSpot}
+        setOpenPanel={setOpenPanel}
       />
       <ParkingSpotOverview
         parkingSpots={parkingSpots}
         availableParkingSpots={availableParkingSpots}
         selectedParkingSpot={selectedParkingSpot}
+        setSelectedParkingSpot={setSelectedParkingSpot}
+        setOpenPanel={setOpenPanel}
+      />
+      <CreateReservationPanel
+        client={client}
+        selectedParkingSpot={selectedParkingSpot}
+        date={date}
+        time={time}
+        openPanel={openPanel}
+        setOpenPanel={setOpenPanel}
         setSelectedParkingSpot={setSelectedParkingSpot}
       />
     </Box>

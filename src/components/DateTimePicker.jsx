@@ -11,6 +11,7 @@ function DateTimePicker({
   setDate,
   setTime,
   setSelectedParkingSpot,
+  setOpenPanel,
 }) {
   const maxDate = addWeeks(today, 2);
   const buttons = ["AM", "PM", "FD"];
@@ -18,6 +19,7 @@ function DateTimePicker({
   const handleDate = (newDate) => {
     setDate(newDate);
     setSelectedParkingSpot(null);
+    setOpenPanel(false);
   };
 
   const handleTime = (event, newTime) => {
@@ -25,6 +27,7 @@ function DateTimePicker({
     if (newTime !== null) {
       setTime(newTime);
       setSelectedParkingSpot(null);
+      setOpenPanel(false);
     }
   };
 

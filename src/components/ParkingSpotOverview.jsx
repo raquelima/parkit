@@ -1,4 +1,4 @@
-import ParkingSpot from "./ParkingSpot";
+import ParkingSpot from "../components/ParkingSpot";
 import logo from "../assets/adobe.png";
 import { Box } from "@mui/material";
 
@@ -7,17 +7,21 @@ function ParkingSpotOverview({
   availableParkingSpots,
   selectedParkingSpot,
   setSelectedParkingSpot,
+  setOpenPanel,
 }) {
   const handleSelect = (parkingSpot) => {
-    if (parkingSpot.id == selectedParkingSpot) {
+    if (parkingSpot?.id == selectedParkingSpot?.id) {
       setSelectedParkingSpot(null);
+      setOpenPanel(false);
     } else {
-      setSelectedParkingSpot(parkingSpot.id);
+      console.log(parkingSpot);
+      setSelectedParkingSpot(parkingSpot);
+      setOpenPanel(true);
     }
   };
 
   const isParkingSpotSelected = (parkingSpot) =>
-    selectedParkingSpot === parkingSpot.id;
+    selectedParkingSpot?.id === parkingSpot?.id;
 
   //takes available spots array and checks if current spot id is in the array, if yes returns true
   const checkAvailability = (availableParkingSpotsArray, parkingSpotId) => {
