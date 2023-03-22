@@ -15,6 +15,7 @@ import fetchUserReservations from "../api/fetchUserReservations";
 import { SwaggerClientContext } from "../App";
 import filterUpcoming from "../utils/filterUpcoming";
 import fetchParkingSpotsToday from "../api/fetchParkingSpotsToday";
+import cancelReservation from "../api/cancelReservation";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
@@ -48,16 +49,10 @@ function Dashboard() {
       setLoading(result?.loading);
     });
   };
-  const cancelReservation = (id) => {
-    client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
-      //twice in code
-      fetchUserReservations(client).then((result) => {
-        setReservations(result?.reservations);
-        setError(result?.error);
-        setLoading(result?.loading);
-      })
-    );
+  const handleClick = (id) => {
+    cancelReservation(client, id).then(() => fetchReservations());
   };
+
   const upcomingReservationsColumns = [
     {
       field: "date",
@@ -105,7 +100,7 @@ function Dashboard() {
           <IconButton
             aria-label="cancel reservation"
             color="error"
-            onClick={() => cancelReservation(reservations.row.id)}
+            onClick={() => handleClick(reservations.row.id)}
           >
             <CloseIcon />
           </IconButton>

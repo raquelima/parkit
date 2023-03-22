@@ -8,6 +8,7 @@ import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import StatusChip from "../components/StatusChip";
 import fetchUserReservations from "../api/fetchUserReservations";
+import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
 
 function Reservations() {
@@ -36,15 +37,8 @@ function Reservations() {
       });
   };
 
-  const cancelReservation = (id) => {
-    client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
-      //twice in code
-      fetchUserReservations(client).then((result) => {
-        setReservations(result?.reservations);
-        setError(result?.error);
-        setLoading(result?.loading);
-      })
-    );
+  const handleClick = (id) => {
+    cancelReservation(client, id).then(() => fetchReservations());
   };
 
   const reservationsColumns = [
@@ -130,7 +124,7 @@ function Reservations() {
             <IconButton
               aria-label="cancel reservation"
               color="error"
-              onClick={() => cancelReservation(reservations.row.id)}
+              onClick={() => handleClick(reservation.row.id)}
             >
               <CloseIcon />
             </IconButton>
