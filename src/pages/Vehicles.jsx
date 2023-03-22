@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import { THEMECOLOR } from "../Constants";
 import CreateVehiclePanel from "../components/CreateVehiclePanel";
+import removeVehicle from "../api/removeVehicle";
 
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
@@ -16,17 +17,17 @@ function Vehicles() {
   const [loading, setLoading] = useState(true);
   const [openPanel, setOpenPanel] = useState(false);
 
-  const deleteVehicle = (id) => {
-    client?.apis.vehicles.removeVehicle({ id: id }).then(() =>
-      //twice in code
-      fetchUserVehicles(client).then((result) => {
-        setVehicles(result?.vehicles);
-        setError(result?.error);
-        setLoading(result?.loading);
-      })
-    );
+  const fetchVehicles = () => {
+    fetchUserVehicles(client).then((result) => {
+      setVehicles(result?.vehicles);
+      setError(result?.error);
+      setLoading(result?.loading);
+    });
   };
 
+  const handleClick = (id) => {
+    removeVehicle(client, id).then(() => fetchVehicles());
+  };
   const vehiclesColumns = [
     {
       field: "make",
@@ -64,9 +65,9 @@ function Vehicles() {
       renderCell: (vehicle) => {
         return (
           <IconButton
-            aria-label="delete vehicle"
+            aria-label="remove vehicle"
             color="error"
-            onClick={() => deleteVehicle(vehicle.row.id)}
+            onClick={() => handleClick(vehicle.row.id)}
           >
             <CloseIcon />
           </IconButton>
@@ -76,11 +77,7 @@ function Vehicles() {
   ];
 
   useEffect(() => {
-    fetchUserVehicles(client).then((result) => {
-      setVehicles(result?.vehicles);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
+    fetchVehicles();
   }, [client]);
   return (
     <Box>
