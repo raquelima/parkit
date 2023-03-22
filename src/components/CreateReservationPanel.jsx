@@ -17,16 +17,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import car from "../assets/car.svg";
 import { format } from "date-fns";
 import fetchUserVehicles from "../api/fetchUserVehicles";
+import createReservation from "../api/createReservation";
 
 function CreateReservationPanel({
   client,
   selectedParkingSpot,
   date,
   time,
+  halfDay,
+  am,
   openPanel,
   setOpenPanel,
   setSelectedParkingSpot,
 }) {
+  const user = JSON.parse(localStorage.getItem("user"));
   const [vehicles, setVehicles] = useState(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
   const selectedVehicle = vehicles?.find(
@@ -34,7 +38,7 @@ function CreateReservationPanel({
   );
 
   const reservationLabels = ["Reserve for", "Date", "Duration", "Vehicle"];
-  const reservationDetails = ["Raquel Lima", format(date, "dd/MM/yyyy"), time];
+  const reservationDetails = [user.username, format(date, "dd/MM/yyyy"), time];
 
   const vehicleLabels = ["Manufacture", "Model", "Electric", "Plate number"];
   const vehicleDetails = [
@@ -51,6 +55,20 @@ function CreateReservationPanel({
 
   const handleChange = (event) => {
     setSelectedVehicleId(event.target.value);
+  };
+
+  const handleClick = () => {
+    createReservation(
+      client,
+      selectedParkingSpot?.id,
+      user.userId,
+      selectedVehicleId,
+      format(date, "yyyy-MM-dd").toString(),
+      halfDay,
+      am
+    ).then((result) => {
+      setOpenPanel(false);
+    });
   };
 
   useEffect(() => {
@@ -154,6 +172,7 @@ function CreateReservationPanel({
                 borderRadius: "4px",
                 textTransform: "none",
               }}
+              onClick={() => handleClick()}
             >
               Reserve Space
             </Button>

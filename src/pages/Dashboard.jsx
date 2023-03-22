@@ -13,7 +13,6 @@ import { format } from "date-fns";
 import { useContext, useState, useEffect } from "react";
 import fetchUserReservations from "../api/fetchUserReservations";
 import { SwaggerClientContext } from "../App";
-import filterById from "../utils/filterById";
 import filterUpcoming from "../utils/filterUpcoming";
 import fetchParkingSpotsToday from "../api/fetchParkingSpotsToday";
 
@@ -42,6 +41,13 @@ function Dashboard() {
   const infoCardsPaths = ["/parking_overview", "/reservations"];
   const infoCardsButtons = ["See overview", "See reservations"];
 
+  const fetchReservations = () => {
+    fetchUserReservations(client).then((result) => {
+      setReservations(result?.reservations);
+      setError(result?.error);
+      setLoading(result?.loading);
+    });
+  };
   const cancelReservation = (id) => {
     client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
       //twice in code
@@ -52,7 +58,6 @@ function Dashboard() {
       })
     );
   };
-
   const upcomingReservationsColumns = [
     {
       field: "date",
@@ -81,7 +86,7 @@ function Dashboard() {
       sortable: false,
       width: 200,
       valueGetter: (reservations) =>
-        `${reservations.row.vehicle.make} ${reservations.row.vehicle.model}`,
+        `${reservations.row.vehicle?.make} ${reservations.row.vehicle?.model}`,
     },
     {
       field: "parking_spot_id",
@@ -110,11 +115,7 @@ function Dashboard() {
   ];
 
   useEffect(() => {
-    fetchUserReservations(client).then((result) => {
-      setReservations(result?.reservations);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
+    fetchReservations();
     fetchParkingSpotsToday(client).then((result) => {
       setAvailable(result?.parkingSpots);
       setError(result?.error);

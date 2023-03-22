@@ -1,10 +1,6 @@
 import format from "date-fns/format";
-
 //make api not deliver more than 2 weeks after
-async function fetchParkingSpotAvailability(client, date, time) {
-  let halfDay = time === "AM" || time === "PM" ? true : false;
-  let am = time === "AM" ? true : false;
-
+async function fetchParkingSpotAvailability(client, date, halfDay, am) {
   if (client?.apis["parking-spots"]) {
     try {
       const response = await client.apis[
@@ -16,7 +12,6 @@ async function fetchParkingSpotAvailability(client, date, time) {
         half_day: halfDay,
         am: am,
       });
-      console.log(response);
       return {
         availableParkingSpots: response.body.available_parking_spots,
         error: null,

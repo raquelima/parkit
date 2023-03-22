@@ -14,6 +14,8 @@ function ParkingOverview() {
   const today = new Date();
   const [date, setDate] = useState(today);
   const [time, setTime] = useState("AM");
+  const halfDay = time === "AM" || time === "PM" ? true : false;
+  const am = time === "AM" ? true : false;
 
   const [parkingSpots, setParkingSpots] = useState(null);
   const [availableParkingSpots, setAvailableParkingSpots] = useState(null);
@@ -29,7 +31,7 @@ function ParkingOverview() {
       setError(result?.error);
       setLoading(result?.loading);
     });
-    fetchParkingSpotAvailability(client, date, time).then((result) => {
+    fetchParkingSpotAvailability(client, date, halfDay, am).then((result) => {
       setAvailableParkingSpots(result?.availableParkingSpots);
       setError(result?.error);
       setLoading(result?.loading);
@@ -59,6 +61,8 @@ function ParkingOverview() {
         selectedParkingSpot={selectedParkingSpot}
         date={date}
         time={time}
+        halfDay={halfDay}
+        am={am}
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
         setSelectedParkingSpot={setSelectedParkingSpot}

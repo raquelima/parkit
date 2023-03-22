@@ -8,16 +8,33 @@ import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import StatusChip from "../components/StatusChip";
 import fetchUserReservations from "../api/fetchUserReservations";
+import fetchParkingSpots from "../api/fetchParkingSpots";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
 
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
   const [reservations, setReservations] = useState(null);
+  const [parkingSpots, setParkingSpots] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+  const fetchReservations = () => {
+    fetchUserReservations(client).then((result) => {
+      setReservations(result?.reservations);
+      setError(result?.error);
+      setLoading(result?.loading);
+    });
+  };
+
+  const getParkingSpotNumber = (id) => {
+    return parkingSpots
+      ?.filter((parkingSpot) => parkingSpot.id === id)
+      .map((parkingSpot) => {
+        return parkingSpot.number;
+      });
+  };
 
   const cancelReservation = (id) => {
     client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
@@ -36,8 +53,8 @@ function Reservations() {
       headerName: "Date",
       flex: 1,
       width: 200,
-      valueGetter: (reservations) =>
-        format(new Date(reservations.row.date), "dd/MM/yyyy"),
+      valueGetter: (reservation) =>
+        format(new Date(reservation.row.date), "dd/MM/yyyy"),
     },
     {
       field: "duration",
@@ -45,9 +62,9 @@ function Reservations() {
       flex: 1,
       sortable: false,
       width: 200,
-      valueGetter: (reservations) =>
-        `${format(new Date(reservations.row.start_time), "hh:mm")} - ${format(
-          new Date(reservations.row.end_time),
+      valueGetter: (reservation) =>
+        `${format(new Date(reservation.row.start_time), "hh:mm")} - ${format(
+          new Date(reservation.row.end_time),
           "hh:mm"
         )}`,
     },
@@ -57,8 +74,8 @@ function Reservations() {
       flex: 1,
       sortable: false,
       width: 200,
-      valueGetter: (reservations) =>
-        `${reservations.row.vehicle.make} ${reservations.row.vehicle.model}`,
+      valueGetter: (reservation) =>
+        `${reservation.row.vehicle?.make} ${reservation.row.vehicle?.model}`,
     },
     {
       field: "plateNumber",
@@ -66,15 +83,17 @@ function Reservations() {
       flex: 1,
       sortable: false,
       width: 200,
-      valueGetter: (reservations) =>
-        reservations.row.vehicle.license_plate_number,
+      valueGetter: (reservation) =>
+        reservation.row.vehicle?.license_plate_number,
     },
     {
-      field: "parking_spot_id",
+      field: "parkingSpotNumber",
       headerName: "Parking spot",
       flex: 1,
       sortable: false,
       width: 200,
+      valueGetter: (reservation) =>
+        getParkingSpotNumber(reservation.row.parking_spot_id),
     },
     {
       field: "status",
@@ -82,10 +101,10 @@ function Reservations() {
       flex: 1,
       sortable: false,
       width: 200,
-      renderCell: (reservations) => {
+      renderCell: (reservation) => {
         let status;
-        const cancelled = reservations.row.cancelled;
-        const startTime = reservations.row.start_time;
+        const cancelled = reservation.row.cancelled;
+        const startTime = reservation.row.start_time;
 
         cancelled
           ? (status = "cancelled")
@@ -101,9 +120,9 @@ function Reservations() {
       headerName: " ",
       sortable: false,
       width: 70,
-      renderCell: (reservations) => {
-        const startTime = reservations.row.start_time;
-        const cancelled = reservations.row.cancelled;
+      renderCell: (reservation) => {
+        const startTime = reservation.row.start_time;
+        const cancelled = reservation.row.cancelled;
         const upcoming = now < startTime ? true : false;
 
         if (upcoming && !cancelled) {
@@ -122,8 +141,9 @@ function Reservations() {
   ];
 
   useEffect(() => {
-    fetchUserReservations(client).then((result) => {
-      setReservations(result?.reservations);
+    fetchReservations();
+    fetchParkingSpots(client).then((result) => {
+      setParkingSpots(result?.parkingSpots);
       setError(result?.error);
       setLoading(result?.loading);
     });
