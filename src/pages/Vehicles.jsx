@@ -1,11 +1,12 @@
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography, CircularProgress, Button } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
-import CreateReservationButton from "../components/CreateReservationButton";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import fetchUserVehicles from "../api/fetchUserVehicles";
+import { THEMECOLOR } from "../Constants";
+import CreateVehiclePanel from "../components/CreateVehiclePanel";
 
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
@@ -13,6 +14,7 @@ function Vehicles() {
   const [vehicles, setVehicles] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openPanel, setOpenPanel] = useState(false);
 
   const deleteVehicle = (id) => {
     client?.apis.vehicles.removeVehicle({ id: id }).then(() =>
@@ -90,6 +92,17 @@ function Vehicles() {
         }}
       >
         <Typography variant="h6">Your Vehicles</Typography>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: THEMECOLOR,
+            borderRadius: "4px",
+            textTransform: "none",
+          }}
+          onClick={() => setOpenPanel(true)}
+        >
+          Create vehicle +
+        </Button>
       </Box>
 
       {loading ? (
@@ -99,6 +112,12 @@ function Vehicles() {
       ) : (
         <p>No vehicles found</p>
       )}
+
+      <CreateVehiclePanel
+        client={client}
+        openPanel={openPanel}
+        setOpenPanel={setOpenPanel}
+      />
     </Box>
   );
 }
