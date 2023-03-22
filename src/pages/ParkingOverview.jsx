@@ -1,8 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
-import fetchVehicles from "../api/fetchUserVehicles";
 import { SwaggerClientContext } from "../App";
 import CreateReservationPanel from "../components/CreateReservationPanel";
 import DateTimePicker from "../components/DateTimePicker";
@@ -49,13 +48,18 @@ function ParkingOverview() {
         setSelectedParkingSpot={setSelectedParkingSpot}
         setOpenPanel={setOpenPanel}
       />
-      <ParkingSpotOverview
-        parkingSpots={parkingSpots}
-        availableParkingSpots={availableParkingSpots}
-        selectedParkingSpot={selectedParkingSpot}
-        setSelectedParkingSpot={setSelectedParkingSpot}
-        setOpenPanel={setOpenPanel}
-      />
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <ParkingSpotOverview
+          parkingSpots={parkingSpots}
+          availableParkingSpots={availableParkingSpots}
+          selectedParkingSpot={selectedParkingSpot}
+          setSelectedParkingSpot={setSelectedParkingSpot}
+          setOpenPanel={setOpenPanel}
+        />
+      )}
+
       <CreateReservationPanel
         client={client}
         selectedParkingSpot={selectedParkingSpot}
