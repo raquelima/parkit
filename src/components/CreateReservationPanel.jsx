@@ -16,7 +16,7 @@ import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import car from "../assets/car.svg";
 import { format } from "date-fns";
-import fetchVehicles from "../api/fetchVehicles";
+import fetchUserVehicles from "../api/fetchUserVehicles";
 
 function CreateReservationPanel({
   client,
@@ -54,7 +54,7 @@ function CreateReservationPanel({
   };
 
   useEffect(() => {
-    fetchVehicles(client).then((result) => {
+    fetchUserVehicles(client).then((result) => {
       setVehicles(result?.vehicles);
       setSelectedVehicleId(result?.vehicles[0].id);
     });

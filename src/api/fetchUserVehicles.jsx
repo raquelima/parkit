@@ -1,10 +1,12 @@
-async function fetchVehicles(client) {
+import filterById from "../utils/filterById";
+
+async function fetchUserVehicles(client) {
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
   if (client?.apis?.vehicles) {
     try {
       const response = await client.apis.vehicles.listVehicles();
-      console.log(response.body.vehicles);
       return {
-        vehicles: response.body.vehicles,
+        vehicles: filterById(response.body.vehicles, userId),
         error: null,
         loading: false,
       };
@@ -18,4 +20,4 @@ async function fetchVehicles(client) {
   }
 }
 
-export default fetchVehicles;
+export default fetchUserVehicles;

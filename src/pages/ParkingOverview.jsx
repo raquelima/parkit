@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
-import fetchVehicles from "../api/fetchVehicles";
+import fetchVehicles from "../api/fetchUserVehicles";
 import { SwaggerClientContext } from "../App";
 import CreateReservationPanel from "../components/CreateReservationPanel";
 import DateTimePicker from "../components/DateTimePicker";
