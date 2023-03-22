@@ -114,6 +114,7 @@ function Vehicles() {
         client={client}
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
+        fetchVehicles={fetchVehicles}
       />
     </Box>
   );

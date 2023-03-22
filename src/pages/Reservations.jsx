@@ -69,7 +69,7 @@ function Reservations() {
       sortable: false,
       width: 200,
       valueGetter: (reservation) =>
-        `${reservation.row.vehicle?.make} ${reservation.row.vehicle?.model}`,
+        `${reservation.row.vehicle.make} ${reservation.row.vehicle.model}`,
     },
     {
       field: "plateNumber",
@@ -78,7 +78,7 @@ function Reservations() {
       sortable: false,
       width: 200,
       valueGetter: (reservation) =>
-        reservation.row.vehicle?.license_plate_number,
+        reservation.row.vehicle.license_plate_number,
     },
     {
       field: "parkingSpotNumber",

@@ -7,15 +7,55 @@ import {
   IconButton,
   Button,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
+import { useState } from "react";
 import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
+import createVehicle from "../api/createVehicle";
 
-function CreateVehiclePanel({ openPanel, setOpenPanel }) {
-  const labels = ["Manufacture", "Model", "Plate number", "Electric"];
+function CreateVehiclePanel({
+  client,
+  openPanel,
+  setOpenPanel,
+  fetchVehicles,
+}) {
+  const [newVehicle, setNewVehicle] = useState({});
+  const [ev, setEv] = useState(true);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const labels = ["Manufacture", "Model", "Plate number"];
+  const keys = ["make", "model", "licensePlateNumber"];
+
+  const handleSaveInput = (event) => {
+    console.log(newVehicle);
+    setNewVehicle({ ...newVehicle, [event.target.name]: event.target.value });
+  };
+
+  const handleClick = () => {
+    createVehicle(
+      client,
+      ev,
+      newVehicle.licensePlateNumber,
+      newVehicle.make,
+      newVehicle.model
+    ).then((result) => {
+      fetchVehicles();
+      setOpenPanel(false);
+      setSuccess(result?.response);
+      setError(result?.error);
+    });
+  };
 
   const handleClosePanel = () => {
     setOpenPanel(false);
+  };
+
+  const handleToggle = (event, toggle) => {
+    if (toggle !== null) {
+      setEv(toggle);
+    }
   };
 
   return (
@@ -55,12 +95,35 @@ function CreateVehiclePanel({ openPanel, setOpenPanel }) {
             <Typography fontWeight="bold" sx={{ pt: 4, pb: 1 }}>
               New vehicle
             </Typography>
-            {labels.map((label) => (
-              <Box key={label} sx={{ pt: 1 }}>
+            {labels.map((label, index) => (
+              <Box key={keys[index]} sx={{ pt: 1 }}>
                 <Typography>{label}</Typography>
-                <TextField size="small" fullWidth />
+                <TextField
+                  size="small"
+                  name={keys[index]}
+                  onChange={handleSaveInput}
+                  fullWidth
+                />
               </Box>
             ))}
+            <Box sx={{ pt: 1 }}>
+              <Typography>Electric</Typography>
+              <ToggleButtonGroup
+                sx={{ pt: 1 }}
+                size="small"
+                name="ev"
+                exclusive
+                value={ev}
+                onChange={handleToggle}
+              >
+                <ToggleButton value={true} name="ev">
+                  Yes
+                </ToggleButton>
+                <ToggleButton value={false} name="ev">
+                  No
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center", pt: 55 }}>
             <Button
@@ -70,7 +133,7 @@ function CreateVehiclePanel({ openPanel, setOpenPanel }) {
                 borderRadius: "4px",
                 textTransform: "none",
               }}
-              onClick={() => handleClick()}
+              onClick={handleClick}
             >
               Add vehicle
             </Button>
