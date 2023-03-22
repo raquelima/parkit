@@ -27,9 +27,10 @@ function SideNavBar() {
         }}
       >
         <img src={logo} width={23} height={20} />
-        <Typography variant="h5" sx={{ fontWeight: "300", px: 1 }}>
-          l
-        </Typography>
+        <Divider
+          orientation="vertical"
+          sx={{ backgroundColor: "white", mx: 1, height: "18px" }}
+        />
         <Typography variant="h6">ParkIt</Typography>
       </Toolbar>
       <Divider />
