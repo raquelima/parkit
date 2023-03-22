@@ -1,29 +1,25 @@
-import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Box } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import { addWeeks } from "date-fns";
 import logo from "../assets/adobe.png";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
 import { SwaggerClientContext } from "../App";
 import ParkingSpot from "../components/ParkingSpot";
+import DateTimePicker from "../components/DateTimePicker";
 
 function ParkingOverview() {
+  const client = useContext(SwaggerClientContext);
+
   const today = new Date();
-  const maxDate = addWeeks(today, 2);
   const [date, setDate] = useState(today);
   const [time, setTime] = useState("AM");
-  const buttons = ["AM", "PM", "FD"];
 
-  const client = useContext(SwaggerClientContext);
   const [parkingSpots, setParkingSpots] = useState(null);
   const [availableParkingSpots, setAvailableParkingSpots] = useState(null);
+  const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
 
   const handleSelect = (parkingSpot) => {
     if (parkingSpot.id == selectedParkingSpot) {
@@ -35,23 +31,6 @@ function ParkingOverview() {
 
   const isParkingSpotSelected = (parkingSpot) =>
     selectedParkingSpot === parkingSpot.id;
-
-  const handleDate = (newDate) => {
-    setDate(newDate);
-    setSelectedParkingSpot(null);
-  };
-  const handleTime = (event, newTime) => {
-    //Enforce value set copy paste from MUI
-    if (newTime !== null) {
-      setTime(newTime);
-      setSelectedParkingSpot(null);
-    }
-  };
-
-  const handleError = () => {
-    //replace
-    console.log("please enter correct date");
-  };
 
   //takes available spots array and checks if current spot id is in the array, if yes returns true
   const checkAvailability = (availableParkingSpotsArray, parkingSpotId) => {
@@ -75,36 +54,14 @@ function ParkingOverview() {
 
   return (
     <Box overflow="hidden">
-      <Box display="flex" justifyItems="center">
-        <Box display="inline-grid" justifyItems="center" margin="0 auto">
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            {/*add warning for invalid date input*/}
-            <DatePicker
-              sx={{ mt: 1 }}
-              label="Date"
-              format="dd/MM/yyyy"
-              disablePast={true}
-              maxDate={maxDate}
-              value={date}
-              onChange={handleDate}
-              onError={handleError}
-            />
-          </LocalizationProvider>
-          <ToggleButtonGroup
-            sx={{ pt: 1 }}
-            size="small"
-            exclusive
-            value={time}
-            onChange={handleTime}
-          >
-            {buttons.map((time) => (
-              <ToggleButton key={time} value={time} aria-label={time}>
-                {time}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-        </Box>
-      </Box>
+      <DateTimePicker
+        today={today}
+        date={date}
+        time={time}
+        setDate={setDate}
+        setTime={setTime}
+        setSelectedParkingSpot={setSelectedParkingSpot}
+      />
       <Box
         display="flex"
         justifyContent="center"
