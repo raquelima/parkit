@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import EvStationIcon from "@mui/icons-material/EvStation";
 import WarningIcon from "@mui/icons-material/Warning";
 
@@ -9,7 +9,11 @@ function ParkingSpot({ number, disabled, charger, available }) {
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      {charger && <EvStationIcon fontSize="large" />}
+      {charger && (
+        <Tooltip title="EV Charger">
+          <EvStationIcon fontSize="large" />
+        </Tooltip>
+      )}
       <Box
         sx={{
           bgcolor: bgColor,
@@ -25,7 +29,13 @@ function ParkingSpot({ number, disabled, charger, available }) {
           justifyContent: "center",
         }}
       >
-        {disabled ? <WarningIcon color="error" fontSize="large" /> : number}
+        {disabled ? (
+          <Tooltip title="Unavailable">
+            <WarningIcon color="error" fontSize="large" />
+          </Tooltip>
+        ) : (
+          number
+        )}
       </Box>
     </Box>
   );

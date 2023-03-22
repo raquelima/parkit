@@ -1,5 +1,6 @@
 import format from "date-fns/format";
 
+//make api not deliver more than 2 weeks after
 async function fetchParkingSpotAvailability(client, date, time) {
   let halfDay = time === "AM" || time === "PM" ? true : false;
   let am = time === "AM" ? true : false;

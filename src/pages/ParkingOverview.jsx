@@ -63,6 +63,7 @@ function ParkingOverview() {
       <Box display="flex" justifyItems="center">
         <Box display="inline-grid" justifyItems="center" margin="0 auto">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
+            {/*add warning for invalid date input*/}
             <DatePicker
               sx={{ mt: 1 }}
               label="Date"
