@@ -15,10 +15,12 @@ import fetchReservations from "../api/fetchReservations";
 import { SwaggerClientContext } from "../App";
 import filterById from "../utils/filterById";
 import filterUpcoming from "../utils/filterUpcoming";
+import fetchParkingSpotsToday from "../api/fetchParkingSpotsToday";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
   const [reservations, setReservations] = useState(null);
+  const [available, setAvailable] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,13 +29,18 @@ function Dashboard() {
   const upcomingReservations = filterUpcoming(filteredReservations);
   const totalReservations = filteredReservations?.length;
   const upcomingReservationTotal = upcomingReservations?.length;
+  const availableParkingSpotsTotal = available?.length;
 
   const infoCardsText = [
     "Available parking spaces",
     "Upcoming reservations",
     "Total reservations",
   ];
-  const infoCardsNumbers = [3, upcomingReservationTotal, totalReservations];
+  const infoCardsNumbers = [
+    availableParkingSpotsTotal,
+    upcomingReservationTotal,
+    totalReservations,
+  ];
   const infoCardsPaths = ["/parking_overview", "/reservations"];
   const infoCardsButtons = ["See overview", "See reservations"];
 
@@ -107,6 +114,11 @@ function Dashboard() {
   useEffect(() => {
     fetchReservations(client).then((result) => {
       setReservations(result?.reservations);
+      setError(result?.error);
+      setLoading(result?.loading);
+    });
+    fetchParkingSpotsToday(client).then((result) => {
+      setAvailable(result?.parkingSpots);
       setError(result?.error);
       setLoading(result?.loading);
     });
