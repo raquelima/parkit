@@ -23,6 +23,15 @@ function ParkingOverview() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
+
+  const handleSelect = (parkingSpot) => {
+    setSelectedParkingSpot(parkingSpot.id);
+  };
+
+  const isParkingSpotSelected = (parkingSpot) =>
+    selectedParkingSpot === parkingSpot.id;
+
   const handleDate = (newDate) => {
     setDate(newDate);
   };
@@ -128,6 +137,8 @@ function ParkingOverview() {
                     availableParkingSpots,
                     parkingSpot.id
                   )}
+                  selected={isParkingSpotSelected(parkingSpot)}
+                  onClick={() => handleSelect(parkingSpot)}
                 />
               ))}
             </Box>
@@ -145,6 +156,8 @@ function ParkingOverview() {
                     availableParkingSpots,
                     parkingSpot.id
                   )}
+                  selected={isParkingSpotSelected(parkingSpot)}
+                  onClick={() => handleSelect(parkingSpot)}
                 />
               ))}
             </Box>
