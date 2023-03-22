@@ -1,30 +1,53 @@
-import { Box, Container } from "@mui/material";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useState } from "react";
-import format from "date-fns/format";
+import { addWeeks } from "date-fns";
 import logo from "../assets/adobe.png";
 
 function ParkingOverview() {
-  const [dateTime, setDateTime] = useState(format(new Date(), "dd/MM/yyyy a"));
+  const today = new Date();
+  const maxDate = addWeeks(today, 2);
+  const [date, setDate] = useState(today);
+  const [time, setTime] = useState("AM");
+  const buttons = ["AM", "PM", "FD"];
+
   return (
-    <Box>
-      <Box display="flex" justifyContent="center">
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DateTimePicker
-            label="Controlled picker"
-            value={dateTime}
-            onChange={(newValue) => setDateTime(newValue)}
-          />
-        </LocalizationProvider>
+    <Box overflow="hidden">
+      <Box display="flex" justifyItems="center">
+        <Box display="inline-grid" justifyItems="center" margin="0 auto">
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Date"
+              sx={{ mt: 1 }}
+              format="dd/MM/yyyy"
+              disablePast={true}
+              maxDate={maxDate}
+              value={date}
+              onChange={(newDate) => setDate(newDate)}
+            />
+          </LocalizationProvider>
+          <ToggleButtonGroup
+            sx={{ pt: 1 }}
+            size="small"
+            exclusive
+            value={time}
+            onChange={(event, newTime) => setTime(newTime)}
+          >
+            {buttons.map((time) => (
+              <ToggleButton key={time} value={time} aria-label={time}>
+                {time}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        </Box>
       </Box>
       <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
-        minHeight="80vh"
+        minHeight="70vh"
         sx={{
           border: 2,
           borderColor: "rgba(112,112,112,0.14)",

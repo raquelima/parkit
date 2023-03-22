@@ -1,4 +1,4 @@
-import { Box, Toolbar } from "@mui/material";
+import { Box } from "@mui/material";
 import TopBar from "./TopBar";
 import SideNavBar from "./SideNavBar";
 import AppRoutes from "../routes/AppRoutes";
@@ -11,11 +11,7 @@ function RouteContainer({ user, setUser }) {
     <Box sx={{ display: "flex" }}>
       <TopBar />
       <SideNavBar />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-      >
-        <Toolbar />
+      <Box component="main" sx={{ flexGrow: 1, p: 10 }}>
         <AppRoutes />
       </Box>
     </Box>
