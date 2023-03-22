@@ -3,12 +3,11 @@ import { useContext, useState, useEffect } from "react";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
-import filterById from "../utils/filterById";
 import { format } from "date-fns";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import StatusChip from "../components/StatusChip";
-import fetchReservations from "../api/fetchReservations";
+import fetchUserReservations from "../api/fetchUserReservations";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
@@ -18,14 +17,12 @@ function Reservations() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const filteredReservations = filterById(reservations, userId);
-
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
   const cancelReservation = (id) => {
     client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
       //twice in code
-      fetchReservations(client).then((result) => {
+      fetchUserReservations(client).then((result) => {
         setReservations(result?.reservations);
         setError(result?.error);
         setLoading(result?.loading);
@@ -125,7 +122,7 @@ function Reservations() {
   ];
 
   useEffect(() => {
-    fetchReservations(client).then((result) => {
+    fetchUserReservations(client).then((result) => {
       setReservations(result?.reservations);
       setError(result?.error);
       setLoading(result?.loading);
@@ -147,8 +144,8 @@ function Reservations() {
 
       {loading ? (
         <CircularProgress />
-      ) : filteredReservations?.length ? (
-        <Table data={filteredReservations} columns={reservationsColumns} />
+      ) : reservations?.length ? (
+        <Table data={reservations} columns={reservationsColumns} />
       ) : (
         <p>No reservations found</p>
       )}

@@ -1,9 +1,12 @@
-async function fetchReservations(client) {
+import filterById from "../utils/filterById";
+
+async function fetchUserReservations(client) {
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
   if (client?.apis?.reservations) {
     try {
       const response = await client.apis.reservations.listReservations();
       return {
-        reservations: response.body.reservations,
+        reservations: filterById(response.body.reservations, userId),
         error: null,
         loading: false,
       };
@@ -17,4 +20,4 @@ async function fetchReservations(client) {
   }
 }
 
-export default fetchReservations;
+export default fetchUserReservations;

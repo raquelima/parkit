@@ -11,7 +11,7 @@ import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
 import { format } from "date-fns";
 import { useContext, useState, useEffect } from "react";
-import fetchReservations from "../api/fetchReservations";
+import fetchUserReservations from "../api/fetchUserReservations";
 import { SwaggerClientContext } from "../App";
 import filterById from "../utils/filterById";
 import filterUpcoming from "../utils/filterUpcoming";
@@ -24,10 +24,8 @@ function Dashboard() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
-  const filteredReservations = filterById(reservations, userId);
-  const upcomingReservations = filterUpcoming(filteredReservations);
-  const totalReservations = filteredReservations?.length;
+  const upcomingReservations = filterUpcoming(reservations);
+  const totalReservations = reservations?.length;
   const upcomingReservationTotal = upcomingReservations?.length;
   const availableParkingSpotsTotal = available?.length;
 
@@ -47,7 +45,7 @@ function Dashboard() {
   const cancelReservation = (id) => {
     client?.apis["reservations"].cancelReservation({ id: id }).then(() =>
       //twice in code
-      fetchReservations(client).then((result) => {
+      fetchUserReservations(client).then((result) => {
         setReservations(result?.reservations);
         setError(result?.error);
         setLoading(result?.loading);
@@ -112,7 +110,7 @@ function Dashboard() {
   ];
 
   useEffect(() => {
-    fetchReservations(client).then((result) => {
+    fetchUserReservations(client).then((result) => {
       setReservations(result?.reservations);
       setError(result?.error);
       setLoading(result?.loading);
