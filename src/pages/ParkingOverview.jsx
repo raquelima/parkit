@@ -26,7 +26,11 @@ function ParkingOverview() {
   const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
 
   const handleSelect = (parkingSpot) => {
-    setSelectedParkingSpot(parkingSpot.id);
+    if (parkingSpot.id == selectedParkingSpot) {
+      setSelectedParkingSpot(null);
+    } else {
+      setSelectedParkingSpot(parkingSpot.id);
+    }
   };
 
   const isParkingSpotSelected = (parkingSpot) =>
@@ -34,11 +38,13 @@ function ParkingOverview() {
 
   const handleDate = (newDate) => {
     setDate(newDate);
+    setSelectedParkingSpot(null);
   };
   const handleTime = (event, newTime) => {
     //Enforce value set copy paste from MUI
     if (newTime !== null) {
       setTime(newTime);
+      setSelectedParkingSpot(null);
     }
   };
 
