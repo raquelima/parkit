@@ -4,15 +4,16 @@ import { TextField, Button, Box } from "@mui/material";
 import { THEMECOLOR } from "../Constants";
 import logo from "../assets/adobe.png";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../App";
 
-function Login({ setUser }) {
+function Login({ user }) {
   const navigate = useNavigate();
+  const setUser = useContext(UserContext);
   const [userInput, setUserInput] = useState({
     userId: "dGVzdEBhZG9iZS5jb20=",
   });
   const [error, setError] = useState("");
-  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleSaveCredentials = (event) => {
     setUserInput({ ...userInput, [event.target.name]: event.target.value });

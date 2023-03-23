@@ -1,9 +1,9 @@
-import React from "react";
+import { createContext, useState } from "react";
 import useCreateSwaggerClient from "./hooks/useCreateSwaggerClient.jsx";
 import RouteContainer from "./components/RouteContainer";
-import { useState } from "react";
 
-export const SwaggerClientContext = React.createContext();
+export const SwaggerClientContext = createContext();
+export const UserContext = createContext();
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -11,7 +11,9 @@ function App() {
 
   return (
     <SwaggerClientContext.Provider value={client}>
-      <RouteContainer user={user} setUser={setUser} />
+      <UserContext.Provider value={setUser}>
+        <RouteContainer setUser={setUser} user={user} />
+      </UserContext.Provider>
     </SwaggerClientContext.Provider>
   );
 }
