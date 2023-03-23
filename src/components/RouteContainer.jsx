@@ -9,7 +9,7 @@ function RouteContainer({ user, setUser }) {
     <LoginRoutes setUser={setUser} />
   ) : (
     <Box sx={{ display: "flex" }}>
-      <TopBar />
+      <TopBar user={user} />
       <SideNavBar />
       <Box component="main" sx={{ flexGrow: 1, p: 10 }}>
         <AppRoutes />
