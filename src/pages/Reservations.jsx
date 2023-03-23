@@ -42,6 +42,20 @@ function Reservations() {
     cancelReservation(client, id).then(() => fetchReservations());
   };
 
+  const getReservationStatus = (reservation) => {
+    let status;
+    const cancelled = reservation.row.cancelled;
+    const startTime = reservation.row.start_time;
+
+    cancelled
+      ? (status = "cancelled")
+      : now < startTime
+      ? (status = "upcoming")
+      : (status = "overdue");
+
+    return status;
+  };
+
   const reservationsColumns = [
     {
       field: "date",
@@ -97,17 +111,14 @@ function Reservations() {
       sortable: false,
       width: 200,
       renderCell: (reservation) => {
-        let status;
-        const cancelled = reservation.row.cancelled;
-        const startTime = reservation.row.start_time;
-
-        cancelled
-          ? (status = "cancelled")
-          : now < startTime
-          ? (status = "upcoming")
-          : (status = "overdue");
+        let status = getReservationStatus(reservation);
 
         return <StatusChip status={status} />;
+      },
+      valueGetter: (reservation) => {
+        let status = getReservationStatus(reservation);
+
+        return status;
       },
     },
     {
