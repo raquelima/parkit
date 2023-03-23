@@ -1,5 +1,6 @@
 import format from "date-fns/format";
 //make api not deliver more than 2 weeks after
+//also delivers parking spots that are set unavailable
 async function fetchParkingSpotAvailability(client, date, halfDay, am) {
   if (client?.apis["parking-spots"]) {
     try {
@@ -12,8 +13,11 @@ async function fetchParkingSpotAvailability(client, date, halfDay, am) {
         half_day: halfDay,
         am: am,
       });
+      const filterAvailable = response.body.available_parking_spots.filter(
+        (parkingSpot) => !parkingSpot.unavailable
+      );
       return {
-        availableParkingSpots: response.body.available_parking_spots,
+        availableParkingSpots: filterAvailable,
         error: null,
         loading: false,
       };
