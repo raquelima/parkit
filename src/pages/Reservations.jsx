@@ -1,4 +1,4 @@
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
@@ -173,7 +173,9 @@ function Reservations() {
       ) : reservations?.length ? (
         <Table data={reservations} columns={reservationsColumns} />
       ) : (
-        <p>No reservations found</p>
+        <Alert sx={{ mt: 3 }} severity="info">
+          You have no reservations
+        </Alert>
       )}
     </Box>
   );

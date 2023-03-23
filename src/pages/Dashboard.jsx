@@ -4,6 +4,7 @@ import {
   Typography,
   IconButton,
   CircularProgress,
+  Alert,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoCard from "../components/InfoCard";
@@ -156,7 +157,9 @@ function Dashboard() {
             columns={upcomingReservationsColumns}
           />
         ) : (
-          <p>No upcoming reservations</p>
+          <Alert sx={{ mt: 3 }} severity="info">
+            You have no upcoming reservations
+          </Alert>
         )}
       </Box>
     </Box>

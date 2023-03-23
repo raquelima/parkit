@@ -1,4 +1,10 @@
-import { Box, Typography, CircularProgress, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Button,
+  Alert,
+} from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
@@ -107,7 +113,9 @@ function Vehicles() {
       ) : vehicles?.length ? (
         <Table data={vehicles} columns={vehiclesColumns} />
       ) : (
-        <p>No vehicles found</p>
+        <Alert sx={{ mt: 3 }} severity="info">
+          You have no vehicles registered
+        </Alert>
       )}
 
       <CreateVehiclePanel
