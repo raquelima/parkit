@@ -11,14 +11,11 @@ import {
 import { useState } from "react";
 import { THEMECOLOR } from "../Constants";
 import { DRAWERWIDTH } from "../Constants";
-import { useNavigate } from "react-router-dom";
 import profileImage from "../assets/profileImage.svg";
 
-function TopBar(user) {
+function TopBar({ setUser }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
-  const navigate = useNavigate();
 
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,7 +26,7 @@ function TopBar(user) {
 
   const logout = () => {
     localStorage.clear();
-    navigate("/login");
+    setUser(null);
   };
 
   return (
