@@ -7,36 +7,43 @@ import { List, Divider } from "@mui/material";
 import CustomListItem from "./CustomListItem";
 import { useLocation } from "react-router-dom";
 
-const icons = [
-  <AssessmentIcon style={{ color: "white" }} />,
-  <EventIcon style={{ color: "white" }} />,
-  <DashboardIcon style={{ color: "white" }} />,
-  <DriveEtaIcon style={{ color: "white" }} />,
+const listItems = [
+  {
+    page: "Dashboard",
+    path: "/dashboard",
+    icon: <AssessmentIcon style={{ color: "white" }} />,
+  },
+  {
+    page: "Reservations",
+    path: "/reservations",
+    icon: <EventIcon style={{ color: "white" }} />,
+  },
+  {
+    page: "Parking Overview",
+    path: "/parking_overview",
+    icon: <DashboardIcon style={{ color: "white" }} />,
+  },
 ];
-
-const paths = ["/dashboard", "/reservations", "/parking_overview"];
-
-const views = ["Dashboard", "Reservations", "Parking Overview"];
 
 function SideNavBarList() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const location = useLocation();
 
-  const buttonProps = (index) => ({
-    selected: location.pathname === paths[index],
+  const buttonProps = (item, index) => ({
+    selected: location.pathname === item.path,
     onClick: () => setSelectedIndex(index),
   });
 
   return (
     <List>
       <List>
-        {views.map((text, index) => (
+        {listItems.map((item, index) => (
           <CustomListItem
-            key={text}
-            to={paths[index]}
-            primary={text}
-            icon={icons[index]}
-            buttonProps={buttonProps(index)}
+            key={item.page}
+            to={item.path}
+            primary={item.page}
+            icon={item.icon}
+            buttonProps={buttonProps(item, index)}
           />
         ))}
       </List>
@@ -46,7 +53,7 @@ function SideNavBarList() {
           key="vehicles"
           to="/vehicles"
           primary="Vehicles"
-          icon={icons[3]}
+          icon={<DriveEtaIcon style={{ color: "white" }} />}
           buttonProps={buttonProps(3)}
         />
       </List>
