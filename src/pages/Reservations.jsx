@@ -1,6 +1,6 @@
 import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
-import { SwaggerClientContext } from "../App";
+import { SwaggerClientContext, UserContext } from "../App";
 import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
 import { format } from "date-fns";
@@ -10,24 +10,15 @@ import StatusChip from "../components/StatusChip";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
+import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
-
   const [reservations, setReservations] = useState(null);
   const [parkingSpots, setParkingSpots] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-  const fetchReservations = () => {
-    fetchUserReservations(client).then((result) => {
-      setReservations(result?.reservations);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  };
 
   //change to use parking spot endpoint
   const getParkingSpotNumber = (id) => {
@@ -72,7 +63,7 @@ function Reservations() {
       sortable: false,
       width: 200,
       valueGetter: (reservation) =>
-        `${format(new Date(reservation.row.start_time), "hh:mm")} - ${format(
+        `${format(new Date(reservation.row.start_time), "HH:mm")} - ${format(
           new Date(reservation.row.end_time),
           "hh:mm"
         )}`,
@@ -146,18 +137,26 @@ function Reservations() {
     },
   ];
 
-  useEffect(() => {
-    fetchReservations();
-    fetchParkingSpots(client).then((result) => {
-      setParkingSpots(result?.parkingSpots);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  }, [client]);
+  useRequestExecutor(
+    client,
+    () => fetchUserReservations(client),
+    (result) => {
+      setReservations(result);
+      setLoading(false);
+    }
+  );
+
+  useRequestExecutor(
+    client,
+    () => fetchParkingSpots(client),
+    (result) => {
+      setParkingSpots(result?.parking_spots);
+      setLoading(false);
+    }
+  );
 
   return (
     <Box>
-      {error}
       <Box
         sx={{
           display: "flex",

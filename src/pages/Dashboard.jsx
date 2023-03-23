@@ -17,6 +17,7 @@ import { SwaggerClientContext } from "../App";
 import filterUpcoming from "../utils/filterUpcoming";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
+import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
@@ -47,15 +48,12 @@ function Dashboard() {
   const infoCardsPaths = ["/parking_overview", "/reservations"];
   const infoCardsButtons = ["See overview", "See reservations"];
 
-  const fetchReservations = () => {
-    fetchUserReservations(client).then((result) => {
-      setReservations(result?.reservations);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  };
   const handleClick = (id) => {
     cancelReservation(client, id).then(() => fetchReservations());
+  };
+
+  const filterAvailable = (parkingSpots) => {
+    parkingSpots?.filter((parkingSpot) => !parkingSpot.unavailable);
   };
 
   const upcomingReservationsColumns = [
@@ -114,14 +112,23 @@ function Dashboard() {
     },
   ];
 
-  useEffect(() => {
-    fetchReservations();
-    fetchParkingSpotAvailability(client, today, true, am).then((result) => {
-      setAvailable(result?.availableParkingSpots);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  }, [client]);
+  useRequestExecutor(
+    client,
+    () => fetchUserReservations(client),
+    (result) => {
+      setReservations(result);
+      setLoading(false);
+    }
+  );
+
+  useRequestExecutor(
+    client,
+    () => fetchParkingSpotAvailability(client, today, true, am),
+    (result) => {
+      setAvailable(filterAvailable(result?.available_parking_spots));
+      setLoading(false);
+    }
+  );
 
   return (
     <Box>
