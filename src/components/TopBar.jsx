@@ -8,13 +8,23 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { THEMECOLOR } from "../Constants";
 import { DRAWERWIDTH } from "../Constants";
 import profileImage from "../assets/profileImage.svg";
+import ProfilePanel from "./ProfilePanel";
+import fetchUser from "../api/fetchUser";
+import { SwaggerClientContext } from "../App";
+import fetchUserVehicles from "../api/fetchUserVehicles";
+import fetchUserReservations from "../api/fetchUserReservations";
 
 function TopBar({ setUser }) {
+  const client = useContext(SwaggerClientContext);
+  const [profileUser, setProfileUser] = useState(null);
+  const [totalVehicles, setTotalVehicles] = useState(null);
+  const [totalReservations, setTotalReservations] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openPanel, setOpenPanel] = useState(false);
   const open = Boolean(anchorEl);
 
   const handleOpenMenu = (event) => {
@@ -28,6 +38,18 @@ function TopBar({ setUser }) {
     localStorage.clear();
     setUser(null);
   };
+
+  useEffect(() => {
+    fetchUser(client).then((result) => {
+      setProfileUser(result?.user);
+    });
+    fetchUserVehicles(client).then((result) => {
+      setTotalVehicles(result?.vehicles?.length);
+    });
+    fetchUserReservations(client).then((result) => {
+      setTotalReservations(result?.reservations?.length);
+    });
+  }, [client]);
 
   return (
     <AppBar
@@ -77,9 +99,16 @@ function TopBar({ setUser }) {
         </Typography>
         <Typography sx={{ pr: 6, pl: 2, pb: 1 }}>lima@adobe.com</Typography>
         <Divider />
-        <MenuItem>Profile</MenuItem>
+        <MenuItem onClick={() => setOpenPanel(true)}>Profile</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
+      <ProfilePanel
+        user={profileUser}
+        totalVehicles={totalVehicles}
+        totalReservations={totalReservations}
+        openPanel={openPanel}
+        setOpenPanel={setOpenPanel}
+      />
     </AppBar>
   );
 }
