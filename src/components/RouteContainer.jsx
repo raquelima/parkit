@@ -4,12 +4,12 @@ import SideNavBar from "./SideNavBar";
 import AppRoutes from "../routes/AppRoutes";
 import LoginRoutes from "../routes/LoginRoutes";
 
-function RouteContainer({ user, setUser }) {
+function RouteContainer({ user }) {
   return !user ? (
-    <LoginRoutes setUser={setUser} />
+    <LoginRoutes user={user} />
   ) : (
     <Box sx={{ display: "flex" }}>
-      <TopBar />
+      <TopBar userId={user.userId} />
       <SideNavBar />
       <Box component="main" sx={{ flexGrow: 1, p: 10 }}>
         <AppRoutes />

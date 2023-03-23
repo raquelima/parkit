@@ -1,4 +1,10 @@
-import { Box, Typography, CircularProgress, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Button,
+  Alert,
+} from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { SwaggerClientContext } from "../App";
 import Table from "../components/Table";
@@ -8,25 +14,17 @@ import fetchUserVehicles from "../api/fetchUserVehicles";
 import { THEMECOLOR } from "../Constants";
 import CreateVehiclePanel from "../components/CreateVehiclePanel";
 import removeVehicle from "../api/removeVehicle";
+import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
 
   const [vehicles, setVehicles] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openPanel, setOpenPanel] = useState(false);
 
-  const fetchVehicles = () => {
-    fetchUserVehicles(client).then((result) => {
-      setVehicles(result?.vehicles);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  };
-
   const handleClick = (id) => {
-    removeVehicle(client, id).then(() => fetchVehicles());
+    removeVehicle(client, id);
   };
   const vehiclesColumns = [
     {
@@ -76,12 +74,17 @@ function Vehicles() {
     },
   ];
 
-  useEffect(() => {
-    fetchVehicles();
-  }, [client]);
+  useRequestExecutor(
+    client,
+    () => fetchUserVehicles(client),
+    (result) => {
+      setVehicles(result);
+      setLoading(false);
+    }
+  );
+
   return (
     <Box>
-      {error}
       <Box
         sx={{
           display: "flex",
@@ -107,14 +110,16 @@ function Vehicles() {
       ) : vehicles?.length ? (
         <Table data={vehicles} columns={vehiclesColumns} />
       ) : (
-        <p>No vehicles found</p>
+        <Alert sx={{ mt: 3 }} severity="info">
+          You have no vehicles registered
+        </Alert>
       )}
 
       <CreateVehiclePanel
         client={client}
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
-        fetchVehicles={fetchVehicles}
+        setError={setError}
       />
     </Box>
   );

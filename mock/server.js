@@ -314,6 +314,13 @@ export function setupMockServer() {
         return res(ctx.status(500));
       }
 
+      const mockStatusCode = req.headers.get("x-test-response-code");
+      const mockStatusText = req.headers.get("x-test-response-text");
+
+      if (mockStatusCode) {
+        return res(ctx.status(mockStatusCode, mockStatusText));
+      }
+
       return api.handleRequest(
         {
           path: req.url.pathname.replace(/^\/api/, ""),

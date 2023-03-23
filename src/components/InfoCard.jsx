@@ -13,7 +13,7 @@ function InfoCard({ text, number, button, path }) {
     <Card
       sx={{
         height: 175,
-        width: 370,
+        width: 330,
         background: "linear-gradient(rgb(93,121,152,0.5), rgb(198,84,90,1))",
         borderRadius: "21px",
       }}

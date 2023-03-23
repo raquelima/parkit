@@ -15,21 +15,13 @@ import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import createVehicle from "../api/createVehicle";
 
-function CreateVehiclePanel({
-  client,
-  openPanel,
-  setOpenPanel,
-  fetchVehicles,
-}) {
+function CreateVehiclePanel({ client, openPanel, setOpenPanel }) {
   const [newVehicle, setNewVehicle] = useState({});
   const [ev, setEv] = useState(true);
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
   const labels = ["Manufacture", "Model", "Plate number"];
   const keys = ["make", "model", "licensePlateNumber"];
 
   const handleSaveInput = (event) => {
-    console.log(newVehicle);
     setNewVehicle({ ...newVehicle, [event.target.name]: event.target.value });
   };
 
@@ -40,16 +32,13 @@ function CreateVehiclePanel({
       newVehicle.licensePlateNumber,
       newVehicle.make,
       newVehicle.model
-    ).then((result) => {
-      fetchVehicles();
-      setOpenPanel(false);
-      setSuccess(result?.response);
-      setError(result?.error);
-    });
-  };
-
-  const handleClosePanel = () => {
-    setOpenPanel(false);
+    )
+      .then((result) => {
+        fetchVehicles();
+        setOpenPanel(false);
+        setMessage(result?.response);
+      })
+      .catch((e) => {});
   };
 
   const handleToggle = (event, toggle) => {
@@ -84,7 +73,7 @@ function CreateVehiclePanel({
           <Typography color="white">Create Vehicle</Typography>
           <IconButton
             aria-label="close panel"
-            onClick={handleClosePanel}
+            onClick={() => setOpenPanel(false)}
             sx={{ color: "white" }}
           >
             <CloseIcon />

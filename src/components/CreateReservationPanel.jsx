@@ -18,6 +18,7 @@ import car from "../assets/car.svg";
 import { format } from "date-fns";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import createReservation from "../api/createReservation";
+import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function CreateReservationPanel({
   client,
@@ -71,12 +72,14 @@ function CreateReservationPanel({
     });
   };
 
-  useEffect(() => {
-    fetchUserVehicles(client).then((result) => {
-      setVehicles(result?.vehicles);
-      setSelectedVehicleId(result?.vehicles[0].id);
-    });
-  }, [client]);
+  useRequestExecutor(
+    client,
+    () => fetchUserVehicles(client),
+    (result) => {
+      setVehicles(result);
+      setSelectedVehicleId(result[0]?.id);
+    }
+  );
 
   return (
     <Drawer

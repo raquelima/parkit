@@ -1,6 +1,6 @@
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
-import { SwaggerClientContext } from "../App";
+import { SwaggerClientContext, UserContext } from "../App";
 import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
 import { format } from "date-fns";
@@ -10,25 +10,17 @@ import StatusChip from "../components/StatusChip";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
+import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
-
   const [reservations, setReservations] = useState(null);
   const [parkingSpots, setParkingSpots] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-  const fetchReservations = () => {
-    fetchUserReservations(client).then((result) => {
-      setReservations(result?.reservations);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  };
-
+  //change to use parking spot endpoint
   const getParkingSpotNumber = (id) => {
     return parkingSpots
       ?.filter((parkingSpot) => parkingSpot.id === id)
@@ -39,6 +31,20 @@ function Reservations() {
 
   const handleClick = (id) => {
     cancelReservation(client, id).then(() => fetchReservations());
+  };
+
+  const getReservationStatus = (reservation) => {
+    let status;
+    const cancelled = reservation.row.cancelled;
+    const startTime = reservation.row.start_time;
+
+    cancelled
+      ? (status = "cancelled")
+      : now < startTime
+      ? (status = "upcoming")
+      : (status = "overdue");
+
+    return status;
   };
 
   const reservationsColumns = [
@@ -57,7 +63,7 @@ function Reservations() {
       sortable: false,
       width: 200,
       valueGetter: (reservation) =>
-        `${format(new Date(reservation.row.start_time), "hh:mm")} - ${format(
+        `${format(new Date(reservation.row.start_time), "HH:mm")} - ${format(
           new Date(reservation.row.end_time),
           "hh:mm"
         )}`,
@@ -69,7 +75,7 @@ function Reservations() {
       sortable: false,
       width: 200,
       valueGetter: (reservation) =>
-        `${reservation.row.vehicle.make} ${reservation.row.vehicle.model}`,
+        `${reservation.row.vehicle?.make} ${reservation.row.vehicle?.model}`,
     },
     {
       field: "plateNumber",
@@ -78,7 +84,7 @@ function Reservations() {
       sortable: false,
       width: 200,
       valueGetter: (reservation) =>
-        reservation.row.vehicle.license_plate_number,
+        reservation.row.vehicle?.license_plate_number,
     },
     {
       field: "parkingSpotNumber",
@@ -96,17 +102,14 @@ function Reservations() {
       sortable: false,
       width: 200,
       renderCell: (reservation) => {
-        let status;
-        const cancelled = reservation.row.cancelled;
-        const startTime = reservation.row.start_time;
-
-        cancelled
-          ? (status = "cancelled")
-          : now < startTime
-          ? (status = "upcoming")
-          : (status = "overdue");
+        let status = getReservationStatus(reservation);
 
         return <StatusChip status={status} />;
+      },
+      valueGetter: (reservation) => {
+        let status = getReservationStatus(reservation);
+
+        return status;
       },
     },
     {
@@ -134,18 +137,26 @@ function Reservations() {
     },
   ];
 
-  useEffect(() => {
-    fetchReservations();
-    fetchParkingSpots(client).then((result) => {
-      setParkingSpots(result?.parkingSpots);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  }, [client]);
+  useRequestExecutor(
+    client,
+    () => fetchUserReservations(client),
+    (result) => {
+      setReservations(result);
+      setLoading(false);
+    }
+  );
+
+  useRequestExecutor(
+    client,
+    () => fetchParkingSpots(client),
+    (result) => {
+      setParkingSpots(result?.parking_spots);
+      setLoading(false);
+    }
+  );
 
   return (
     <Box>
-      {error}
       <Box
         sx={{
           display: "flex",
@@ -161,7 +172,9 @@ function Reservations() {
       ) : reservations?.length ? (
         <Table data={reservations} columns={reservationsColumns} />
       ) : (
-        <p>No reservations found</p>
+        <Alert sx={{ mt: 3 }} severity="info">
+          You have no reservations
+        </Alert>
       )}
     </Box>
   );

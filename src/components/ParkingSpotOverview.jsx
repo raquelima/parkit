@@ -1,6 +1,6 @@
 import ParkingSpot from "../components/ParkingSpot";
 import logo from "../assets/adobe.png";
-import { Box } from "@mui/material";
+import { Box, Alert } from "@mui/material";
 
 function ParkingSpotOverview({
   parkingSpots,
@@ -14,7 +14,6 @@ function ParkingSpotOverview({
       setSelectedParkingSpot(null);
       setOpenPanel(false);
     } else {
-      console.log(parkingSpot);
       setSelectedParkingSpot(parkingSpot);
       setOpenPanel(true);
     }
@@ -57,43 +56,49 @@ function ParkingSpotOverview({
         >
           <img width="80px" src={logo} />
         </Box>
-        <Box sx={{ pl: 14, pt: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            {parkingSpots?.slice(0, 2).map((parkingSpot) => (
-              <ParkingSpot
-                key={parkingSpot.id}
-                number={parkingSpot.number}
-                disabled={parkingSpot.unavailable}
-                charger={parkingSpot.charger_available}
-                available={checkAvailability(
-                  availableParkingSpots,
-                  parkingSpot.id
-                )}
-                selected={isParkingSpotSelected(parkingSpot)}
-                onClick={() => handleSelect(parkingSpot)}
-              />
-            ))}
+        {parkingSpots ? (
+          <Box sx={{ pl: 14, pt: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              {parkingSpots?.slice(0, 2).map((parkingSpot) => (
+                <ParkingSpot
+                  key={parkingSpot.id}
+                  number={parkingSpot.number}
+                  disabled={parkingSpot.unavailable}
+                  charger={parkingSpot.charger_available}
+                  available={checkAvailability(
+                    availableParkingSpots,
+                    parkingSpot.id
+                  )}
+                  selected={isParkingSpotSelected(parkingSpot)}
+                  onClick={() => handleSelect(parkingSpot)}
+                />
+              ))}
+            </Box>
+            <Box
+              sx={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end" }}
+            >
+              {parkingSpots?.slice(2).map((parkingSpot) => (
+                <ParkingSpot
+                  key={parkingSpot.id}
+                  number={parkingSpot.number}
+                  disabled={parkingSpot.unavailable}
+                  availableParkingSpots={availableParkingSpots}
+                  charger={parkingSpot.charger_available}
+                  available={checkAvailability(
+                    availableParkingSpots,
+                    parkingSpot.id
+                  )}
+                  selected={isParkingSpotSelected(parkingSpot)}
+                  onClick={() => handleSelect(parkingSpot)}
+                />
+              ))}
+            </Box>
           </Box>
-          <Box
-            sx={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end" }}
-          >
-            {parkingSpots?.slice(2).map((parkingSpot) => (
-              <ParkingSpot
-                key={parkingSpot.id}
-                number={parkingSpot.number}
-                disabled={parkingSpot.unavailable}
-                availableParkingSpots={availableParkingSpots}
-                charger={parkingSpot.charger_available}
-                available={checkAvailability(
-                  availableParkingSpots,
-                  parkingSpot.id
-                )}
-                selected={isParkingSpotSelected(parkingSpot)}
-                onClick={() => handleSelect(parkingSpot)}
-              />
-            ))}
-          </Box>
-        </Box>
+        ) : (
+          <Alert sx={{ mt: 3 }} severity="info">
+            No parking spots were found
+          </Alert>
+        )}
       </Box>
     </Box>
   );

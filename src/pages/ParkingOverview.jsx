@@ -6,6 +6,7 @@ import { SwaggerClientContext } from "../App";
 import CreateReservationPanel from "../components/CreateReservationPanel";
 import DateTimePicker from "../components/DateTimePicker";
 import ParkingSpotOverview from "../components/ParkingSpotOverview";
+import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function ParkingOverview() {
   const client = useContext(SwaggerClientContext);
@@ -21,21 +22,25 @@ function ParkingOverview() {
   const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
   const [openPanel, setOpenPanel] = useState(false);
 
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchParkingSpots(client).then((result) => {
-      setParkingSpots(result?.parkingSpots);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-    fetchParkingSpotAvailability(client, date, halfDay, am).then((result) => {
-      setAvailableParkingSpots(result?.availableParkingSpots);
-      setError(result?.error);
-      setLoading(result?.loading);
-    });
-  }, [client, date, time]);
+  useRequestExecutor(
+    client,
+    () => fetchParkingSpots(client),
+    (result) => {
+      setParkingSpots(result?.parking_spots);
+      setLoading(false);
+    }
+  );
+
+  useRequestExecutor(
+    client,
+    () => fetchParkingSpotAvailability(client, date, halfDay, am),
+    (result) => {
+      setAvailableParkingSpots(result?.available_parking_spots);
+      setLoading(false);
+    }
+  );
 
   return (
     <Box overflow="hidden">
