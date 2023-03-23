@@ -5,6 +5,7 @@ import EventIcon from "@mui/icons-material/Event";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import { List, Divider } from "@mui/material";
 import CustomListItem from "./CustomListItem";
+import { useLocation } from "react-router-dom";
 
 const icons = [
   <AssessmentIcon style={{ color: "white" }} />,
@@ -19,10 +20,11 @@ const views = ["Dashboard", "Reservations", "Parking Overview"];
 
 function SideNavBarList() {
   const [selectedIndex, setSelectedIndex] = useState(1);
+  const location = useLocation();
 
-  const buttonProps = (value) => ({
-    selected: selectedIndex === value,
-    onClick: () => setSelectedIndex(value),
+  const buttonProps = (index) => ({
+    selected: location.pathname === paths[index],
+    onClick: () => setSelectedIndex(index),
   });
 
   return (
