@@ -14,15 +14,19 @@ import { useContext, useState, useEffect } from "react";
 import fetchUserReservations from "../api/fetchUserReservations";
 import { SwaggerClientContext } from "../App";
 import filterUpcoming from "../utils/filterUpcoming";
-import fetchParkingSpotsToday from "../api/fetchParkingSpotsToday";
 import cancelReservation from "../api/cancelReservation";
+import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
+
   const [reservations, setReservations] = useState(null);
   const [available, setAvailable] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const today = new Date();
+  const am = format(today, "a") == "AM" ? true : false;
 
   const upcomingReservations = filterUpcoming(reservations);
   const totalReservations = reservations?.length;
@@ -111,8 +115,8 @@ function Dashboard() {
 
   useEffect(() => {
     fetchReservations();
-    fetchParkingSpotsToday(client).then((result) => {
-      setAvailable(result?.parkingSpots);
+    fetchParkingSpotAvailability(client, today, true, am).then((result) => {
+      setAvailable(result?.availableParkingSpots);
       setError(result?.error);
       setLoading(result?.loading);
     });
