@@ -18,6 +18,7 @@ import fetchUserReservations from "../api/fetchUserReservations";
 import profileImage from "../assets/profileImage.svg";
 import { THEMECOLOR } from "../Constants";
 import { DRAWERWIDTH } from "../Constants";
+import AvatarMenu from "./AvatarMenu";
 
 function TopBar() {
   const client = useContext(SwaggerClientContext);
@@ -91,44 +92,17 @@ function TopBar() {
         variant="dense"
         sx={{ justifyContent: "flex-end", minHeight: 44 }}
       >
-        <IconButton
-          onClick={handleOpenMenu}
-          aria-controls={open ? "profile-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-        >
-          <Avatar
-            src={profileImage}
-            sx={{
-              width: "30px",
-              height: "30px",
-            }}
-          />
-        </IconButton>
+        <AvatarMenu
+          profileUser={profileUser}
+          handleOpenMenu={handleOpenMenu}
+          open={open}
+          anchorEl={anchorEl}
+          handleClose={handleClose}
+          setOpenPanel={setOpenPanel}
+          logout={logout}
+        />
       </Toolbar>
-      <Menu
-        anchorEl={anchorEl}
-        id="profile-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          sx: {
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            borderRadius: "13px",
-          },
-        }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <Typography fontWeight="bold" variant="h6" sx={{ pr: 6, pl: 2 }}>
-          Raquel Lima
-        </Typography>
-        <Typography sx={{ pr: 6, pl: 2, pb: 1 }}>lima@adobe.com</Typography>
-        <Divider />
-        <MenuItem onClick={() => setOpenPanel(true)}>Profile</MenuItem>
-        <MenuItem onClick={logout}>Logout</MenuItem>
-      </Menu>
+
       <ProfilePanel
         user={profileUser}
         totalVehicles={totalVehicles}
