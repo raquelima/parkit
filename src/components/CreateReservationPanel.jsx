@@ -1,24 +1,14 @@
 import { useState, useContext, useEffect } from "react";
-import {
-  Box,
-  Toolbar,
-  Typography,
-  Drawer,
-  List,
-  Divider,
-  IconButton,
-  Button,
-  CircularProgress,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Box, Divider } from "@mui/material";
 import { format } from "date-fns";
 import { UserContext } from "../App";
+import ReservationDetails from "./ReservationDetails";
+import VehicleDetails from "./VehicleDetails";
+import Panel from "./Panel";
+import CreateButton from "./CreateButton";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import createReservation from "../api/createReservation";
 import fetchUser from "../api/fetchUser";
-import { THEMECOLOR } from "../Constants";
-import ReservationDetails from "./ReservationDetails";
-import VehicleDetails from "./VehicleDetails";
 
 function CreateReservationPanel({
   client,
@@ -109,70 +99,28 @@ function CreateReservationPanel({
   }, [client]);
 
   return (
-    <Drawer
-      sx={{
-        width: 320,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: 320,
-        },
-      }}
-      variant="persistent"
-      anchor="right"
-      open={openPanel}
-    >
-      <List disablePadding>
-        <Toolbar
-          variant="dense"
-          sx={{
-            minHeight: 44,
-            backgroundColor: THEMECOLOR,
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography color="white">Create Reservation</Typography>
-          <IconButton
-            aria-label="close panel"
-            onClick={handleClosePanel}
-            sx={{ color: "white" }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
-
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Box sx={{ px: 3 }}>
-            <ReservationDetails
-              selectedParkingSpot={selectedParkingSpot}
-              profileUser={profileUser}
-              reservationDate={reservationDate}
-              reservationTime={reservationTime}
-              vehicles={vehicles}
-              selectedVehicleId={selectedVehicleId}
-              handleChange={handleChange}
-            />
-            <Divider />
-            <VehicleDetails selectedVehicle={selectedVehicle} />
-            <Box sx={{ display: "flex", justifyContent: "center", pt: 7 }}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: THEMECOLOR,
-                  borderRadius: "4px",
-                  textTransform: "none",
-                }}
-                onClick={() => handleClick()}
-              >
-                Reserve Space
-              </Button>
-            </Box>
-          </Box>
-        )}
-      </List>
-    </Drawer>
+    <Panel
+      children={
+        <Box sx={{ px: 3 }}>
+          <ReservationDetails
+            selectedParkingSpot={selectedParkingSpot}
+            profileUser={profileUser}
+            reservationDate={reservationDate}
+            reservationTime={reservationTime}
+            vehicles={vehicles}
+            selectedVehicleId={selectedVehicleId}
+            handleChange={handleChange}
+          />
+          <Divider />
+          <VehicleDetails selectedVehicle={selectedVehicle} />
+          <CreateButton handleClick={handleClick} text="Reserve Space" />
+        </Box>
+      }
+      headerTitle="Create Reservation"
+      loading={loading}
+      openPanel={openPanel}
+      handleClosePanel={handleClosePanel}
+    />
   );
 }
 export default CreateReservationPanel;

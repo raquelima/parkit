@@ -84,6 +84,7 @@ function Reservations() {
     cancelReservation(client, id)
       .then(() => {
         fetchReservations();
+        setError(null);
         setSuccess("Reservation was cancelled");
         handleClickSnack();
       })
