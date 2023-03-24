@@ -1,6 +1,18 @@
 import { Snackbar, Alert } from "@mui/material";
-
-function CustomSnackbar({ openSnackbar, setOpenSnackbar, severity, message }) {
+/**
+ *
+ * @param {*} openSnackbar
+ * @param {*} setOpenSnackbar
+ * @param {*} severity
+ * @param {*} message
+ * @returns
+ */
+function AutoHidingSnackbar({
+  openSnackbar,
+  setOpenSnackbar,
+  severity,
+  message,
+}) {
   return (
     <Snackbar
       open={openSnackbar}
@@ -13,4 +25,4 @@ function CustomSnackbar({ openSnackbar, setOpenSnackbar, severity, message }) {
     </Snackbar>
   );
 }
-export default CustomSnackbar;
+export default AutoHidingSnackbar;

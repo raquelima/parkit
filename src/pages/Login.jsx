@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Box, Typography, Container } from "@mui/material";
 import { UserContext } from "../App";
-import CustomSnackbar from "../components/CustomSnackBar";
+import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import logo from "../assets/adobeLogoSmall.png";
 import { THEMECOLOR } from "../Constants";
 
@@ -55,7 +55,7 @@ function Login({ user }) {
         height: "100%",
       }}
     >
-      <CustomSnackbar
+      <AutoHidingSnackbar
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
         severity={"error"}

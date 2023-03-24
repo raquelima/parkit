@@ -1,17 +1,8 @@
 import { useState, useContext, useEffect } from "react";
-import {
-  IconButton,
-  Avatar,
-  AppBar,
-  Toolbar,
-  MenuItem,
-  Menu,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { AppBar, Toolbar } from "@mui/material";
 import { SwaggerClientContext, UserContext } from "../App";
 import ProfilePanel from "./ProfilePanel";
-import CustomSnackbar from "./CustomSnackBar";
+import AutoHidingSnackbar from "./AutoHidingSnackbar";
 import fetchUser from "../api/fetchUser";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import fetchUserReservations from "../api/fetchUserReservations";
@@ -19,6 +10,10 @@ import { THEMECOLOR } from "../Constants";
 import { DRAWERWIDTH } from "../Constants";
 import AvatarMenu from "./AvatarMenu";
 
+/**
+ *
+ * @returns
+ */
 function TopBar() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
@@ -109,7 +104,7 @@ function TopBar() {
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
       />
-      <CustomSnackbar
+      <AutoHidingSnackbar
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
         severity="error"

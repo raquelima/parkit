@@ -13,7 +13,7 @@ import { SwaggerClientContext, UserContext } from "../App";
 import StatusChip from "../components/StatusChip";
 import Table from "../components/Table";
 import CreateButton from "../components/CreateButton";
-import CustomSnackbar from "../components/CustomSnackBar";
+import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
@@ -212,7 +212,7 @@ function Reservations() {
         />
       </Box>
 
-      <CustomSnackbar
+      <AutoHidingSnackbar
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
         severity={error ? "error" : "success"}

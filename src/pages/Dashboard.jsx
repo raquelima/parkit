@@ -14,7 +14,7 @@ import { SwaggerClientContext } from "../App";
 import InfoCard from "../components/InfoCard";
 import Table from "../components/Table";
 import CreateButton from "../components/CreateButton";
-import CustomSnackbar from "../components/CustomSnackBar";
+import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
@@ -171,7 +171,7 @@ function Dashboard() {
 
   return (
     <Box>
-      <CustomSnackbar
+      <AutoHidingSnackbar
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
         severity={error ? "error" : "success"}

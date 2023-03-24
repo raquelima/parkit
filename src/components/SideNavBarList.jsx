@@ -5,7 +5,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
 import EventIcon from "@mui/icons-material/Event";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import CustomListItem from "./CustomListItem";
+import NavListitem from "./NavListitem";
 
 const listItems = [
   {
@@ -25,6 +25,10 @@ const listItems = [
   },
 ];
 
+/**
+ *
+ * @returns
+ */
 function SideNavBarList() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const location = useLocation();
@@ -42,7 +46,7 @@ function SideNavBarList() {
         </Typography>
         <List>
           {listItems.map((item, index) => (
-            <CustomListItem
+            <NavListitem
               key={item.page}
               to={item.path}
               primary={item.page}
@@ -60,7 +64,7 @@ function SideNavBarList() {
           Management
         </Typography>
         <List>
-          <CustomListItem
+          <NavListitem
             key="vehicles"
             to="/vehicles"
             primary="Vehicles"

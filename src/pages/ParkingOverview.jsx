@@ -4,7 +4,7 @@ import { SwaggerClientContext, UserContext } from "../App";
 import CreateReservationPanel from "../components/CreateReservationPanel";
 import DateTimePicker from "../components/DateTimePicker";
 import ParkingSpotOverview from "../components/ParkingSpotOverview";
-import CustomSnackbar from "../components/CustomSnackBar";
+import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
 import { THEMECOLOR } from "../Constants";
@@ -117,7 +117,7 @@ function ParkingOverview() {
         handleClickSnack={handleClickSnack}
         fetchAvailableParkingSpots={fetchAvailableParkingSpots}
       />
-      <CustomSnackbar
+      <AutoHidingSnackbar
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
         severity={error ? "error" : "success"}

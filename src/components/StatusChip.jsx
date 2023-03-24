@@ -1,26 +1,13 @@
 import { Chip } from "@mui/material";
+import { STATUSCHIPS } from "../Constants";
 
-const statuschips = {
-  cancelled: {
-    color: "#D83B3B",
-    backgroundColor: "rgba(255,201,201,0.8)",
-  },
-  upcoming: {
-    color: "#67CEAD",
-    backgroundColor: "#E5F8F2",
-  },
-  ongoing: {
-    color: "#30689C",
-    backgroundColor: "#ADE5FF",
-  },
-  overdue: {
-    color: "#F7C692",
-    backgroundColor: "rgba(252,233,212,0.86)",
-  },
-};
-
+/**
+ *
+ * @param {*} status
+ * @returns
+ */
 function StatusChip({ status }) {
-  const { color, backgroundColor } = statuschips[status];
+  const { color, backgroundColor } = STATUSCHIPS[status];
   return (
     <Chip
       label={status}

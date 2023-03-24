@@ -9,7 +9,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { SwaggerClientContext, UserContext } from "../App";
 import Table from "../components/Table";
-import CustomSnackbar from "../components/CustomSnackBar";
+import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import CreateButton from "../components/CreateButton";
 import CreateVehiclePanel from "../components/CreateVehiclePanel";
 import fetchUserVehicles from "../api/fetchUserVehicles";
@@ -141,7 +141,7 @@ function Vehicles() {
           btnText="Create vehicle +"
         />
       </Box>
-      <CustomSnackbar
+      <AutoHidingSnackbar
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
         severity={error ? "error" : "success"}
