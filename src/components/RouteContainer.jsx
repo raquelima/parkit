@@ -4,6 +4,11 @@ import SideNavBar from "./SideNavBar";
 import AppRoutes from "../routes/AppRoutes";
 import LoginRoutes from "../routes/LoginRoutes";
 
+/**
+ *
+ * @param {*} user
+ * @returns
+ */
 function RouteContainer({ user }) {
   return !user ? (
     <LoginRoutes user={user} />

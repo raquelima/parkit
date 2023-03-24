@@ -4,6 +4,10 @@ import logo from "../assets/adobeLogoSmall.png";
 import { DRAWERWIDTH } from "../Constants";
 import { THEMECOLOR } from "../Constants";
 
+/**
+ *
+ * @returns
+ */
 function SideNavBar() {
   return (
     <Drawer

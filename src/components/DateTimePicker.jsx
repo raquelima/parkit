@@ -10,6 +10,19 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { addWeeks } from "date-fns";
 
+/**
+ *
+ * @param {*} today
+ * @param {*} reservationDate
+ * @param {*} reservationTime
+ * @param {*} setReservationDate
+ * @param {*} setReservationTime
+ * @param {*} setSelectedParkingSpot
+ * @param {*} setOpenPanel
+ * @param {*} setError
+ * @param {*} handleClickSnack
+ * @returns
+ */
 function DateTimePicker({
   today,
   reservationDate,

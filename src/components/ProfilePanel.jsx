@@ -1,6 +1,15 @@
 import ProfileDetails from "./profileDetails";
 import Panel from "./Panel";
 
+/**
+ *
+ * @param {*} user
+ * @param {*} totalVehicles
+ * @param {*} totalReservations
+ * @param {*} openPanel
+ * @param {*} setOpenPanel
+ * @returns
+ */
 function ProfilePanel({
   user,
   totalVehicles,

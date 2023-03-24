@@ -2,6 +2,15 @@ import { Box, Alert, Typography } from "@mui/material";
 import ParkingSpot from "../components/ParkingSpot";
 import logo from "../assets/adobeLogoLarge.png";
 
+/**
+ *
+ * @param {*} parkingSpots
+ * @param {*} availableParkingSpots
+ * @param {*} selectedParkingSpot
+ * @param {*} setSelectedParkingSpot
+ * @param {*} setOpenPanel
+ * @returns
+ */
 function ParkingSpotOverview({
   parkingSpots,
   availableParkingSpots,

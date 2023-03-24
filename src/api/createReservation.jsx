@@ -1,15 +1,15 @@
 import executeRequest from "./executeRequest";
 
 /**
- * @description Creates a reservation with the parameters below
- * @param {Object} client
+ * Creates a reservation with the parameters below
+ * @param {Object} client The API client
  * @param {string} parkingSpotId
  * @param {string} userId
  * @param {string} vehicleId
  * @param {Object} date
  * @param {Boolean} halfDay
  * @param {Boolean} am
- * @returns {Promise<Object>}
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
  */
 async function createReservation(
   client,

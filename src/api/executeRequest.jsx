@@ -1,8 +1,8 @@
 import handleError from "./handleError";
 
 /**
- * @describe Executes an API request using specified client, tag, operation, parameters, and options.
- * @param {Object} client
+ * Executes an API request using specified client, tag, operation, parameters, and options.
+ * @param {Object} client The API client
  * @param {string} tag
  * @param {string} operation
  * @param {Object} parameters

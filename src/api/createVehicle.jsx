@@ -1,8 +1,8 @@
 import executeRequest from "./executeRequest";
 
 /**
- * @description Creates a vehicle with the specified, client, ev, license plate number, make and model.
- * @param {Object} client
+ * Creates a vehicle with the specified, client, ev, license plate number, make and model.
+ * @param {Object} client The API client
  * @param {Boolean} ev
  * @param {string} licensePlateNumber
  * @param {string} make

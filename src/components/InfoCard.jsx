@@ -6,6 +6,14 @@ import Typography from "@mui/material/Typography";
 import { THEMECOLOR } from "../Constants";
 import { useNavigate } from "react-router-dom";
 
+/**
+ *
+ * @param {*} text
+ * @param {*} number
+ * @param {*} button
+ * @param {*} path
+ * @returns
+ */
 function InfoCard({ text, number, button, path }) {
   const navigate = useNavigate();
 

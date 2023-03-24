@@ -9,6 +9,15 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { THEMECOLOR } from "../Constants";
 
+/**
+ *
+ * @param {*} children
+ * @param {*} headerTitle
+ * @param {*} loading
+ * @param {*} openPanel
+ * @param {*} handleClosePanel
+ * @returns
+ */
 function Panel({
   children,
   headerTitle,

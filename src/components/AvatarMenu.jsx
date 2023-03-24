@@ -10,7 +10,7 @@ import {
 import profileImage from "../assets/profileImage.svg";
 
 /**
- * @description
+ *
  * @param {Object} profileUser
  * @param {Function} handleOpenMenu
  * @param {Object} open

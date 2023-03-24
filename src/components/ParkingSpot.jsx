@@ -2,6 +2,16 @@ import { Box, Tooltip } from "@mui/material";
 import EvStationIcon from "@mui/icons-material/EvStation";
 import WarningIcon from "@mui/icons-material/Warning";
 
+/**
+ *
+ * @param {*} number
+ * @param {*} disabled
+ * @param {*} charger
+ * @param {*} available
+ * @param {*} selected
+ * @param {*} onClick,
+ * @returns
+ */
 function ParkingSpot({
   number,
   disabled,

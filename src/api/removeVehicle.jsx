@@ -1,8 +1,8 @@
 import executeRequest from "./executeRequest";
 
 /**
- * @describe Removes a vehicle with the specified ID using the given client
- * @param {Object} client
+ * Removes a vehicle with the specified ID using the given client
+ * @param {Object} client The API client
  * @param {*} vehicleId
  * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
  */

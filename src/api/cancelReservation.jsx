@@ -1,10 +1,10 @@
 import executeRequest from "./executeRequest";
 
 /**
- * @description Cancels a reservation with the specified ID using the given client
- * @param {Object} client
+ * Cancels a reservation with the specified ID using the given client
+ * @param {Object} client The API client
  * @param {string} reservationId
- * @returns {Promise<Object>}
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
  */
 const cancelReservation = async (client, reservationId) => {
   return executeRequest(

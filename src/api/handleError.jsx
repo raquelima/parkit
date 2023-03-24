@@ -1,6 +1,6 @@
 /**
- * @description Handles error that was thrown by an API call.
- * @param {Object} e
+ * Handles error that was thrown by an API call.
+ * @param {Object} e The error object
  * @throws {Error} Throws an error with the same status code as the original error.
  */
 function handleError(e) {

@@ -6,6 +6,13 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 
+/**
+ *
+ * @param {*} handleSaveInput
+ * @param {*} ev
+ * @param {*} handleToggle
+ * @returns
+ */
 function CreateVehicleInput({ handleSaveInput, ev, handleToggle }) {
   const fields = [
     { label: "Manufacture", key: "make" },

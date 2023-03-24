@@ -1,6 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import profileImage from "../assets/profileImage.svg";
 
+/**
+ *
+ * @param {*} user
+ * @param {*} totalVehicles
+ * @param {*} totalReservations
+ * @returns
+ */
 function ProfileDetails({ user, totalVehicles, totalReservations }) {
   const userDetails = [
     { label: "Email", value: user?.email },

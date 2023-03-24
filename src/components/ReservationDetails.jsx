@@ -2,6 +2,17 @@ import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import { format } from "date-fns";
 import car from "../assets/car.svg";
 
+/**
+ *
+ * @param {*} selectedParkingSpot
+ * @param {*} profileUser
+ * @param {*} reservationDate
+ * @param {*} reservationTime
+ * @param {*} vehicles
+ * @param {*} selectedVehicleId
+ * @param {*} handleChange
+ * @returns
+ */
 function ReservationDetails({
   selectedParkingSpot,
   profileUser,

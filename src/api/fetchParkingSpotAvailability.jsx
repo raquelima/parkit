@@ -2,8 +2,8 @@ import format from "date-fns/format";
 import executeRequest from "./executeRequest";
 
 /**
- * @description Fetches available parking spots using specified client, date and full-/half-day specification
- * @param {Object} client
+ * Fetches available parking spots using specified client, date and full-/half-day specification
+ * @param {Object} client The API client
  * @param {Object} date
  * @param {Boolean} halfDay
  * @param {Boolean} am

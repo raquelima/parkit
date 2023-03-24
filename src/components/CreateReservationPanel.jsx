@@ -10,6 +10,22 @@ import fetchUserVehicles from "../api/fetchUserVehicles";
 import createReservation from "../api/createReservation";
 import fetchUser from "../api/fetchUser";
 
+/**
+ *
+ * @param {*} client
+ * @param {*} selectedParkingSpot
+ * @param {*} reservationDate
+ * @param {*} reservationTime
+ * @param {*} halfDay
+ * @param {*} openPanel
+ * @param {*} setOpenPanel
+ * @param {*} setSelectedParkingSpot
+ * @param {*} setError
+ * @param {*} setSuccess
+ * @param {*} handleClickSnack
+ * @param {*} fetchAvailableParkingSpots
+ * @returns
+ */
 function CreateReservationPanel({
   client,
   selectedParkingSpot,

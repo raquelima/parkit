@@ -1,5 +1,10 @@
 import { Box, Typography } from "@mui/material";
 
+/**
+ *
+ * @param {*} selectedVehicle
+ * @returns
+ */
 function VehicleDetails({ selectedVehicle }) {
   const vehicleDetails = [
     {

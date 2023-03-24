@@ -1,10 +1,10 @@
 import { Snackbar, Alert } from "@mui/material";
 /**
  *
- * @param {*} openSnackbar
+ * @param {Boolean} openSnackbar
  * @param {*} setOpenSnackbar
- * @param {*} severity
- * @param {*} message
+ * @param {string} severity
+ * @param {string} message
  * @returns
  */
 function AutoHidingSnackbar({

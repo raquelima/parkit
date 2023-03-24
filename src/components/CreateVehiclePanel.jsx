@@ -6,6 +6,17 @@ import CreateButton from "./CreateButton";
 import Panel from "./Panel";
 import createVehicle from "../api/createVehicle";
 
+/**
+ *
+ * @param {*} client
+ * @param {*} openPanel
+ * @param {*} setOpenPanel
+ * @param {*} fetchVehicles
+ * @param {*} setError
+ * @param {*} setSuccess
+ * @param {*} handleClickSnack
+ * @returns
+ */
 function CreateVehiclePanel({
   client,
   openPanel,

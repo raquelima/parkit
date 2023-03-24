@@ -1,6 +1,13 @@
 import { Box, Button } from "@mui/material";
 import { THEMECOLOR } from "../Constants";
 
+/**
+ *
+ * @param {Function} handleClick
+ * @param {string} btnText
+ * @param {Object} sx
+ * @returns
+ */
 function CreateButton({ handleClick, btnText, sx }) {
   return (
     <Box sx={sx}>
