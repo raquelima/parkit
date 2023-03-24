@@ -19,9 +19,16 @@ function DateTimePicker({
   const buttons = ["AM", "PM", "FD"];
 
   const handleDate = (newDate) => {
-    setDate(newDate);
-    setSelectedParkingSpot(null);
-    setOpenPanel(false);
+    if (today <= newDate && newDate <= maxDate) {
+      setDate(newDate);
+      setSelectedParkingSpot(null);
+      setOpenPanel(false);
+    } else {
+      console.log("he");
+      setDate(today);
+      setSelectedParkingSpot(null);
+      setOpenPanel(false);
+    }
   };
 
   const handleTime = (event, newTime) => {

@@ -156,7 +156,9 @@ function CreateReservationPanel({
           }}
         >
           <img src={car} height="150px" />
-          <Typography>Nr. {selectedParkingSpot?.number}</Typography>
+          <Typography fontWeight="bold">
+            Nr. {selectedParkingSpot?.number}
+          </Typography>
           <Typography>
             {selectedParkingSpot?.charger_available ? "EV " : "Standard "}
             Parking Space
