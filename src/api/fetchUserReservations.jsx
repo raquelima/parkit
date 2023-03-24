@@ -1,6 +1,11 @@
-import filterById from "../utils/filterById";
+import filterByUserId from "../utils/filterByUserId";
 import executeRequest from "./executeRequest";
 
+/**
+ * @description Fetches reservations from logged in user using specified client by reading the user ID from LocalStorage
+ * @param {Object} client
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
+ */
 async function fetchUserReservations(client) {
   const userId = JSON.parse(localStorage.getItem("user")).userId;
 
@@ -9,7 +14,7 @@ async function fetchUserReservations(client) {
     "reservations",
     "listReservations"
   );
-  return filterById(response?.reservations, userId);
+  return filterByUserId(response?.reservations, userId);
 }
 
 export default fetchUserReservations;

@@ -1,3 +1,8 @@
+/**
+ * @description Handles error that was thrown by an API call.
+ * @param {Object} e
+ * @throws {Error} Throws an error with the same status code as the original error.
+ */
 function handleError(e) {
   switch (e.response.status) {
     case 400:

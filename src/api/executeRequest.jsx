@@ -1,5 +1,15 @@
 import handleError from "./handleError";
 
+/**
+ * @describe Executes an API request using specified client, tag, operation, parameters, and options.
+ * @param {Object} client
+ * @param {string} tag
+ * @param {string} operation
+ * @param {Object} parameters
+ * @param {Object} options
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
+ * @throws {Error} Throws an error if the API call fails with a non-successful status code.
+ */
 async function executeRequest(client, tag, operation, parameters, options) {
   if (client?.apis?.[tag]) {
     try {

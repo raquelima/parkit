@@ -1,7 +1,14 @@
 import format from "date-fns/format";
 import executeRequest from "./executeRequest";
-//make api not deliver more than 2 weeks after
-//also delivers parking spots that are set unavailable
+
+/**
+ * @description Fetches available parking spots using specified client, date and full-/half-day specification
+ * @param {Object} client
+ * @param {Object} date
+ * @param {Boolean} halfDay
+ * @param {Boolean} am
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
+ */
 async function fetchParkingSpotAvailability(client, date, halfDay, am) {
   return executeRequest(
     client,
