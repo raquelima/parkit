@@ -130,6 +130,7 @@ api.register({
     const availableParkingSpots = parkingSpots.filter(
       (parkingSpot) =>
         reservations
+          .filter((reservation) => !reservation.cancelled)
           .filter(
             (reservation) => reservation.parking_spot_id === parkingSpot.id
           )
