@@ -7,9 +7,6 @@ import {
   List,
   Divider,
   IconButton,
-  Select,
-  MenuItem,
-  FormControl,
   Button,
   CircularProgress,
 } from "@mui/material";
@@ -19,8 +16,9 @@ import { UserContext } from "../App";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import createReservation from "../api/createReservation";
 import fetchUser from "../api/fetchUser";
-import car from "../assets/car.svg";
 import { THEMECOLOR } from "../Constants";
+import ReservationDetails from "./ReservationDetails";
+import VehicleDetails from "./VehicleDetails";
 
 function CreateReservationPanel({
   client,
@@ -46,48 +44,6 @@ function CreateReservationPanel({
   const selectedVehicle = vehicles?.find(
     (vehicle) => vehicle.id === selectedVehicleId
   );
-
-  const reservationDetails = [
-    {
-      label: "Reserve for",
-      value: profileUser?.first_name + " " + profileUser?.last_name,
-    },
-    {
-      label: "Date",
-      value: format(reservationDate, "dd/MM/yyyy"),
-    },
-    {
-      label: "Duration",
-      value:
-        reservationTime == "AM"
-          ? "AM: 00:00-12:00"
-          : reservationTime == "PM"
-          ? " PM: 12:00-00:00"
-          : "FD: 00:00-00:00",
-    },
-    {
-      label: "Vehicle",
-    },
-  ];
-
-  const vehicleDetails = [
-    {
-      label: "Manufacture",
-      value: selectedVehicle?.make,
-    },
-    {
-      label: "Model",
-      value: selectedVehicle?.model,
-    },
-    {
-      label: "Electric",
-      value: selectedVehicle?.ev ? "Yes" : "No",
-    },
-    {
-      label: "Plate number",
-      value: selectedVehicle?.license_plate_number,
-    },
-  ];
 
   const handleClosePanel = () => {
     setOpenPanel(false);
@@ -184,73 +140,22 @@ function CreateReservationPanel({
             <CloseIcon />
           </IconButton>
         </Toolbar>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            py: 2,
-          }}
-        >
-          <img src={car} height="150px" />
-          <Typography fontWeight="bold" color="text.secondary">
-            Nr. {selectedParkingSpot?.number}
-          </Typography>
-          <Typography color="text.secondary">
-            {selectedParkingSpot?.charger_available ? "EV " : "Standard "}
-            Parking Space
-          </Typography>
-        </Box>
+
         {loading ? (
           <CircularProgress />
         ) : (
           <Box sx={{ px: 3 }}>
-            <Box sx={{ pb: 4 }}>
-              {reservationDetails.map((item) => (
-                <Box key={item.label} sx={{ pt: 1 }}>
-                  <Typography fontWeight="bold" color="text.secondary">
-                    {item.label}
-                  </Typography>
-                  <Typography color="text.secondary">{item.value}</Typography>
-                </Box>
-              ))}
-              <FormControl sx={{ minWidth: 120 }} size="small">
-                {vehicles && (
-                  <Select value={selectedVehicleId} onChange={handleChange}>
-                    {vehicles.map((vehicle) => (
-                      <MenuItem key={vehicle.id} value={vehicle.id}>
-                        {vehicle.make + " " + vehicle.model}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              </FormControl>
-            </Box>
+            <ReservationDetails
+              selectedParkingSpot={selectedParkingSpot}
+              profileUser={profileUser}
+              reservationDate={reservationDate}
+              reservationTime={reservationTime}
+              vehicles={vehicles}
+              selectedVehicleId={selectedVehicleId}
+              handleChange={handleChange}
+            />
             <Divider />
-            <Typography
-              fontWeight="bold"
-              color="text.secondary"
-              sx={{ pt: 4, pb: 1 }}
-            >
-              Details
-            </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "flex-start",
-              }}
-            >
-              {selectedVehicle &&
-                vehicleDetails.map((item) => (
-                  <Box key={item.label} sx={{ pt: 1, pr: 4 }}>
-                    <Typography fontWeight="bold" color="text.secondary">
-                      {item.label}
-                    </Typography>
-                    <Typography color="text.secondary">{item.value}</Typography>
-                  </Box>
-                ))}
-            </Box>
+            <VehicleDetails selectedVehicle={selectedVehicle} />
             <Box sx={{ display: "flex", justifyContent: "center", pt: 7 }}>
               <Button
                 variant="contained"
