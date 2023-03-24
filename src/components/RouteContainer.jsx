@@ -4,6 +4,11 @@ import SideNavBar from "./SideNavBar";
 import AppRoutes from "../routes/AppRoutes";
 import LoginRoutes from "../routes/LoginRoutes";
 
+/**
+ *
+ * @param {*} user
+ * @returns
+ */
 function RouteContainer({ user }) {
   return !user ? (
     <LoginRoutes user={user} />
@@ -11,7 +16,7 @@ function RouteContainer({ user }) {
     <Box sx={{ display: "flex" }}>
       <TopBar userId={user.userId} />
       <SideNavBar />
-      <Box component="main" sx={{ flexGrow: 1, p: 10 }}>
+      <Box component="main" sx={{ flexGrow: 1, px: 9, pt: 10 }}>
         <AppRoutes />
       </Box>
     </Box>

@@ -1,11 +1,16 @@
-import filterById from "../utils/filterById";
+import filterByUserId from "../utils/filterByUserId";
 import executeRequest from "./executeRequest";
 
+/**
+ * Fetches vehicles from logged in user using specified client by reading the user ID from LocalStorage
+ * @param {Object} client The API client
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
+ */
 async function fetchUserVehicles(client) {
   const userId = JSON.parse(localStorage.getItem("user")).userId;
   const response = await executeRequest(client, "vehicles", "listVehicles");
 
-  return filterById(response?.vehicles, userId);
+  return filterByUserId(response?.vehicles, userId);
 }
 
 export default fetchUserVehicles;

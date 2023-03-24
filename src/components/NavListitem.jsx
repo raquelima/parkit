@@ -6,7 +6,15 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function CustomListItem({ to, primary, icon, buttonProps }) {
+/**
+ *
+ * @param {*} to
+ * @param {*} primary
+ * @param {*} icon
+ * @param {*} buttonProps
+ * @returns
+ */
+function NavListitem({ to, primary, icon, buttonProps }) {
   return (
     <ListItem component={Link} to={to} disablePadding>
       <ListItemButton
@@ -30,4 +38,4 @@ function CustomListItem({ to, primary, icon, buttonProps }) {
     </ListItem>
   );
 }
-export default CustomListItem;
+export default NavListitem;

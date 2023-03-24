@@ -6,6 +6,14 @@ import Typography from "@mui/material/Typography";
 import { THEMECOLOR } from "../Constants";
 import { useNavigate } from "react-router-dom";
 
+/**
+ *
+ * @param {*} text
+ * @param {*} number
+ * @param {*} button
+ * @param {*} path
+ * @returns
+ */
 function InfoCard({ text, number, button, path }) {
   const navigate = useNavigate();
 
@@ -14,7 +22,8 @@ function InfoCard({ text, number, button, path }) {
       sx={{
         height: 175,
         width: 330,
-        background: "linear-gradient(rgb(93,121,152,0.5), rgb(198,84,90,1))",
+        background:
+          "linear-gradient(rgb(155,173,192,0.84), rgb(198,84,90,0.84))",
         borderRadius: "21px",
       }}
     >

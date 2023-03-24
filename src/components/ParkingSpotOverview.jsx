@@ -1,7 +1,16 @@
+import { Box, Alert, Typography } from "@mui/material";
 import ParkingSpot from "../components/ParkingSpot";
-import logo from "../assets/adobe.png";
-import { Box, Alert } from "@mui/material";
+import logo from "../assets/adobeLogoLarge.png";
 
+/**
+ *
+ * @param {*} parkingSpots
+ * @param {*} availableParkingSpots
+ * @param {*} selectedParkingSpot
+ * @param {*} setSelectedParkingSpot
+ * @param {*} setOpenPanel
+ * @returns
+ */
 function ParkingSpotOverview({
   parkingSpots,
   availableParkingSpots,
@@ -39,7 +48,7 @@ function ParkingSpotOverview({
         border: 2,
         borderColor: "rgba(112,112,112,0.14)",
         borderRadius: 2,
-        mt: 3,
+        mt: 2,
       }}
     >
       <Box
@@ -54,44 +63,53 @@ function ParkingSpotOverview({
             pt: 4,
           }}
         >
-          <img width="80px" src={logo} />
+          <img width="200px" src={logo} />
         </Box>
         {parkingSpots ? (
-          <Box sx={{ pl: 14, pt: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              {parkingSpots?.slice(0, 2).map((parkingSpot) => (
-                <ParkingSpot
-                  key={parkingSpot.id}
-                  number={parkingSpot.number}
-                  disabled={parkingSpot.unavailable}
-                  charger={parkingSpot.charger_available}
-                  available={checkAvailability(
-                    availableParkingSpots,
-                    parkingSpot.id
-                  )}
-                  selected={isParkingSpotSelected(parkingSpot)}
-                  onClick={() => handleSelect(parkingSpot)}
-                />
-              ))}
+          <Box>
+            <Box sx={{ pl: 12, pt: 5 }}>
+              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                {parkingSpots?.slice(0, 2).map((parkingSpot) => (
+                  <ParkingSpot
+                    key={parkingSpot.id}
+                    number={parkingSpot.number}
+                    disabled={parkingSpot.unavailable}
+                    charger={parkingSpot.charger_available}
+                    available={checkAvailability(
+                      availableParkingSpots,
+                      parkingSpot.id
+                    )}
+                    selected={isParkingSpotSelected(parkingSpot)}
+                    onClick={() => handleSelect(parkingSpot)}
+                  />
+                ))}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "flex-end",
+                }}
+              >
+                {parkingSpots?.slice(2).map((parkingSpot) => (
+                  <ParkingSpot
+                    key={parkingSpot.id}
+                    number={parkingSpot.number}
+                    disabled={parkingSpot.unavailable}
+                    availableParkingSpots={availableParkingSpots}
+                    charger={parkingSpot.charger_available}
+                    available={checkAvailability(
+                      availableParkingSpots,
+                      parkingSpot.id
+                    )}
+                    selected={isParkingSpotSelected(parkingSpot)}
+                    onClick={() => handleSelect(parkingSpot)}
+                  />
+                ))}
+              </Box>
             </Box>
-            <Box
-              sx={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end" }}
-            >
-              {parkingSpots?.slice(2).map((parkingSpot) => (
-                <ParkingSpot
-                  key={parkingSpot.id}
-                  number={parkingSpot.number}
-                  disabled={parkingSpot.unavailable}
-                  availableParkingSpots={availableParkingSpots}
-                  charger={parkingSpot.charger_available}
-                  available={checkAvailability(
-                    availableParkingSpots,
-                    parkingSpot.id
-                  )}
-                  selected={isParkingSpotSelected(parkingSpot)}
-                  onClick={() => handleSelect(parkingSpot)}
-                />
-              ))}
+            <Box sx={{ pl: 2, pt: 11 }}>
+              <Typography>Ground floor</Typography>
             </Box>
           </Box>
         ) : (

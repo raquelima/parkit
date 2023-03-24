@@ -1,31 +1,79 @@
+import { useContext, useState, useEffect } from "react";
 import {
   Box,
   Typography,
   CircularProgress,
-  Button,
   Alert,
+  IconButton,
 } from "@mui/material";
-import { useContext, useState, useEffect } from "react";
-import { SwaggerClientContext } from "../App";
-import Table from "../components/Table";
-import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import fetchUserVehicles from "../api/fetchUserVehicles";
-import { THEMECOLOR } from "../Constants";
+import { SwaggerClientContext, UserContext } from "../App";
+import Table from "../components/Table";
+import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
+import CreateButton from "../components/CreateButton";
 import CreateVehiclePanel from "../components/CreateVehiclePanel";
+import fetchUserVehicles from "../api/fetchUserVehicles";
 import removeVehicle from "../api/removeVehicle";
-import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
+  const setUser = useContext(UserContext);
 
   const [vehicles, setVehicles] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openPanel, setOpenPanel] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
+  };
+
+  const fetchVehicles = () => {
+    fetchUserVehicles(client)
+      .then((result) => {
+        setVehicles(result);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+        if (e.message === "401") {
+          setUser(null);
+        } else if (e.message === "400") {
+          setError("Oops something went wrong");
+          handleClickSnack();
+        } else if (e.message === "500") {
+          setError("Internal Server Error");
+          handleClickSnack();
+        }
+      });
+  };
 
   const handleClick = (id) => {
-    removeVehicle(client, id);
+    removeVehicle(client, id)
+      .then(() => {
+        fetchVehicles();
+        setSuccess("Vehicle was deleted");
+        handleClickSnack();
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+        if (e.message === "401") {
+          setUser(null);
+        } else if (e.message === "409") {
+          setError(
+            "Can't delete vehicle associated to existing reservations. Please cancel these reservations before removing the vehicle"
+          );
+          handleClickSnack();
+        } else if (e.message === "500") {
+          setError("Internal Server Error");
+          handleClickSnack();
+        }
+      });
   };
+
   const vehiclesColumns = [
     {
       field: "make",
@@ -74,14 +122,9 @@ function Vehicles() {
     },
   ];
 
-  useRequestExecutor(
-    client,
-    () => fetchUserVehicles(client),
-    (result) => {
-      setVehicles(result);
-      setLoading(false);
-    }
-  );
+  useEffect(() => {
+    fetchVehicles();
+  }, [client]);
 
   return (
     <Box>
@@ -92,19 +135,18 @@ function Vehicles() {
         }}
       >
         <Typography variant="h6">Your Vehicles</Typography>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: THEMECOLOR,
-            borderRadius: "4px",
-            textTransform: "none",
-          }}
-          onClick={() => setOpenPanel(true)}
-        >
-          Create vehicle +
-        </Button>
-      </Box>
 
+        <CreateButton
+          handleClick={() => setOpenPanel(true)}
+          btnText="Create vehicle +"
+        />
+      </Box>
+      <AutoHidingSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
+      />
       {loading ? (
         <CircularProgress />
       ) : vehicles?.length ? (
@@ -119,7 +161,10 @@ function Vehicles() {
         client={client}
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
+        fetchVehicles={fetchVehicles}
         setError={setError}
+        setSuccess={setSuccess}
+        handleClickSnack={handleClickSnack}
       />
     </Box>
   );

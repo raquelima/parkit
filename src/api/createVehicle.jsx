@@ -1,5 +1,14 @@
 import executeRequest from "./executeRequest";
 
+/**
+ * Creates a vehicle with the specified, client, ev, license plate number, make and model.
+ * @param {Object} client The API client
+ * @param {Boolean} ev
+ * @param {string} licensePlateNumber
+ * @param {string} make
+ * @param {string} model
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
+ */
 async function createVehicle(client, ev, licensePlateNumber, make, model) {
   const userId = JSON.parse(localStorage.getItem("user")).userId;
 

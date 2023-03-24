@@ -1,26 +1,39 @@
-import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
-import { SwaggerClientContext, UserContext } from "../App";
-import Table from "../components/Table";
-import CreateReservationButton from "../components/CreateReservationButton";
-import { format } from "date-fns";
-import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Alert,
+  IconButton,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { format } from "date-fns";
+import { SwaggerClientContext, UserContext } from "../App";
 import StatusChip from "../components/StatusChip";
+import Table from "../components/Table";
+import CreateButton from "../components/CreateButton";
+import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
-import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
+  const setUser = useContext(UserContext);
+
+  const navigate = useNavigate();
+
   const [reservations, setReservations] = useState(null);
   const [parkingSpots, setParkingSpots] = useState(null);
+
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-  //change to use parking spot endpoint
   const getParkingSpotNumber = (id) => {
     return parkingSpots
       ?.filter((parkingSpot) => parkingSpot.id === id)
@@ -29,22 +42,59 @@ function Reservations() {
       });
   };
 
-  const handleClick = (id) => {
-    cancelReservation(client, id).then(() => fetchReservations());
-  };
-
   const getReservationStatus = (reservation) => {
     let status;
     const cancelled = reservation.row.cancelled;
     const startTime = reservation.row.start_time;
+    const endTime = reservation.row.end_time;
 
     cancelled
       ? (status = "cancelled")
       : now < startTime
       ? (status = "upcoming")
+      : now > startTime && now < endTime
+      ? (status = "ongoing")
       : (status = "overdue");
 
     return status;
+  };
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleError = (e) => {
+    setLoading(false);
+    if (e.message === "401") {
+      setUser(null);
+      handleClickSnack();
+    } else if (e.message === "400") {
+      setError("Oops something went wrong");
+      handleClickSnack();
+    } else if (e.message === "500") {
+      setError("Internal Server Error");
+      handleClickSnack();
+    }
+  };
+
+  const fetchReservations = () => {
+    fetchUserReservations(client)
+      .then((result) => {
+        setReservations(result);
+        setLoading(false);
+      })
+      .catch(handleError);
+  };
+
+  const handleClick = (id) => {
+    cancelReservation(client, id)
+      .then(() => {
+        fetchReservations();
+        setError(null);
+        setSuccess("Reservation was cancelled");
+        handleClickSnack();
+      })
+      .catch(handleError);
   };
 
   const reservationsColumns = [
@@ -65,7 +115,7 @@ function Reservations() {
       valueGetter: (reservation) =>
         `${format(new Date(reservation.row.start_time), "HH:mm")} - ${format(
           new Date(reservation.row.end_time),
-          "hh:mm"
+          "HH:mm"
         )}`,
     },
     {
@@ -137,23 +187,15 @@ function Reservations() {
     },
   ];
 
-  useRequestExecutor(
-    client,
-    () => fetchUserReservations(client),
-    (result) => {
-      setReservations(result);
-      setLoading(false);
-    }
-  );
-
-  useRequestExecutor(
-    client,
-    () => fetchParkingSpots(client),
-    (result) => {
-      setParkingSpots(result?.parking_spots);
-      setLoading(false);
-    }
-  );
+  useEffect(() => {
+    fetchReservations();
+    fetchParkingSpots(client)
+      .then((result) => {
+        setParkingSpots(result?.parking_spots);
+        setLoading(false);
+      })
+      .catch(handleError);
+  }, [client]);
 
   return (
     <Box>
@@ -164,8 +206,18 @@ function Reservations() {
         }}
       >
         <Typography variant="h6">Your reservations</Typography>
-        <CreateReservationButton />
+        <CreateButton
+          handleClick={() => navigate("/parking_overview")}
+          btnText="Create reservation +"
+        />
       </Box>
+
+      <AutoHidingSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
+      />
 
       {loading ? (
         <CircularProgress />

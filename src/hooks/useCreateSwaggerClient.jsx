@@ -3,6 +3,11 @@ import SwaggerClient from "swagger-client";
 import { developmentBaseUrl } from "../../mock/conf.js";
 import spec from "@berufsbildung-basel/parkit-spec/api.yml";
 
+/**
+ *
+ * @param {*} user
+ * @returns
+ */
 function useCreateSwaggerClient(user) {
   const [swaggerClient, setSwaggerClient] = useState(null);
 

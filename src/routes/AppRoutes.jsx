@@ -12,6 +12,7 @@ function AppRoutes() {
       <Route path="/reservations" element={<Reservations />} />
       <Route path="/parking_overview" element={<ParkingOverview />} />
       <Route path="/vehicles" element={<Vehicles />} />
+      <Route path="/*" element={<Dashboard />} />
     </Routes>
   );
 }
