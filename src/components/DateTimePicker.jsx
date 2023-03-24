@@ -79,11 +79,11 @@ function DateTimePicker({
           onChange={handleTime}
         >
           {buttons.map((button) => (
-            <Tooltip key={button.label} title={button.tooltip} arrow>
-              <ToggleButton value={button.label} aria-label={button.label}>
-                {button.label}
-              </ToggleButton>
-            </Tooltip>
+            <ToggleButton value={button.label} aria-label={button.label}>
+              <Tooltip key={button.label} title={button.tooltip} arrow>
+                <span>{button.label}</span>
+              </Tooltip>
+            </ToggleButton>
           ))}
         </ToggleButtonGroup>
       </Box>
