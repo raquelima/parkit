@@ -1,5 +1,7 @@
 function handleError(e) {
   switch (e.response.status) {
+    case 400:
+      throw Error(400);
     case 401:
       throw Error(401);
     case 500:
