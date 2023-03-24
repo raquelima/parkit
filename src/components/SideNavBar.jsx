@@ -1,8 +1,8 @@
 import { Drawer, Toolbar, Typography, Divider } from "@mui/material";
-import { DRAWERWIDTH } from "../Constants";
-import { THEMECOLOR } from "../Constants";
 import SideNavBarList from "./SideNavBarList";
 import logo from "../assets/adobe.png";
+import { DRAWERWIDTH } from "../Constants";
+import { THEMECOLOR } from "../Constants";
 
 function SideNavBar() {
   return (

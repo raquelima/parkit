@@ -1,6 +1,6 @@
+import { Box, Alert } from "@mui/material";
 import ParkingSpot from "../components/ParkingSpot";
 import logo from "../assets/adobe.png";
-import { Box, Alert } from "@mui/material";
 
 function ParkingSpotOverview({
   parkingSpots,

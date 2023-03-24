@@ -1,3 +1,4 @@
+import { useState, useContext } from "react";
 import {
   Box,
   Toolbar,
@@ -10,11 +11,10 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import { useState, useContext } from "react";
-import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
-import createVehicle from "../api/createVehicle";
 import { UserContext } from "../App";
+import createVehicle from "../api/createVehicle";
+import { THEMECOLOR } from "../Constants";
 
 function CreateVehiclePanel({
   client,
@@ -26,10 +26,15 @@ function CreateVehiclePanel({
   handleClickSnack,
 }) {
   const setUser = useContext(UserContext);
+
   const [newVehicle, setNewVehicle] = useState({});
   const [ev, setEv] = useState(true);
-  const labels = ["Manufacture", "Model", "Plate number"];
-  const keys = ["make", "model", "licensePlateNumber"];
+
+  const fields = [
+    { label: "Manufacture", key: "make" },
+    { label: "Model", key: "model" },
+    { label: "Plate number", key: "licensePlateNumber" },
+  ];
 
   const handleSaveInput = (event) => {
     setNewVehicle({ ...newVehicle, [event.target.name]: event.target.value });
@@ -56,7 +61,7 @@ function CreateVehiclePanel({
       newVehicle.make,
       newVehicle.model
     )
-      .then((result) => {
+      .then(() => {
         fetchVehicles();
         setSuccess("Vehicle was created");
         handleClickSnack();
@@ -94,7 +99,7 @@ function CreateVehiclePanel({
             justifyContent: "space-between",
           }}
         >
-          <Typography color="white">Create Vehicle</Typography>
+          <Typography color="white">Add Vehicle</Typography>
           <IconButton
             aria-label="close panel"
             onClick={() => setOpenPanel(false)}
@@ -108,12 +113,12 @@ function CreateVehiclePanel({
             <Typography fontWeight="bold" sx={{ pt: 4, pb: 1 }}>
               New vehicle
             </Typography>
-            {labels.map((label, index) => (
-              <Box key={keys[index]} sx={{ pt: 1 }}>
-                <Typography>{label}</Typography>
+            {fields.map((field) => (
+              <Box key={field.key} sx={{ pt: 1 }}>
+                <Typography>{field.label}</Typography>
                 <TextField
                   size="small"
-                  name={keys[index]}
+                  name={field.key}
                   onChange={handleSaveInput}
                   fullWidth
                 />
@@ -128,6 +133,7 @@ function CreateVehiclePanel({
                 exclusive
                 value={ev}
                 onChange={handleToggle}
+                width={""}
               >
                 <ToggleButton value={true} name="ev">
                   Yes

@@ -1,3 +1,4 @@
+import { useState, useContext, useEffect } from "react";
 import {
   IconButton,
   Avatar,
@@ -8,29 +9,38 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
-import { THEMECOLOR } from "../Constants";
-import { DRAWERWIDTH } from "../Constants";
-import profileImage from "../assets/profileImage.svg";
+import { SwaggerClientContext, UserContext } from "../App";
 import ProfilePanel from "./ProfilePanel";
+import CustomSnackbar from "./CustomSnackBar";
 import fetchUser from "../api/fetchUser";
-import { SwaggerClientContext } from "../App";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import fetchUserReservations from "../api/fetchUserReservations";
-import { UserContext } from "../App";
-import CustomSnackbar from "./CustomSnackBar";
+import profileImage from "../assets/profileImage.svg";
+import { THEMECOLOR } from "../Constants";
+import { DRAWERWIDTH } from "../Constants";
 
 function TopBar() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
+
   const [profileUser, setProfileUser] = useState(null);
   const [totalVehicles, setTotalVehicles] = useState(null);
   const [totalReservations, setTotalReservations] = useState(null);
+
   const [anchorEl, setAnchorEl] = useState(null);
-  const [openPanel, setOpenPanel] = useState(false);
   const open = Boolean(anchorEl);
+
+  const [openPanel, setOpenPanel] = useState(false);
+
   const [error, setError] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleClickSnack = () => {
     setOpenSnackbar(true);
@@ -47,13 +57,6 @@ function TopBar() {
       setError("Internal Server Error");
       handleClickSnack();
     }
-  };
-
-  const handleOpenMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   const logout = () => {

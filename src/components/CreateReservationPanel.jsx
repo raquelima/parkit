@@ -1,3 +1,4 @@
+import { useState, useContext, useEffect } from "react";
 import {
   Box,
   Toolbar,
@@ -10,21 +11,22 @@ import {
   MenuItem,
   FormControl,
   Button,
+  CircularProgress,
 } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
-import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
-import car from "../assets/car.svg";
 import { format } from "date-fns";
+import { UserContext } from "../App";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import createReservation from "../api/createReservation";
-import { UserContext } from "../App";
+import fetchUser from "../api/fetchUser";
+import car from "../assets/car.svg";
+import { THEMECOLOR } from "../Constants";
 
 function CreateReservationPanel({
   client,
   selectedParkingSpot,
-  date,
-  time,
+  reservationDate,
+  reservationTime,
   halfDay,
   am,
   openPanel,
@@ -36,22 +38,55 @@ function CreateReservationPanel({
 }) {
   const setUser = useContext(UserContext);
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [profileUser, setProfileUser] = useState("");
+
+  const [loading, setLoading] = useState(true);
   const [vehicles, setVehicles] = useState(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
   const selectedVehicle = vehicles?.find(
     (vehicle) => vehicle.id === selectedVehicleId
   );
 
-  const reservationLabels = ["Reserve for", "Date", "Duration", "Vehicle"];
-  const reservationDetails = [user.username, format(date, "dd/MM/yyyy"), time];
+  const reservationDetails = [
+    {
+      label: "Reserve for",
+      value: profileUser?.first_name + " " + profileUser?.last_name,
+    },
+    {
+      label: "Date",
+      value: format(reservationDate, "dd/MM/yyyy"),
+    },
+    {
+      label: "Duration",
+      value:
+        reservationTime == "AM"
+          ? "AM: 00:00-12:00"
+          : reservationTime == "PM"
+          ? " PM: 12:00-00:00"
+          : "FD: 00:00-00:00",
+    },
+    {
+      label: "Vehicle",
+    },
+  ];
 
-  const vehicleLabels = ["Manufacture", "Model", "Electric", "Plate number"];
   const vehicleDetails = [
-    selectedVehicle?.make,
-    selectedVehicle?.model,
-    selectedVehicle?.ev ? "Yes" : "No",
-    selectedVehicle?.license_plate_number,
+    {
+      label: "Manufacture",
+      value: selectedVehicle?.make,
+    },
+    {
+      label: "Model",
+      value: selectedVehicle?.model,
+    },
+    {
+      label: "Electric",
+      value: selectedVehicle?.ev ? "Yes" : "No",
+    },
+    {
+      label: "Plate number",
+      value: selectedVehicle?.license_plate_number,
+    },
   ];
 
   const handleClosePanel = () => {
@@ -67,9 +102,9 @@ function CreateReservationPanel({
     createReservation(
       client,
       selectedParkingSpot?.id,
-      user.userId,
+      profileUser?.id,
       selectedVehicleId,
-      format(date, "yyyy-MM-dd").toString(),
+      format(reservationDate, "yyyy-MM-dd").toString(),
       halfDay,
       am
     )
@@ -107,10 +142,12 @@ function CreateReservationPanel({
   };
 
   useEffect(() => {
-    fetchUserVehicles(client)
-      .then((result) => {
-        setVehicles(result);
-        setSelectedVehicleId(result[0]?.id);
+    Promise.all([fetchUserVehicles(client), fetchUser(client)])
+      .then(([vehicles, user]) => {
+        setVehicles(vehicles);
+        setSelectedVehicleId(vehicles[0]?.id);
+        setProfileUser(user);
+        setLoading(false);
       })
       .catch(handleError);
   }, [client]);
@@ -156,67 +193,79 @@ function CreateReservationPanel({
           }}
         >
           <img src={car} height="150px" />
-          <Typography fontWeight="bold">
+          <Typography fontWeight="bold" color="text.secondary">
             Nr. {selectedParkingSpot?.number}
           </Typography>
-          <Typography>
+          <Typography color="text.secondary">
             {selectedParkingSpot?.charger_available ? "EV " : "Standard "}
             Parking Space
           </Typography>
         </Box>
-        <Box sx={{ px: 3 }}>
-          <Box sx={{ pb: 4 }}>
-            {reservationLabels.map((label, index) => (
-              <Box key={label} sx={{ pt: 1 }}>
-                <Typography fontWeight="bold">{label}</Typography>
-                <Typography>{reservationDetails[index]}</Typography>
-              </Box>
-            ))}
-            <FormControl sx={{ minWidth: 120 }} size="small">
-              {vehicles && (
-                <Select value={selectedVehicleId} onChange={handleChange}>
-                  {vehicles.map((vehicle) => (
-                    <MenuItem key={vehicle.id} value={vehicle.id}>
-                      {vehicle.make + " " + vehicle.model}
-                    </MenuItem>
-                  ))}
-                </Select>
-              )}
-            </FormControl>
-          </Box>
-          <Divider />
-          <Typography fontWeight="bold" sx={{ pt: 4, pb: 1 }}>
-            Details
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "flex-start",
-            }}
-          >
-            {selectedVehicle &&
-              vehicleLabels.map((label, index) => (
-                <Box key={label} sx={{ pt: 1, pr: 4 }}>
-                  <Typography fontWeight="bold">{label}</Typography>
-                  <Typography>{vehicleDetails[index]}</Typography>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Box sx={{ px: 3 }}>
+            <Box sx={{ pb: 4 }}>
+              {reservationDetails.map((item) => (
+                <Box key={item.label} sx={{ pt: 1 }}>
+                  <Typography fontWeight="bold" color="text.secondary">
+                    {item.label}
+                  </Typography>
+                  <Typography color="text.secondary">{item.value}</Typography>
                 </Box>
               ))}
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "center", pt: 7 }}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: THEMECOLOR,
-                borderRadius: "4px",
-                textTransform: "none",
-              }}
-              onClick={() => handleClick()}
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                {vehicles && (
+                  <Select value={selectedVehicleId} onChange={handleChange}>
+                    {vehicles.map((vehicle) => (
+                      <MenuItem key={vehicle.id} value={vehicle.id}>
+                        {vehicle.make + " " + vehicle.model}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </FormControl>
+            </Box>
+            <Divider />
+            <Typography
+              fontWeight="bold"
+              color="text.secondary"
+              sx={{ pt: 4, pb: 1 }}
             >
-              Reserve Space
-            </Button>
+              Details
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+              }}
+            >
+              {selectedVehicle &&
+                vehicleDetails.map((item) => (
+                  <Box key={item.label} sx={{ pt: 1, pr: 4 }}>
+                    <Typography fontWeight="bold" color="text.secondary">
+                      {item.label}
+                    </Typography>
+                    <Typography color="text.secondary">{item.value}</Typography>
+                  </Box>
+                ))}
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "center", pt: 7 }}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: THEMECOLOR,
+                  borderRadius: "4px",
+                  textTransform: "none",
+                }}
+                onClick={() => handleClick()}
+              >
+                Reserve Space
+              </Button>
+            </Box>
           </Box>
-        </Box>
+        )}
       </List>
     </Drawer>
   );

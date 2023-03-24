@@ -6,9 +6,9 @@ import {
   List,
   IconButton,
 } from "@mui/material";
-import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import profileImage from "../assets/profileImage.svg";
+import { THEMECOLOR } from "../Constants";
 
 function ProfilePanel({
   user,
@@ -17,17 +17,16 @@ function ProfilePanel({
   openPanel,
   setOpenPanel,
 }) {
-  const profileLabels = ["Email", "Username", "Preferred language"];
-
   const profileDetails = [
-    user?.email,
-    user?.username,
-    user?.preferred_language,
+    { label: "Email", value: user?.email },
+    { label: "Username", value: user?.username },
+    { label: "Preferred language", value: user?.preferred_language },
   ];
 
-  const totalLabels = ["Total vehicles:", "Total reservations:"];
-
-  const totalDetails = [totalVehicles, totalReservations];
+  const totalDetails = [
+    { label: "Total vehicles:", value: totalVehicles },
+    { label: "Total reservations:", value: totalReservations },
+  ];
 
   const handleClosePanel = () => {
     setOpenPanel(false);
@@ -80,18 +79,18 @@ function ProfilePanel({
         </Box>
         <Box sx={{ px: 3 }}>
           <Box sx={{ pb: 4 }}>
-            {profileLabels.map((label, index) => (
-              <Box key={label} sx={{ pt: 1 }}>
-                <Typography fontWeight="bold">{label}</Typography>
-                <Typography>{profileDetails[index]}</Typography>
+            {profileDetails.map((item) => (
+              <Box key={item.label} sx={{ pt: 1 }}>
+                <Typography fontWeight="bold">{item.label}</Typography>
+                <Typography>{item.value}</Typography>
               </Box>
             ))}
-            {totalLabels.map((label, index) => (
-              <Box key={label} sx={{ pt: 1, display: "flex" }}>
+            {totalDetails.map((item) => (
+              <Box key={item.label} sx={{ pt: 1, display: "flex" }}>
                 <Typography fontWeight="bold" sx={{ pr: 1 }}>
-                  {label}
+                  {item.label}
                 </Typography>
-                <Typography>{totalDetails[index]}</Typography>
+                <Typography>{item.value}</Typography>
               </Box>
             ))}
           </Box>
