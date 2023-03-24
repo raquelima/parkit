@@ -23,6 +23,7 @@ function CreateReservationPanel({
   setError,
   setSuccess,
   handleClickSnack,
+  fetchAvailableParkingSpots,
 }) {
   const setUser = useContext(UserContext);
 
@@ -55,6 +56,8 @@ function CreateReservationPanel({
       am
     )
       .then(() => {
+        fetchAvailableParkingSpots();
+        setSelectedParkingSpot();
         setSuccess("Reservation was created");
         handleClickSnack();
         setOpenPanel(false);

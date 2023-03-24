@@ -48,6 +48,15 @@ function ParkingOverview() {
     }
   };
 
+  const fetchAvailableParkingSpots = () => {
+    fetchParkingSpotAvailability(client, reservationDate, halfDay, am)
+      .then((result) => {
+        setAvailableParkingSpots(result?.available_parking_spots);
+        setLoading(false);
+      })
+      .catch(handleError);
+  };
+
   useEffect(() => {
     Promise.all([
       fetchParkingSpots(client),
@@ -106,6 +115,7 @@ function ParkingOverview() {
         setError={setError}
         setSuccess={setSuccess}
         handleClickSnack={handleClickSnack}
+        fetchAvailableParkingSpots={fetchAvailableParkingSpots}
       />
       <CustomSnackbar
         openSnackbar={openSnackbar}
