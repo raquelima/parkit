@@ -63,7 +63,9 @@ function Vehicles() {
         if (e.message === "401") {
           setUser(null);
         } else if (e.message === "409") {
-          setError("Can't delete vehicle associated to existing reservations");
+          setError(
+            "Can't delete vehicle associated to existing reservations. Please cancel these reservations before removing the vehicle"
+          );
           handleClickSnack();
         } else if (e.message === "500") {
           setError("Internal Server Error");

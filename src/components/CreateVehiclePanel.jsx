@@ -34,7 +34,9 @@ function CreateVehiclePanel({
       setUser(null);
       handleClickSnack();
     } else if (e.message === "409") {
-      setError("Vehicle with the same plate number already exists");
+      setError(
+        "Vehicle with the same plate number already exists. Please enter a different plate number or remove the vehicle."
+      );
       handleClickSnack();
     } else if (e.message === "500") {
       setError("Internal Server Error");

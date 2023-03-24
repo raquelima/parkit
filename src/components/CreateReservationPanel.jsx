@@ -67,7 +67,9 @@ function CreateReservationPanel({
           setUser(null);
           handleClickSnack();
         } else if (e.message === "409") {
-          setError("Conflict");
+          setError(
+            "Could not create reservation. The reservation you want to create conflicts with an existing reservation. Select a different parking spot or date/time"
+          );
           handleClickSnack();
         } else if (e.message === "500") {
           setError("Internal Server Error");
