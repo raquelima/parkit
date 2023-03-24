@@ -113,7 +113,11 @@ function CreateReservationPanel({
           />
           <Divider />
           <VehicleDetails selectedVehicle={selectedVehicle} />
-          <CreateButton handleClick={handleClick} text="Reserve Space" />
+          <CreateButton
+            handleClick={handleClick}
+            btnText="Reserve Space"
+            sx={{ display: "flex", justifyContent: "center", pt: 7 }}
+          />
         </Box>
       }
       headerTitle="Create Reservation"

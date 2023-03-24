@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -11,7 +12,7 @@ import { format } from "date-fns";
 import { SwaggerClientContext, UserContext } from "../App";
 import StatusChip from "../components/StatusChip";
 import Table from "../components/Table";
-import CreateReservationButton from "../components/CreateReservationButton";
+import CreateButton from "../components/CreateButton";
 import CustomSnackbar from "../components/CustomSnackBar";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
@@ -20,6 +21,8 @@ import fetchParkingSpots from "../api/fetchParkingSpots";
 function Reservations() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const [reservations, setReservations] = useState(null);
   const [parkingSpots, setParkingSpots] = useState(null);
@@ -200,7 +203,10 @@ function Reservations() {
         }}
       >
         <Typography variant="h6">Your reservations</Typography>
-        <CreateReservationButton />
+        <CreateButton
+          handleClick={() => navigate("/parking_overview")}
+          btnText="Create reservation +"
+        />
       </Box>
 
       <CustomSnackbar

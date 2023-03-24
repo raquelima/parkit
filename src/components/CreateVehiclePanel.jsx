@@ -75,7 +75,11 @@ function CreateVehiclePanel({
             ev={ev}
             handleToggle={handleToggle}
           />
-          <CreateButton handleClick={handleClick} text="Add vehicle" />
+          <CreateButton
+            handleClick={handleClick}
+            btnText="Add vehicle"
+            sx={{ display: "flex", justifyContent: "center", pt: 7 }}
+          />
         </Box>
       }
       headerTitle="Create Vehicle"

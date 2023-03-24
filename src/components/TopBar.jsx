@@ -15,7 +15,6 @@ import CustomSnackbar from "./CustomSnackBar";
 import fetchUser from "../api/fetchUser";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import fetchUserReservations from "../api/fetchUserReservations";
-import profileImage from "../assets/profileImage.svg";
 import { THEMECOLOR } from "../Constants";
 import { DRAWERWIDTH } from "../Constants";
 import AvatarMenu from "./AvatarMenu";

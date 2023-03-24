@@ -1,9 +1,9 @@
 import { Box, Button } from "@mui/material";
 import { THEMECOLOR } from "../Constants";
 
-function CreateButton({ handleClick, text }) {
+function CreateButton({ handleClick, btnText, sx }) {
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", pt: 7 }}>
+    <Box sx={sx}>
       <Button
         variant="contained"
         sx={{
@@ -11,9 +11,9 @@ function CreateButton({ handleClick, text }) {
           borderRadius: "4px",
           textTransform: "none",
         }}
-        onClick={() => handleClick()}
+        onClick={handleClick}
       >
-        {text}
+        {btnText}
       </Button>
     </Box>
   );

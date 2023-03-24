@@ -1,21 +1,19 @@
+import { useContext, useState, useEffect } from "react";
 import {
   Box,
   Typography,
   CircularProgress,
-  Button,
   Alert,
+  IconButton,
 } from "@mui/material";
-import { useContext, useState, useEffect } from "react";
-import { SwaggerClientContext } from "../App";
-import Table from "../components/Table";
-import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import fetchUserVehicles from "../api/fetchUserVehicles";
-import { THEMECOLOR } from "../Constants";
-import CreateVehiclePanel from "../components/CreateVehiclePanel";
-import removeVehicle from "../api/removeVehicle";
-import { UserContext } from "../App";
+import { SwaggerClientContext, UserContext } from "../App";
+import Table from "../components/Table";
 import CustomSnackbar from "../components/CustomSnackBar";
+import CreateButton from "../components/CreateButton";
+import CreateVehiclePanel from "../components/CreateVehiclePanel";
+import fetchUserVehicles from "../api/fetchUserVehicles";
+import removeVehicle from "../api/removeVehicle";
 
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
@@ -135,17 +133,11 @@ function Vehicles() {
         }}
       >
         <Typography variant="h6">Your Vehicles</Typography>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: THEMECOLOR,
-            borderRadius: "4px",
-            textTransform: "none",
-          }}
-          onClick={() => setOpenPanel(true)}
-        >
-          Create vehicle +
-        </Button>
+
+        <CreateButton
+          handleClick={() => setOpenPanel(true)}
+          btnText="Create vehicle +"
+        />
       </Box>
       <CustomSnackbar
         openSnackbar={openSnackbar}

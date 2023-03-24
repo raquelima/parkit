@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Grid,
   Box,
@@ -12,8 +13,8 @@ import { format } from "date-fns";
 import { SwaggerClientContext } from "../App";
 import InfoCard from "../components/InfoCard";
 import Table from "../components/Table";
+import CreateButton from "../components/CreateButton";
 import CustomSnackbar from "../components/CustomSnackBar";
-import CreateReservationButton from "../components/CreateReservationButton";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
@@ -21,6 +22,8 @@ import filterUpcomingReservations from "../utils/filterUpcomingReservations";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
+
+  const navigate = useNavigate();
 
   const today = new Date();
   const am = format(today, "a") == "AM" ? true : false;
@@ -178,7 +181,10 @@ function Dashboard() {
         <Typography gutterBottom variant="h6" component="div">
           Information
         </Typography>
-        <CreateReservationButton />
+        <CreateButton
+          handleClick={() => navigate("/parking_overview")}
+          btnText="Create reservation +"
+        />
       </Box>
       <Grid container>
         <Grid container justifyContent="space-between">
