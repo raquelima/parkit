@@ -1,26 +1,57 @@
-import { Box, Typography, CircularProgress, Alert } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Alert,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { format } from "date-fns";
 import { SwaggerClientContext, UserContext } from "../App";
+import StatusChip from "../components/StatusChip";
 import Table from "../components/Table";
 import CreateReservationButton from "../components/CreateReservationButton";
-import { format } from "date-fns";
-import { IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import StatusChip from "../components/StatusChip";
+import CustomSnackbar from "../components/CustomSnackBar";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
-import CustomSnackbar from "../components/CustomSnackBar";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
+
   const [reservations, setReservations] = useState(null);
   const [parkingSpots, setParkingSpots] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+  const getParkingSpotNumber = (id) => {
+    return parkingSpots
+      ?.filter((parkingSpot) => parkingSpot.id === id)
+      .map((parkingSpot) => {
+        return parkingSpot.number;
+      });
+  };
+
+  const getReservationStatus = (reservation) => {
+    let status;
+    const cancelled = reservation.row.cancelled;
+    const startTime = reservation.row.start_time;
+
+    cancelled
+      ? (status = "cancelled")
+      : now < startTime
+      ? (status = "upcoming")
+      : (status = "overdue");
+
+    return status;
+  };
 
   const handleClickSnack = () => {
     setOpenSnackbar(true);
@@ -40,8 +71,6 @@ function Reservations() {
     }
   };
 
-  const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
   const fetchReservations = () => {
     fetchUserReservations(client)
       .then((result) => {
@@ -49,15 +78,6 @@ function Reservations() {
         setLoading(false);
       })
       .catch(handleError);
-  };
-
-  //change to use parking spot endpoint
-  const getParkingSpotNumber = (id) => {
-    return parkingSpots
-      ?.filter((parkingSpot) => parkingSpot.id === id)
-      .map((parkingSpot) => {
-        return parkingSpot.number;
-      });
   };
 
   const handleClick = (id) => {
@@ -68,20 +88,6 @@ function Reservations() {
         handleClickSnack();
       })
       .catch(handleError);
-  };
-
-  const getReservationStatus = (reservation) => {
-    let status;
-    const cancelled = reservation.row.cancelled;
-    const startTime = reservation.row.start_time;
-
-    cancelled
-      ? (status = "cancelled")
-      : now < startTime
-      ? (status = "upcoming")
-      : (status = "overdue");
-
-    return status;
   };
 
   const reservationsColumns = [

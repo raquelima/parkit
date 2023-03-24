@@ -1,4 +1,10 @@
-import { Box, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import {
+  Box,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -51,10 +57,12 @@ function DateTimePicker({
   return (
     <Box display="flex" justifyItems="center">
       <Box display="inline-grid" justifyItems="center" margin="0 auto">
+        <Typography variant="subtitle2" color="text.secondary">
+          Select a date and time
+        </Typography>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             sx={{ mt: 1 }}
-            label="Date"
             format="dd/MM/yyyy"
             disablePast={true}
             maxDate={maxDate}

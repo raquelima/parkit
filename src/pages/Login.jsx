@@ -1,22 +1,19 @@
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { TextField, Button, Box } from "@mui/material";
-import { THEMECOLOR } from "../Constants";
-import logo from "../assets/adobe.png";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { TextField, Button, Box, Typography, Container } from "@mui/material";
+
 import { UserContext } from "../App";
 import CustomSnackbar from "../components/CustomSnackBar";
+import logo from "../assets/adobeLogoSmall.png";
+import { THEMECOLOR } from "../Constants";
 
 function Login({ user }) {
   const navigate = useNavigate();
+
   const setUser = useContext(UserContext);
+
   const [error, setError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
-
-  const handleClickSnack = () => {
-    setOpenSnackbar(true);
-  };
 
   const [userInput, setUserInput] = useState({
     userId: "dGVzdEBhZG9iZS5jb20=",
@@ -24,6 +21,10 @@ function Login({ user }) {
 
   const handleSaveCredentials = (event) => {
     setUserInput({ ...userInput, [event.target.name]: event.target.value });
+  };
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
   };
 
   const handleSubmit = (event) => {
@@ -91,7 +92,10 @@ function Login({ user }) {
                 width: { md: 230 },
                 mt: 2,
               }}
-              InputLabelProps={{ style: { fontSize: 15, padding: 0 } }}
+              InputLabelProps={{
+                style: { fontSize: 15, padding: 0 },
+                required: false,
+              }}
               inputProps={{
                 style: {
                   padding: 0,
@@ -109,7 +113,10 @@ function Login({ user }) {
                 width: { md: 230 },
                 mt: 1,
               }}
-              InputLabelProps={{ style: { fontSize: 15, padding: 0 } }}
+              InputLabelProps={{
+                style: { fontSize: 15, padding: 0 },
+                required: false,
+              }}
               inputProps={{
                 style: {
                   padding: 0,

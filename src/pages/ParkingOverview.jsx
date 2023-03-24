@@ -1,26 +1,30 @@
-import { Box, CircularProgress } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
-import fetchParkingSpots from "../api/fetchParkingSpots";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { SwaggerClientContext, UserContext } from "../App";
 import CreateReservationPanel from "../components/CreateReservationPanel";
 import DateTimePicker from "../components/DateTimePicker";
 import ParkingSpotOverview from "../components/ParkingSpotOverview";
 import CustomSnackbar from "../components/CustomSnackBar";
+import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
+import fetchParkingSpots from "../api/fetchParkingSpots";
+import { THEMECOLOR } from "../Constants";
 
 function ParkingOverview() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
 
   const today = new Date();
-  const [date, setDate] = useState(today);
-  const [time, setTime] = useState("AM");
-  const halfDay = time === "AM" || time === "PM" ? true : false;
-  const am = time === "AM" ? true : false;
+  const [reservationDate, setReservationDate] = useState(today);
+  const [reservationTime, setReservationTime] = useState("AM");
+  const halfDay =
+    reservationTime === "AM" || reservationTime === "PM" ? true : false;
+  const am = reservationTime === "AM" ? true : false;
 
   const [parkingSpots, setParkingSpots] = useState(null);
   const [availableParkingSpots, setAvailableParkingSpots] = useState(null);
   const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
+
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [openPanel, setOpenPanel] = useState(false);
@@ -44,12 +48,10 @@ function ParkingOverview() {
     }
   };
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     Promise.all([
       fetchParkingSpots(client),
-      fetchParkingSpotAvailability(client, date, halfDay, am),
+      fetchParkingSpotAvailability(client, reservationDate, halfDay, am),
     ])
       .then(([parkingSpotsResult, availableParkingSpotsResult]) => {
         setParkingSpots(parkingSpotsResult?.parking_spots);
@@ -59,16 +61,16 @@ function ParkingOverview() {
         setLoading(false);
       })
       .catch(handleError);
-  }, [client, date, time]);
+  }, [client, reservationDate, reservationTime]);
 
   return (
     <Box overflow="hidden">
       <DateTimePicker
         today={today}
-        date={date}
-        time={time}
-        setDate={setDate}
-        setTime={setTime}
+        reservationDate={reservationDate}
+        reservationTime={reservationTime}
+        setReservationDate={setReservationDate}
+        setReservationTime={setReservationTime}
         setSelectedParkingSpot={setSelectedParkingSpot}
         setOpenPanel={setOpenPanel}
         setError={setError}
@@ -77,20 +79,25 @@ function ParkingOverview() {
       {loading ? (
         <CircularProgress />
       ) : (
-        <ParkingSpotOverview
-          parkingSpots={parkingSpots}
-          availableParkingSpots={availableParkingSpots}
-          selectedParkingSpot={selectedParkingSpot}
-          setSelectedParkingSpot={setSelectedParkingSpot}
-          setOpenPanel={setOpenPanel}
-        />
+        <Box>
+          <Typography fontWeight="bold" color={THEMECOLOR}>
+            Parking Overview
+          </Typography>
+          <ParkingSpotOverview
+            parkingSpots={parkingSpots}
+            availableParkingSpots={availableParkingSpots}
+            selectedParkingSpot={selectedParkingSpot}
+            setSelectedParkingSpot={setSelectedParkingSpot}
+            setOpenPanel={setOpenPanel}
+          />
+        </Box>
       )}
 
       <CreateReservationPanel
         client={client}
         selectedParkingSpot={selectedParkingSpot}
-        date={date}
-        time={time}
+        reservationDate={reservationDate}
+        reservationTime={reservationTime}
         halfDay={halfDay}
         am={am}
         openPanel={openPanel}

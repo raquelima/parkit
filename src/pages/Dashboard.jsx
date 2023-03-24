@@ -1,3 +1,4 @@
+import { useContext, useState, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -7,27 +8,54 @@ import {
   Alert,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { format } from "date-fns";
+import { SwaggerClientContext } from "../App";
 import InfoCard from "../components/InfoCard";
 import Table from "../components/Table";
+import CustomSnackbar from "../components/CustomSnackBar";
 import CreateReservationButton from "../components/CreateReservationButton";
-import { format } from "date-fns";
-import { useContext, useState, useEffect } from "react";
 import fetchUserReservations from "../api/fetchUserReservations";
-import { SwaggerClientContext } from "../App";
-import filterUpcoming from "../utils/filterUpcoming";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
-import CustomSnackbar from "../components/CustomSnackBar";
+import filterUpcomingReservations from "../utils/filterUpcomingReservations";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
 
+  const today = new Date();
+  const am = format(today, "a") == "AM" ? true : false;
+
   const [reservations, setReservations] = useState(null);
-  const [available, setAvailable] = useState(null);
+  const [availableParkingSpots, setAvailableParkingSpots] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const upcomingReservations = filterUpcomingReservations(reservations);
+  const totalReservations = reservations?.length;
+  const upcomingReservationTotal = upcomingReservations?.length;
+  const availableParkingSpotsTotal = availableParkingSpots?.length;
+
+  const infoCards = [
+    {
+      label: "Available parking spaces",
+      value: availableParkingSpotsTotal,
+      path: "/parking_overview",
+      button: "See overview",
+    },
+    {
+      label: "Upcoming reservations",
+      value: upcomingReservationTotal,
+      path: "/reservations",
+      button: "See reservations",
+    },
+    {
+      label: "Total reservations",
+      value: totalReservations,
+    },
+  ];
 
   const handleClickSnack = () => {
     setOpenSnackbar(true);
@@ -45,27 +73,6 @@ function Dashboard() {
       handleClickSnack();
     }
   };
-
-  const today = new Date();
-  const am = format(today, "a") == "AM" ? true : false;
-
-  const upcomingReservations = filterUpcoming(reservations);
-  const totalReservations = reservations?.length;
-  const upcomingReservationTotal = upcomingReservations?.length;
-  const availableParkingSpotsTotal = available?.length;
-
-  const infoCardsText = [
-    "Available parking spaces",
-    "Upcoming reservations",
-    "Total reservations",
-  ];
-  const infoCardsNumbers = [
-    availableParkingSpotsTotal,
-    upcomingReservationTotal,
-    totalReservations,
-  ];
-  const infoCardsPaths = ["/parking_overview", "/reservations"];
-  const infoCardsButtons = ["See overview", "See reservations"];
 
   const fetchReservations = () => {
     fetchUserReservations(client)
@@ -87,7 +94,7 @@ function Dashboard() {
       .catch(handleError);
   };
 
-  const filterAvailable = (parkingSpots) => {
+  const filterAvailableParkingSpots = (parkingSpots) => {
     return parkingSpots?.filter((parkingSpot) => !parkingSpot.unavailable);
   };
 
@@ -151,7 +158,7 @@ function Dashboard() {
     fetchReservations();
     fetchParkingSpotAvailability(client, today, true, am)
       .then((result) => {
-        setAvailable(
+        setAvailableParkingSpots(
           filterAvailableParkingSpots(result?.available_parking_spots)
         );
         setLoading(false);
@@ -169,19 +176,19 @@ function Dashboard() {
       />
       <Box sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}>
         <Typography gutterBottom variant="h6" component="div">
-          Today's information
+          Information
         </Typography>
         <CreateReservationButton />
       </Box>
       <Grid container>
         <Grid container justifyContent="space-between">
-          {infoCardsText.map((text, index) => (
-            <Grid key={text} item>
+          {infoCards.map((card) => (
+            <Grid key={card.label} item>
               <InfoCard
-                text={text}
-                number={infoCardsNumbers[index]}
-                button={infoCardsButtons[index]}
-                path={infoCardsPaths[index]}
+                text={card.label}
+                number={card.value}
+                button={card.button}
+                path={card.path}
               />
             </Grid>
           ))}

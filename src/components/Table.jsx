@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 function Table({ data, columns }) {
   return (
-    <Box sx={{ height: 400, width: "100%", pt: 2 }}>
+    <Box sx={{ height: "80vh", width: "100%", pt: 2 }}>
       <DataGrid
         sx={{
           border: 0,

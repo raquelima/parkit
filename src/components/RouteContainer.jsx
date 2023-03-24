@@ -11,7 +11,7 @@ function RouteContainer({ user }) {
     <Box sx={{ display: "flex" }}>
       <TopBar userId={user.userId} />
       <SideNavBar />
-      <Box component="main" sx={{ flexGrow: 1, p: 10 }}>
+      <Box component="main" sx={{ flexGrow: 1, px: 9, pt: 10 }}>
         <AppRoutes />
       </Box>
     </Box>
