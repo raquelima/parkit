@@ -9,6 +9,10 @@ const statuschips = {
     color: "#67CEAD",
     backgroundColor: "#E5F8F2",
   },
+  ongoing: {
+    color: "#30689C",
+    backgroundColor: "#ADE5FF",
+  },
   overdue: {
     color: "#F7C692",
     backgroundColor: "rgba(252,233,212,0.86)",

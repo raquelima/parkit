@@ -46,11 +46,14 @@ function Reservations() {
     let status;
     const cancelled = reservation.row.cancelled;
     const startTime = reservation.row.start_time;
+    const endTime = reservation.row.end_time;
 
     cancelled
       ? (status = "cancelled")
       : now < startTime
       ? (status = "upcoming")
+      : now > startTime && now < endTime
+      ? (status = "ongoing")
       : (status = "overdue");
 
     return status;
