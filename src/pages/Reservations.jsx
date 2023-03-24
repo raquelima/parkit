@@ -112,7 +112,7 @@ function Reservations() {
       valueGetter: (reservation) =>
         `${format(new Date(reservation.row.start_time), "HH:mm")} - ${format(
           new Date(reservation.row.end_time),
-          "hh:mm"
+          "HH:mm"
         )}`,
     },
     {

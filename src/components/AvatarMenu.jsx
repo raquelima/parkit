@@ -9,6 +9,17 @@ import {
 } from "@mui/material";
 import profileImage from "../assets/profileImage.svg";
 
+/**
+ * @description
+ * @param {Object} profileUser
+ * @param {Function} handleOpenMenu
+ * @param {Object} open
+ * @param {Object} anchorEl
+ * @param {Function} handleClose
+ * @param {Function} setOpenPanel
+ * @param {Object} logout
+ * @returns {JSX.Element}
+ */
 function AvatarMenu({
   profileUser,
   handleOpenMenu,
