@@ -10,6 +10,7 @@ import StatusChip from "../components/StatusChip";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
+import CustomSnackbar from "../components/CustomSnackBar";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
@@ -17,6 +18,27 @@ function Reservations() {
   const [reservations, setReservations] = useState(null);
   const [parkingSpots, setParkingSpots] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleError = (e) => {
+    setLoading(false);
+    if (e.message === "401") {
+      setUser(null);
+      handleClickSnack();
+    } else if (e.message === "400") {
+      setError("Oops something went wrong");
+      handleClickSnack();
+    } else if (e.message === "500") {
+      setError("Internal Server Error");
+      handleClickSnack();
+    }
+  };
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
@@ -26,15 +48,7 @@ function Reservations() {
         setReservations(result);
         setLoading(false);
       })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
+      .catch(handleError);
   };
 
   //change to use parking spot endpoint
@@ -47,7 +61,13 @@ function Reservations() {
   };
 
   const handleClick = (id) => {
-    cancelReservation(client, id).then(() => fetchReservations());
+    cancelReservation(client, id)
+      .then(() => {
+        fetchReservations();
+        setSuccess("Reservation was cancelled");
+        handleClickSnack();
+      })
+      .catch(handleError);
   };
 
   const getReservationStatus = (reservation) => {
@@ -158,18 +178,10 @@ function Reservations() {
     fetchReservations();
     fetchParkingSpots(client)
       .then((result) => {
-        setParkingSpots(result?.parkingSpots);
-        setLoading(result?.loading);
+        setParkingSpots(result?.parking_spots);
+        setLoading(false);
       })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
+      .catch(handleError);
   }, [client]);
 
   return (
@@ -183,6 +195,13 @@ function Reservations() {
         <Typography variant="h6">Your reservations</Typography>
         <CreateReservationButton />
       </Box>
+
+      <CustomSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
+      />
 
       {loading ? (
         <CircularProgress />

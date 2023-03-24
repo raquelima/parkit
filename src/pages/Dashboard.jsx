@@ -17,6 +17,7 @@ import { SwaggerClientContext } from "../App";
 import filterUpcoming from "../utils/filterUpcoming";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
+import CustomSnackbar from "../components/CustomSnackBar";
 
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
@@ -24,6 +25,26 @@ function Dashboard() {
   const [reservations, setReservations] = useState(null);
   const [available, setAvailable] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleError = (e) => {
+    setLoading(false);
+    if (e.message === "401") {
+      setUser(null);
+    } else if (e.message === "400") {
+      setError("Oops something went wrong");
+      handleClickSnack();
+    } else if (e.message === "500") {
+      setError("Internal Server Error");
+      handleClickSnack();
+    }
+  };
 
   const today = new Date();
   const am = format(today, "a") == "AM" ? true : false;
@@ -52,19 +73,18 @@ function Dashboard() {
         setReservations(result);
         setLoading(false);
       })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
+      .catch(handleError);
   };
 
   const handleClick = (id) => {
-    cancelReservation(client, id).then(() => fetchReservations());
+    cancelReservation(client, id)
+      .then(() => {
+        fetchReservations();
+        setSuccess("Reservation was cancelled");
+        handleClickSnack();
+        setLoading(false);
+      })
+      .catch(handleError);
   };
 
   const filterAvailable = (parkingSpots) => {
@@ -131,22 +151,22 @@ function Dashboard() {
     fetchReservations();
     fetchParkingSpotAvailability(client, today, true, am)
       .then((result) => {
-        setAvailable(filterAvailable(result?.available_parking_spots));
+        setAvailable(
+          filterAvailableParkingSpots(result?.available_parking_spots)
+        );
         setLoading(false);
       })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
+      .catch(handleError);
   }, [client]);
 
   return (
     <Box>
+      <CustomSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
+      />
       <Box sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}>
         <Typography gutterBottom variant="h6" component="div">
           Today's information

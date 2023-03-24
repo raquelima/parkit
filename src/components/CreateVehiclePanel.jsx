@@ -21,6 +21,9 @@ function CreateVehiclePanel({
   openPanel,
   setOpenPanel,
   fetchVehicles,
+  setError,
+  setSuccess,
+  handleClickSnack,
 }) {
   const setUser = useContext(UserContext);
   const [newVehicle, setNewVehicle] = useState({});
@@ -30,6 +33,19 @@ function CreateVehiclePanel({
 
   const handleSaveInput = (event) => {
     setNewVehicle({ ...newVehicle, [event.target.name]: event.target.value });
+  };
+
+  const handleError = (e) => {
+    if (e.message === "401") {
+      setUser(null);
+      handleClickSnack();
+    } else if (e.message === "409") {
+      setError("Vehicle with the same plate number already exists");
+      handleClickSnack();
+    } else if (e.message === "500") {
+      setError("Internal Server Error");
+      handleClickSnack();
+    }
   };
 
   const handleClick = () => {
@@ -42,15 +58,11 @@ function CreateVehiclePanel({
     )
       .then((result) => {
         fetchVehicles();
+        setSuccess("Vehicle was created");
+        handleClickSnack();
         setOpenPanel(false);
       })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-      });
+      .catch(handleError);
   };
 
   const handleToggle = (event, toggle) => {

@@ -15,6 +15,7 @@ import { THEMECOLOR } from "../Constants";
 import CreateVehiclePanel from "../components/CreateVehiclePanel";
 import removeVehicle from "../api/removeVehicle";
 import { UserContext } from "../App";
+import CustomSnackbar from "../components/CustomSnackBar";
 
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
@@ -23,6 +24,13 @@ function Vehicles() {
   const [vehicles, setVehicles] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openPanel, setOpenPanel] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
+  };
 
   const fetchVehicles = () => {
     fetchUserVehicles(client)
@@ -31,18 +39,39 @@ function Vehicles() {
         setLoading(false);
       })
       .catch((e) => {
+        setLoading(false);
         if (e.message === "401") {
           setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
+        } else if (e.message === "400") {
+          setError("Oops something went wrong");
+          handleClickSnack();
+        } else if (e.message === "500") {
+          setError("Internal Server Error");
+          handleClickSnack();
         }
       });
   };
 
   const handleClick = (id) => {
-    removeVehicle(client, id).then(() => fetchVehicles());
+    removeVehicle(client, id)
+      .then(() => {
+        fetchVehicles();
+        setSuccess("Vehicle was deleted");
+        handleClickSnack();
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+        if (e.message === "401") {
+          setUser(null);
+        } else if (e.message === "409") {
+          setError("Can't delete vehicle associated to existing reservations");
+          handleClickSnack();
+        } else if (e.message === "500") {
+          setError("Internal Server Error");
+          handleClickSnack();
+        }
+      });
   };
 
   const vehiclesColumns = [
@@ -118,7 +147,12 @@ function Vehicles() {
           Create vehicle +
         </Button>
       </Box>
-
+      <CustomSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
+      />
       {loading ? (
         <CircularProgress />
       ) : vehicles?.length ? (
@@ -134,6 +168,9 @@ function Vehicles() {
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
         fetchVehicles={fetchVehicles}
+        setError={setError}
+        setSuccess={setSuccess}
+        handleClickSnack={handleClickSnack}
       />
     </Box>
   );

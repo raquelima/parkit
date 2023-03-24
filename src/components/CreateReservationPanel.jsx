@@ -30,6 +30,9 @@ function CreateReservationPanel({
   openPanel,
   setOpenPanel,
   setSelectedParkingSpot,
+  setError,
+  setSuccess,
+  handleClickSnack,
 }) {
   const setUser = useContext(UserContext);
 
@@ -71,15 +74,36 @@ function CreateReservationPanel({
       am
     )
       .then(() => {
+        setSuccess("Reservation was created");
+        handleClickSnack();
         setOpenPanel(false);
       })
       .catch((e) => {
         if (e.message === "401") {
           setUser(null);
-        }
-        if (e.message === "409") {
+          handleClickSnack();
+        } else if (e.message === "409") {
+          setError("Conflict");
+          handleClickSnack();
+        } else if (e.message === "500") {
+          setError("Internal Server Error");
+          handleClickSnack();
         }
       });
+  };
+
+  const handleError = (e) => {
+    setLoading(false);
+    if (e.message === "401") {
+      setUser(null);
+      handleClickSnack();
+    } else if (e.message === "400") {
+      setError("Oops something went wrong");
+      handleClickSnack();
+    } else if (e.message === "500") {
+      setError("Internal Server Error");
+      handleClickSnack();
+    }
   };
 
   useEffect(() => {
@@ -88,15 +112,7 @@ function CreateReservationPanel({
         setVehicles(result);
         setSelectedVehicleId(result[0]?.id);
       })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
+      .catch(handleError);
   }, [client]);
 
   return (

@@ -6,14 +6,21 @@ import logo from "../assets/adobe.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../App";
+import CustomSnackbar from "../components/CustomSnackBar";
 
 function Login({ user }) {
   const navigate = useNavigate();
   const setUser = useContext(UserContext);
+  const [error, setError] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
+  };
+
   const [userInput, setUserInput] = useState({
     userId: "dGVzdEBhZG9iZS5jb20=",
   });
-  const [error, setError] = useState("");
 
   const handleSaveCredentials = (event) => {
     setUserInput({ ...userInput, [event.target.name]: event.target.value });
@@ -25,17 +32,16 @@ function Login({ user }) {
       userInput.username == "test@adobe.com" &&
       userInput.password == "testPassword"
     ) {
-      setUser(true);
       localStorage.setItem("user", JSON.stringify(userInput));
-      navigate("/");
+      setUser(userInput);
     } else {
       setError("Wrong username or password");
+      handleClickSnack();
     }
   };
 
   useEffect(() => {
     if (user) {
-      setUser(true);
       navigate("/");
     }
   }, []);
@@ -49,6 +55,12 @@ function Login({ user }) {
         height: "100%",
       }}
     >
+      <CustomSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={"error"}
+        message={error}
+      />
       <Container component="main" maxWidth={false} sx={{ maxWidth: "450px" }}>
         <Box
           sx={{
@@ -59,7 +71,6 @@ function Login({ user }) {
             backgroundColor: "white",
           }}
         >
-          {error}
           <Box
             component="form"
             sx={{

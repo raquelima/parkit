@@ -18,6 +18,7 @@ import { SwaggerClientContext } from "../App";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import fetchUserReservations from "../api/fetchUserReservations";
 import { UserContext } from "../App";
+import CustomSnackbar from "./CustomSnackBar";
 
 function TopBar() {
   const client = useContext(SwaggerClientContext);
@@ -28,6 +29,25 @@ function TopBar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openPanel, setOpenPanel] = useState(false);
   const open = Boolean(anchorEl);
+  const [error, setError] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleError = (e) => {
+    if (e.message === "401") {
+      setUser(null);
+      handleClickSnack();
+    } else if (e.message === "400") {
+      setError("Oops something went wrong");
+      handleClickSnack();
+    } else if (e.message === "500") {
+      setError("Internal Server Error");
+      handleClickSnack();
+    }
+  };
 
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,46 +62,18 @@ function TopBar() {
   };
 
   useEffect(() => {
-    fetchUser(client)
-      .then((result) => {
-        setProfileUser(result);
+    Promise.all([
+      fetchUser(client),
+      fetchUserVehicles(client),
+      fetchUserReservations(client),
+    ])
+      .then(([user, vehicles, reservations]) => {
+        setProfileUser(user);
+        setTotalVehicles(vehicles.length);
+        setTotalReservations(reservations.length);
       })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
-    fetchUserVehicles(client)
-      .then((result) => {
-        setTotalVehicles(result.length);
-      })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
-    fetchUserReservations(client)
-      .then((result) => {
-        setTotalReservations(result.length);
-      })
-      .catch((e) => {
-        if (e.message === "401") {
-          setUser(null);
-        }
-        if (e.message === "409") {
-        }
-        if (e.message === "500") {
-        }
-      });
-  }, [client]);
+      .catch(handleError);
+  }, [client, setUser]);
 
   return (
     <AppBar
@@ -140,6 +132,12 @@ function TopBar() {
         totalReservations={totalReservations}
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
+      />
+      <CustomSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity="error"
+        message={error}
       />
     </AppBar>
   );

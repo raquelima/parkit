@@ -12,6 +12,8 @@ function DateTimePicker({
   setTime,
   setSelectedParkingSpot,
   setOpenPanel,
+  setError,
+  handleClickSnack,
 }) {
   const maxDate = addWeeks(today, 2);
   const buttons = ["AM", "PM", "FD"];
@@ -32,8 +34,8 @@ function DateTimePicker({
   };
 
   const handleError = () => {
-    //replace
-    console.log("please enter correct date");
+    setError("Enter valid date");
+    handleClickSnack();
   };
 
   return (
