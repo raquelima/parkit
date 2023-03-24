@@ -10,15 +10,32 @@ import StatusChip from "../components/StatusChip";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
-import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function Reservations() {
   const client = useContext(SwaggerClientContext);
+  const setUser = useContext(UserContext);
   const [reservations, setReservations] = useState(null);
   const [parkingSpots, setParkingSpots] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+  const fetchReservations = () => {
+    fetchUserReservations(client)
+      .then((result) => {
+        setReservations(result);
+        setLoading(false);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
+  };
 
   //change to use parking spot endpoint
   const getParkingSpotNumber = (id) => {
@@ -137,23 +154,23 @@ function Reservations() {
     },
   ];
 
-  useRequestExecutor(
-    client,
-    () => fetchUserReservations(client),
-    (result) => {
-      setReservations(result);
-      setLoading(false);
-    }
-  );
-
-  useRequestExecutor(
-    client,
-    () => fetchParkingSpots(client),
-    (result) => {
-      setParkingSpots(result?.parking_spots);
-      setLoading(false);
-    }
-  );
+  useEffect(() => {
+    fetchReservations();
+    fetchParkingSpots(client)
+      .then((result) => {
+        setParkingSpots(result?.parkingSpots);
+        setLoading(result?.loading);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
+  }, [client]);
 
   return (
     <Box>

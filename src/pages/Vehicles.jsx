@@ -14,18 +14,37 @@ import fetchUserVehicles from "../api/fetchUserVehicles";
 import { THEMECOLOR } from "../Constants";
 import CreateVehiclePanel from "../components/CreateVehiclePanel";
 import removeVehicle from "../api/removeVehicle";
-import useRequestExecutor from "../hooks/useRequestExecutor";
+import { UserContext } from "../App";
 
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
+  const setUser = useContext(UserContext);
 
   const [vehicles, setVehicles] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openPanel, setOpenPanel] = useState(false);
 
-  const handleClick = (id) => {
-    removeVehicle(client, id);
+  const fetchVehicles = () => {
+    fetchUserVehicles(client)
+      .then((result) => {
+        setVehicles(result);
+        setLoading(false);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
   };
+
+  const handleClick = (id) => {
+    removeVehicle(client, id).then(() => fetchVehicles());
+  };
+
   const vehiclesColumns = [
     {
       field: "make",
@@ -74,14 +93,9 @@ function Vehicles() {
     },
   ];
 
-  useRequestExecutor(
-    client,
-    () => fetchUserVehicles(client),
-    (result) => {
-      setVehicles(result);
-      setLoading(false);
-    }
-  );
+  useEffect(() => {
+    fetchVehicles();
+  }, [client]);
 
   return (
     <Box>
@@ -119,7 +133,7 @@ function Vehicles() {
         client={client}
         openPanel={openPanel}
         setOpenPanel={setOpenPanel}
-        setError={setError}
+        fetchVehicles={fetchVehicles}
       />
     </Box>
   );

@@ -17,9 +17,11 @@ import fetchUser from "../api/fetchUser";
 import { SwaggerClientContext } from "../App";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import fetchUserReservations from "../api/fetchUserReservations";
+import { UserContext } from "../App";
 
-function TopBar({ setUser }) {
+function TopBar() {
   const client = useContext(SwaggerClientContext);
+  const setUser = useContext(UserContext);
   const [profileUser, setProfileUser] = useState(null);
   const [totalVehicles, setTotalVehicles] = useState(null);
   const [totalReservations, setTotalReservations] = useState(null);
@@ -40,15 +42,45 @@ function TopBar({ setUser }) {
   };
 
   useEffect(() => {
-    fetchUser(client).then((result) => {
-      setProfileUser(result?.user);
-    });
-    fetchUserVehicles(client).then((result) => {
-      setTotalVehicles(result?.vehicles?.length);
-    });
-    fetchUserReservations(client).then((result) => {
-      setTotalReservations(result?.reservations?.length);
-    });
+    fetchUser(client)
+      .then((result) => {
+        setProfileUser(result);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
+    fetchUserVehicles(client)
+      .then((result) => {
+        setTotalVehicles(result.length);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
+    fetchUserReservations(client)
+      .then((result) => {
+        setTotalReservations(result.length);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
   }, [client]);
 
   return (

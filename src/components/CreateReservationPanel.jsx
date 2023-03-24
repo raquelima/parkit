@@ -11,14 +11,14 @@ import {
   FormControl,
   Button,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import car from "../assets/car.svg";
 import { format } from "date-fns";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import createReservation from "../api/createReservation";
-import useRequestExecutor from "../hooks/useRequestExecutor";
+import { UserContext } from "../App";
 
 function CreateReservationPanel({
   client,
@@ -31,6 +31,8 @@ function CreateReservationPanel({
   setOpenPanel,
   setSelectedParkingSpot,
 }) {
+  const setUser = useContext(UserContext);
+
   const user = JSON.parse(localStorage.getItem("user"));
   const [vehicles, setVehicles] = useState(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState(null);
@@ -67,19 +69,35 @@ function CreateReservationPanel({
       format(date, "yyyy-MM-dd").toString(),
       halfDay,
       am
-    ).then((result) => {
-      setOpenPanel(false);
-    });
+    )
+      .then(() => {
+        setOpenPanel(false);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+      });
   };
 
-  useRequestExecutor(
-    client,
-    () => fetchUserVehicles(client),
-    (result) => {
-      setVehicles(result);
-      setSelectedVehicleId(result[0]?.id);
-    }
-  );
+  useEffect(() => {
+    fetchUserVehicles(client)
+      .then((result) => {
+        setVehicles(result);
+        setSelectedVehicleId(result[0]?.id);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
+  }, [client]);
 
   return (
     <Drawer

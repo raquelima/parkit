@@ -10,12 +10,19 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { THEMECOLOR } from "../Constants";
 import CloseIcon from "@mui/icons-material/Close";
 import createVehicle from "../api/createVehicle";
+import { UserContext } from "../App";
 
-function CreateVehiclePanel({ client, openPanel, setOpenPanel }) {
+function CreateVehiclePanel({
+  client,
+  openPanel,
+  setOpenPanel,
+  fetchVehicles,
+}) {
+  const setUser = useContext(UserContext);
   const [newVehicle, setNewVehicle] = useState({});
   const [ev, setEv] = useState(true);
   const labels = ["Manufacture", "Model", "Plate number"];
@@ -36,9 +43,14 @@ function CreateVehiclePanel({ client, openPanel, setOpenPanel }) {
       .then((result) => {
         fetchVehicles();
         setOpenPanel(false);
-        setMessage(result?.response);
       })
-      .catch((e) => {});
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+      });
   };
 
   const handleToggle = (event, toggle) => {

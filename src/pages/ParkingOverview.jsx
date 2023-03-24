@@ -2,14 +2,14 @@ import { Box, CircularProgress } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
-import { SwaggerClientContext } from "../App";
+import { SwaggerClientContext, UserContext } from "../App";
 import CreateReservationPanel from "../components/CreateReservationPanel";
 import DateTimePicker from "../components/DateTimePicker";
 import ParkingSpotOverview from "../components/ParkingSpotOverview";
-import useRequestExecutor from "../hooks/useRequestExecutor";
 
 function ParkingOverview() {
   const client = useContext(SwaggerClientContext);
+  const setUser = useContext(UserContext);
 
   const today = new Date();
   const [date, setDate] = useState(today);
@@ -24,23 +24,37 @@ function ParkingOverview() {
 
   const [loading, setLoading] = useState(true);
 
-  useRequestExecutor(
-    client,
-    () => fetchParkingSpots(client),
-    (result) => {
-      setParkingSpots(result?.parking_spots);
-      setLoading(false);
-    }
-  );
+  useEffect(() => {
+    fetchParkingSpots(client)
+      .then((result) => {
+        setParkingSpots(result?.parking_spots);
+        setLoading(false);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
 
-  useRequestExecutor(
-    client,
-    () => fetchParkingSpotAvailability(client, date, halfDay, am),
-    (result) => {
-      setAvailableParkingSpots(result?.available_parking_spots);
-      setLoading(false);
-    }
-  );
+    fetchParkingSpotAvailability(client, date, halfDay, am)
+      .then((result) => {
+        setAvailableParkingSpots(result?.available_parking_spots);
+        setLoading(false);
+      })
+      .catch((e) => {
+        if (e.message === "401") {
+          setUser(null);
+        }
+        if (e.message === "409") {
+        }
+        if (e.message === "500") {
+        }
+      });
+  }, [client, date, time]);
 
   return (
     <Box overflow="hidden">
