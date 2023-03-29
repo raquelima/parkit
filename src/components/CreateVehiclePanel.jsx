@@ -93,8 +93,8 @@ function CreateVehiclePanel({
    * @param {boolean} toggleValue - Indicates which toggle button is selected
    */
   const handleToggleSelection = (event, toggleValue) => {
-    if (toggle !== null) {
-      setEv(toggle);
+    if (toggleValue !== null) {
+      setEv(toggleValue);
     }
   };
 
