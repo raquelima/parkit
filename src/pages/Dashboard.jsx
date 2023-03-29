@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { format } from "date-fns";
-import { SwaggerClientContext } from "../App";
+import { SwaggerClientContext, UserContext } from "../App";
 import InfoCard from "../components/InfoCard";
 import Table from "../components/Table";
 import CreateButton from "../components/CreateButton";
@@ -28,6 +28,7 @@ import filterUpcomingReservations from "../utils/filterUpcomingReservations";
  */
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
+  const setUser = useContext(UserContext);
 
   const navigate = useNavigate();
 

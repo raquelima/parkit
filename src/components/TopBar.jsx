@@ -66,9 +66,6 @@ function TopBar() {
     } else if (e.message === "500") {
       setError("Internal Server Error");
       handleClickSnack();
-    } else {
-      setError("Something went wrong");
-      handleClickSnack();
     }
   };
 
@@ -86,8 +83,8 @@ function TopBar() {
     ])
       .then(([user, vehicles, reservations]) => {
         setProfileUser(user);
-        setTotalVehicles(vehicles.length);
-        setTotalReservations(reservations.length);
+        setTotalVehicles(vehicles?.length);
+        setTotalReservations(reservations?.length);
       })
       .catch(handleError);
   }, [client, setUser]);
