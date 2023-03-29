@@ -7,15 +7,15 @@ import Panel from "./Panel";
 import createVehicle from "../api/createVehicle";
 
 /**
- *
- * @param {*} client
- * @param {*} openPanel
- * @param {*} setOpenPanel
- * @param {*} fetchVehicles
- * @param {*} setError
- * @param {*} setSuccess
- * @param {*} handleClickSnack
- * @returns
+ * A functional component that renders a panel to create vehicles
+ * @param {Object} client - The Swagger Client object
+ * @param {boolean} openPanel - A boolean flag indicating whether the panel should be displayed
+ * @param {Function} setOpenPanel - A function that sets the value of openPanel
+ * @param {Function} fetchVehicles - a function that fetches the user vehicles
+ * @param {Function} setError - A function that sets an error message
+ * @param {Function} setSuccess - A function that sets an success message
+ * @param {Function} handleClickSnack - A function that displays a snackbar
+ * @returns {JSX.Element} The CreateVehiclePanel component
  */
 function CreateVehiclePanel({
   client,
@@ -31,15 +31,26 @@ function CreateVehiclePanel({
   const [newVehicle, setNewVehicle] = useState({});
   const [ev, setEv] = useState(true);
 
+  /**
+   * Saves user input in the state
+   * @param {Object} event
+   */
   const handleSaveInput = (event) => {
     setNewVehicle({ ...newVehicle, [event.target.name]: event.target.value });
   };
 
+  /**
+   * Closes the panel and clears the state
+   */
   const handleClosePanel = () => {
     setOpenPanel(false);
     setNewVehicle(null);
   };
 
+  /**
+   * Handles errors according to the error status
+   * @param {Object} e - An error object
+   */
   const handleError = (e) => {
     if (e.message === "401") {
       setUser(null);
@@ -55,7 +66,10 @@ function CreateVehiclePanel({
     }
   };
 
-  const handleClick = () => {
+  /**
+   * Creates a vehicle
+   */
+  const handleCreateVehicle = () => {
     createVehicle(
       client,
       ev,
@@ -73,9 +87,14 @@ function CreateVehiclePanel({
       .catch(handleError);
   };
 
-  const handleToggle = (event, toggle) => {
-    if (toggle !== null) {
-      setEv(toggle);
+  /**
+   * Handles the ev toggle selection making sure on button is always selected and sets the selected value in the state
+   * @param {Event} event - An onChange event
+   * @param {boolean} toggleValue - Indicates which toggle button is selected
+   */
+  const handleToggleSelection = (event, toggleValue) => {
+    if (toggleValue !== null) {
+      setEv(toggleValue);
     }
   };
 
@@ -86,10 +105,10 @@ function CreateVehiclePanel({
           <CreateVehicleInput
             handleSaveInput={handleSaveInput}
             ev={ev}
-            handleToggle={handleToggle}
+            handleToggleSelection={handleToggleSelection}
           />
           <CreateButton
-            handleClick={handleClick}
+            handleClick={handleCreateVehicle}
             btnText="Add vehicle"
             sx={{ display: "flex", justifyContent: "center", pt: 7 }}
           />

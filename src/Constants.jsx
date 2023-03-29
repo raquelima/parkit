@@ -1,8 +1,8 @@
-export const DRAWERWIDTH = 260;
+export const DRAWER_WIDTH = 260;
 
-export const THEMECOLOR = "#303E4D";
+export const THEME_COLOR = "#303E4D";
 
-export const STATUSCHIPS = {
+export const STATUS_CHIPS = {
   cancelled: {
     color: "#D83B3B",
     backgroundColor: "rgba(255,201,201,0.8)",

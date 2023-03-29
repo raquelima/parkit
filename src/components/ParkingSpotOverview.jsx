@@ -3,13 +3,13 @@ import ParkingSpot from "../components/ParkingSpot";
 import logo from "../assets/adobeLogoLarge.png";
 
 /**
- *
- * @param {*} parkingSpots
- * @param {*} availableParkingSpots
- * @param {*} selectedParkingSpot
- * @param {*} setSelectedParkingSpot
- * @param {*} setOpenPanel
- * @returns
+ * A functional component that renders the parking spots
+ * @param {Array} parkingSpots - An array with all parking spot objects
+ * @param {Array} availableParkingSpots - An array with all available parking spot objects
+ * @param {Object} selectedParkingSpot - The selected parking spot object
+ * @param {Function} setSelectedParkingSpot - A function that sets the value of selectedParkingSpot
+ * @param {Function} setOpenPanel - A function that sets the value of openPanel
+ * @returns {JSX.Element} The ParkingSpotOverview component
  */
 function ParkingSpotOverview({
   parkingSpots,
@@ -18,6 +18,10 @@ function ParkingSpotOverview({
   setSelectedParkingSpot,
   setOpenPanel,
 }) {
+  /**
+   * Handles selection of parking spots and unselects parking spot if clicked when selected
+   * @param {Object} parkingSpot - The selected parking spot object
+   */
   const handleSelect = (parkingSpot) => {
     if (parkingSpot?.id == selectedParkingSpot?.id) {
       setSelectedParkingSpot(null);
@@ -27,12 +31,24 @@ function ParkingSpotOverview({
       setOpenPanel(true);
     }
   };
-
+  /**
+   * Checks if parkingSpot object is selected
+   * @param {Object} parkingSpot - A parking spot object
+   * @returns {boolean} Boolean flag indicating whether parking spot is selected
+   */
   const isParkingSpotSelected = (parkingSpot) =>
     selectedParkingSpot?.id === parkingSpot?.id;
 
-  //takes available spots array and checks if current spot id is in the array, if yes returns true
-  const checkAvailability = (availableParkingSpotsArray, parkingSpotId) => {
+  /**
+   * Checks whether the parking spot ID is in the available parking spots array. Returns true if the ID was found meaning it is available
+   * @param {Array} availableParkingSpotsArray - An array of available parking spots
+   * @param {string} parkingSpotId - A parking spot id
+   * @returns {boolean} Boolean flag indicating whether parking spot is available
+   */
+  const isParkingSpotAvailable = (
+    availableParkingSpotsArray,
+    parkingSpotId
+  ) => {
     return availableParkingSpotsArray?.some(
       (availableParkingSpot) => availableParkingSpot.id == parkingSpotId
     );
@@ -75,7 +91,7 @@ function ParkingSpotOverview({
                     number={parkingSpot.number}
                     disabled={parkingSpot.unavailable}
                     charger={parkingSpot.charger_available}
-                    available={checkAvailability(
+                    available={isParkingSpotAvailable(
                       availableParkingSpots,
                       parkingSpot.id
                     )}
@@ -98,7 +114,7 @@ function ParkingSpotOverview({
                     disabled={parkingSpot.unavailable}
                     availableParkingSpots={availableParkingSpots}
                     charger={parkingSpot.charger_available}
-                    available={checkAvailability(
+                    available={isParkingSpotAvailable(
                       availableParkingSpots,
                       parkingSpot.id
                     )}

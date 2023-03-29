@@ -1,13 +1,13 @@
 import { Chip } from "@mui/material";
-import { STATUSCHIPS } from "../Constants";
+import { STATUS_CHIPS } from "../Constants";
 
 /**
- *
- * @param {*} status
- * @returns
+ * A functional component that renders a MUI Chip component with custom style representing the reservation status chip
+ * @param {number} status - The status of the reservation
+ * @returns {JSX.Element} The StatusChip component
  */
 function StatusChip({ status }) {
-  const { color, backgroundColor } = STATUSCHIPS[status];
+  const { color, backgroundColor } = STATUS_CHIPS[status];
   return (
     <Chip
       label={status}

@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Alert,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { format } from "date-fns";
@@ -18,6 +19,10 @@ import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
 
+/**
+ * This is a functional component that renders the reservations page
+ * @returns {JSX.Element} The Reservations component
+ */
 function Reservations() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
@@ -34,6 +39,11 @@ function Reservations() {
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
+  /**
+   * Filters the parking spots array with the given parking spot ID, returning the number of the parking spot
+   * @param {string} id - The parking spot ID to filter the array with
+   * @returns {number} The parking spot number
+   */
   const getParkingSpotNumber = (id) => {
     return parkingSpots
       ?.filter((parkingSpot) => parkingSpot.id === id)
@@ -42,6 +52,11 @@ function Reservations() {
       });
   };
 
+  /**
+   * Checks the given reservation properties and assigns it a status
+   * @param {Object} reservation - A reservation object
+   * @returns {string} The reservation status
+   */
   const getReservationStatus = (reservation) => {
     let status;
     const cancelled = reservation.row.cancelled;
@@ -59,10 +74,17 @@ function Reservations() {
     return status;
   };
 
+  /**
+   * Displays a snackbar
+   */
   const handleClickSnack = () => {
     setOpenSnackbar(true);
   };
 
+  /**
+   * Handles errors according to the error status
+   * @param {Object} e - An error object
+   */
   const handleError = (e) => {
     setLoading(false);
     if (e.message === "401") {
@@ -77,6 +99,9 @@ function Reservations() {
     }
   };
 
+  /**
+   * Fetches the user reservations
+   */
   const fetchReservations = () => {
     fetchUserReservations(client)
       .then((result) => {
@@ -86,7 +111,11 @@ function Reservations() {
       .catch(handleError);
   };
 
-  const handleClick = (id) => {
+  /**
+   * Cancels reservation by using the given ID then fetches reservations
+   * @param {string} id - The ID of the reservation to be cancelled
+   */
+  const handleCancelReservation = (id) => {
     cancelReservation(client, id)
       .then(() => {
         fetchReservations();
@@ -174,13 +203,15 @@ function Reservations() {
 
         if (upcoming && !cancelled) {
           return (
-            <IconButton
-              aria-label="cancel reservation"
-              color="error"
-              onClick={() => handleClick(reservation.row.id)}
-            >
-              <CloseIcon />
-            </IconButton>
+            <Tooltip arrow title="Cancel Reservation">
+              <IconButton
+                aria-label="cancel reservation"
+                color="error"
+                onClick={() => handleCancelReservation(reservation.row.id)}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
           );
         }
       },

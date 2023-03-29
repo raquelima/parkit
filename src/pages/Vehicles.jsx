@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Alert,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { SwaggerClientContext, UserContext } from "../App";
@@ -15,6 +16,10 @@ import CreateVehiclePanel from "../components/CreateVehiclePanel";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import removeVehicle from "../api/removeVehicle";
 
+/**
+ * This is a functional component that renders the vehicles page
+ * @returns {JSX.Element} The Vehicles component
+ */
 function Vehicles() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
@@ -110,13 +115,15 @@ function Vehicles() {
       width: 70,
       renderCell: (vehicle) => {
         return (
-          <IconButton
-            aria-label="remove vehicle"
-            color="error"
-            onClick={() => handleClick(vehicle.row.id)}
-          >
-            <CloseIcon />
-          </IconButton>
+          <Tooltip arrow title="Remove Vehicle">
+            <IconButton
+              aria-label="remove vehicle"
+              color="error"
+              onClick={() => handleClick(vehicle.row.id)}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         );
       },
     },

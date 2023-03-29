@@ -1,12 +1,13 @@
 import handleError from "./handleError";
 
 /**
- * Executes an API request using specified client, tag, operation, parameters, and options.
- * @param {Object} client The API client
- * @param {string} tag
- * @param {string} operation
- * @param {Object} parameters
- * @param {Object} options
+ * Executes an API request with specified tag, operation, parameters, and options using the given client.
+ * @async
+ * @param {Object} client - The Swagger Client object
+ * @param {string} tag - The Swagger tag corresponding to the API operation to be executed
+ * @param {string} operation - The Swagger operation ID corresponding to the API operation to be executed.
+ * @param {Object} parameters - The parameters required by the API operation to be executed.
+ * @param {Object} options - Optional configuration options to be passed to the Swagger client when executing the API operation.
  * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
  * @throws {Error} Throws an error if the API call fails with a non-successful status code.
  */

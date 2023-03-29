@@ -1,13 +1,14 @@
 import executeRequest from "./executeRequest";
 
 /**
- * Creates a vehicle with the specified, client, ev, license plate number, make and model.
- * @param {Object} client The API client
- * @param {Boolean} ev
- * @param {string} licensePlateNumber
- * @param {string} make
- * @param {string} model
- * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
+ * Creates a vehicle with the specified ev, license plate number, make and model using the given client
+ * @async
+ * @param {Object} client - The Swagger Client object
+ * @param {boolean} ev - Is true when the vehicle to be created is eletric
+ * @param {string} licensePlateNumber - The license plate number of the vehicle to be created
+ * @param {string} make - The manufacture of the vehicle to be created
+ * @param {string} model - The model of the vehicle to be created
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call
  */
 async function createVehicle(client, ev, licensePlateNumber, make, model) {
   const userId = JSON.parse(localStorage.getItem("user")).userId;

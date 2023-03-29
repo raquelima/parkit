@@ -2,7 +2,7 @@ import { format } from "date-fns";
 
 /**
  * @description Filters an array of reservations and filters the upcoming ones
- * @param {Array} reservations
+ * @param {Array} reservations - The reservations array to be filtered
  * @returns {Array} An array of upcoming reservations
  */
 function filterUpcomingReservations(reservations) {

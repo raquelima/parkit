@@ -2,7 +2,8 @@ import executeRequest from "./executeRequest";
 
 /**
  * Fetches all parking spots using specified client
- * @param {Object} client The API client
+ * @async
+ * @param {Object} client - The Swagger Client object
  * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
  */
 async function fetchParkingSpots(client) {

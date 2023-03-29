@@ -1,9 +1,9 @@
 import { Box, Typography } from "@mui/material";
 
 /**
- *
- * @param {*} selectedVehicle
- * @returns
+ * A functional component that renders the selected vehicle details
+ * @param {Object} selectedVehicle - The selected vehicle object
+ * @returns {JSX.Element} The VehicleDetails component
  */
 function VehicleDetails({ selectedVehicle }) {
   const vehicleDetails = [
