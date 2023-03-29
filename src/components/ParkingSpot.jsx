@@ -3,14 +3,14 @@ import EvStationIcon from "@mui/icons-material/EvStation";
 import WarningIcon from "@mui/icons-material/Warning";
 
 /**
- *
- * @param {*} number
- * @param {*} disabled
- * @param {*} charger
- * @param {*} available
- * @param {*} selected
- * @param {*} onClick,
- * @returns
+ * A functional component that renders a parking spot
+ * @param {number} number - The parking spot number
+ * @param {boolean} disabled - A boolean flag indicading whether the parking spot is disabled
+ * @param {boolean} charger - A boolean flag indicading whether the parking spot offers an ev charger
+ * @param {boolean} available - A boolean flag indicading whether the parking spot is available
+ * @param {boolean} selected - A boolean flag indicading whether the parking spot is selected
+ * @param {Function} onClick - A function that handles the selection of the parking spot
+ * @returns {JSX.Element} The ParkingSpot component
  */
 function ParkingSpot({
   number,

@@ -7,12 +7,12 @@ import {
 import { Link } from "react-router-dom";
 
 /**
- *
- * @param {*} to
- * @param {*} primary
- * @param {*} icon
- * @param {*} buttonProps
- * @returns
+ * A functional component that renders a navigation list item
+ * @param {string} to - The path that that the item should navigate to when clicked
+ * @param {string} primary - The primary text to be displayed
+ * @param {ReactElement} icon - The icon to be displayed
+ * @param {Object} buttonProps - The button properties object
+ * @returns {JSX.Element} The NavListItem component
  */
 function NavListitem({ to, primary, icon, buttonProps }) {
   return (

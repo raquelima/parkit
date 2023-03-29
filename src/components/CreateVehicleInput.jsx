@@ -7,13 +7,13 @@ import {
 } from "@mui/material";
 
 /**
- *
- * @param {*} handleSaveInput
- * @param {*} ev
- * @param {*} handleToggle
- * @returns
+ * A functional component that renders MUI Textfiels for the input of vehicle details
+ * @param {Function} handleSaveInput - A handler function that saves the user input
+ * @param {boolean} ev - a boolean flag indicating whether the vehicle is electric
+ * @param {Function} handleToggleSelection - A handler function that handles the selection of the time toggle buttons
+ * @returns {JSX.Element} The CreateVehicleInput component
  */
-function CreateVehicleInput({ handleSaveInput, ev, handleToggle }) {
+function CreateVehicleInput({ handleSaveInput, ev, handleToggleSelection }) {
   const fields = [
     { label: "Manufacture", key: "make" },
     { label: "Model", key: "model" },
@@ -44,7 +44,7 @@ function CreateVehicleInput({ handleSaveInput, ev, handleToggle }) {
           name="ev"
           exclusive
           value={ev}
-          onChange={handleToggle}
+          onChange={handleToggleSelection}
           width={""}
         >
           <ToggleButton value={true} name="ev">

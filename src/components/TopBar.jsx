@@ -2,17 +2,17 @@ import { useState, useContext, useEffect } from "react";
 import { AppBar, Toolbar } from "@mui/material";
 import { SwaggerClientContext, UserContext } from "../App";
 import ProfilePanel from "./ProfilePanel";
+import AvatarMenu from "./AvatarMenu";
 import AutoHidingSnackbar from "./AutoHidingSnackbar";
 import fetchUser from "../api/fetchUser";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import fetchUserReservations from "../api/fetchUserReservations";
-import { THEMECOLOR } from "../Constants";
-import { DRAWERWIDTH } from "../Constants";
-import AvatarMenu from "./AvatarMenu";
+import { THEME_COLOR } from "../Constants";
+import { DRAWER_WIDTH } from "../Constants";
 
 /**
- *
- * @returns
+ * A functional component that renders a MUI AppBar component representing the top bar
+ * @returns {JSX.Element} The TopBar component
  */
 function TopBar() {
   const client = useContext(SwaggerClientContext);
@@ -23,24 +23,39 @@ function TopBar() {
   const [totalReservations, setTotalReservations] = useState(null);
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
 
   const [openPanel, setOpenPanel] = useState(false);
 
   const [error, setError] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
+  /**
+   * Sets the anchor element to open the menu
+   * @param {Event} event - The event object
+   */
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  /**
+   * Sets the anchor element to null to close the menu
+   */
+  const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
+  /**
+   * Displays Snackbar
+   */
   const handleClickSnack = () => {
     setOpenSnackbar(true);
   };
 
+  /**
+   * Handles the error
+   * @param {Object} e - An error object
+   */
   const handleError = (e) => {
     if (e.message === "401") {
       setUser(null);
@@ -51,9 +66,13 @@ function TopBar() {
     } else if (e.message === "500") {
       setError("Internal Server Error");
       handleClickSnack();
+    } else {
+      setError("Something went wrong");
+      handleClickSnack();
     }
   };
 
+  //Logs out the user by clearing Local Storage a triggering a rerender
   const logout = () => {
     localStorage.clear();
     setUser(null);
@@ -77,9 +96,9 @@ function TopBar() {
     <AppBar
       position="fixed"
       sx={{
-        width: `calc(100% - ${DRAWERWIDTH}px)`,
-        ml: `${DRAWERWIDTH}px`,
-        backgroundColor: THEMECOLOR,
+        width: `calc(100% - ${DRAWER_WIDTH}px)`,
+        ml: `${DRAWER_WIDTH}px`,
+        backgroundColor: THEME_COLOR,
       }}
     >
       <Toolbar
@@ -88,10 +107,10 @@ function TopBar() {
       >
         <AvatarMenu
           profileUser={profileUser}
+          openMenu={openMenu}
           handleOpenMenu={handleOpenMenu}
-          open={open}
+          handleCloseMenu={handleCloseMenu}
           anchorEl={anchorEl}
-          handleClose={handleClose}
           setOpenPanel={setOpenPanel}
           logout={logout}
         />

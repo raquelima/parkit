@@ -4,9 +4,9 @@ import { developmentBaseUrl } from "../../mock/conf.js";
 import spec from "@berufsbildung-basel/parkit-spec/api.yml";
 
 /**
- *
- * @param {*} user
- * @returns
+ * A custom React hook that creates a Swagger client using the provided user credentials
+ * @param {Object} user - An object containing the logged in user's username, password and ID
+ * @returns {Object} - The created Swagger client object or null if no user is provided.
  */
 function useCreateSwaggerClient(user) {
   const [swaggerClient, setSwaggerClient] = useState(null);

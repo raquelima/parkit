@@ -3,15 +3,15 @@ import { format } from "date-fns";
 import car from "../assets/car.svg";
 
 /**
- *
- * @param {*} selectedParkingSpot
- * @param {*} profileUser
- * @param {*} reservationDate
- * @param {*} reservationTime
- * @param {*} vehicles
- * @param {*} selectedVehicleId
- * @param {*} handleChange
- * @returns
+ * A functional component that renders reservation details
+ * @param {Object} selectedParkingSpot - The selected parking spot object
+ * @param {Object} profileUser - The logged in user object
+ * @param {Object} reservationDate - The reservation date object
+ * @param {string} reservationTime - The reservation time
+ * @param {Array} vehicles - An array with all user vehicles
+ * @param {string} selectedVehicleId - The ID of the selected vehicle for the reservation
+ * @param {Function} handlesetSelectedVehicleId - A handler function that sets the selectedVehicleId value when the user selects a vehicle
+ * @returns {JSX.Element} The ReservationDetails component
  */
 function ReservationDetails({
   selectedParkingSpot,
@@ -20,7 +20,7 @@ function ReservationDetails({
   reservationTime,
   vehicles,
   selectedVehicleId,
-  handleChange,
+  handlesetSelectedVehicleId,
 }) {
   const reservationDetails = [
     {
@@ -73,7 +73,10 @@ function ReservationDetails({
       ))}
       <FormControl sx={{ minWidth: 120 }} size="small">
         {vehicles && (
-          <Select value={selectedVehicleId} onChange={handleChange}>
+          <Select
+            value={selectedVehicleId}
+            onChange={handlesetSelectedVehicleId}
+          >
             {vehicles.map((vehicle) => (
               <MenuItem key={vehicle.id} value={vehicle.id}>
                 {vehicle.make + " " + vehicle.model}

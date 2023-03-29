@@ -11,20 +11,20 @@ import createReservation from "../api/createReservation";
 import fetchUser from "../api/fetchUser";
 
 /**
- *
- * @param {*} client
- * @param {*} selectedParkingSpot
- * @param {*} reservationDate
- * @param {*} reservationTime
- * @param {*} halfDay
- * @param {*} openPanel
- * @param {*} setOpenPanel
- * @param {*} setSelectedParkingSpot
- * @param {*} setError
- * @param {*} setSuccess
- * @param {*} handleClickSnack
- * @param {*} fetchAvailableParkingSpots
- * @returns
+ * A functional component that renders the panel to create reservations
+ * @param {Object} client - The Swagger Client object
+ * @param {Object} selectedParkingSpot - The current selected parking spot object
+ * @param {Object} reservationDate - The selected reservation date object
+ * @param {string} reservationTime - The selected reservation time
+ * @param {boolean} halfDay - A boolean flag indicating whether the reservation is for a full or half-day
+ * @param {boolean} openPanel - A boolean flag indicating whether the panel should be displayed
+ * @param {Function} setOpenPanel - A function that sets the value of openPanel
+ * @param {Function} setSelectedParkingSpot - A function that sets the value of selectedParkingSpot
+ * @param {Function} setError - A function that sets an error message
+ * @param {Function} setSuccess - A function that sets a success message
+ * @param {Function} handleClickSnack - A function that displays a snackbar
+ * @param {Function} fetchAvailableParkingSpots - a function that fetches the available parking spots
+ * @returns {JSX.Element} The CreateReservationPanel component
  */
 function CreateReservationPanel({
   client,
@@ -52,16 +52,26 @@ function CreateReservationPanel({
     (vehicle) => vehicle.id === selectedVehicleId
   );
 
+  /**
+   * Closes the panel and unselects parking spot
+   */
   const handleClosePanel = () => {
     setOpenPanel(false);
     setSelectedParkingSpot(null);
   };
 
-  const handleChange = (event) => {
+  /**
+   * Sets the selected vehicle ID to the value of the event target's value property.
+   * @param {Event} event - An onChange event
+   */
+  const handlesetSelectedVehicleId = (event) => {
     setSelectedVehicleId(event.target.value);
   };
 
-  const handleClick = () => {
+  /**
+   * Handles the creation of a reservation and handles possible error
+   */
+  const handleCreateReservation = () => {
     createReservation(
       client,
       selectedParkingSpot?.id,
@@ -94,6 +104,10 @@ function CreateReservationPanel({
       });
   };
 
+  /**
+   * Handles errors according to the error status
+   * @param {Object} e - An error object
+   */
   const handleError = (e) => {
     setLoading(false);
     if (e.message === "401") {
@@ -130,12 +144,12 @@ function CreateReservationPanel({
             reservationTime={reservationTime}
             vehicles={vehicles}
             selectedVehicleId={selectedVehicleId}
-            handleChange={handleChange}
+            handlesetSelectedVehicleId={handlesetSelectedVehicleId}
           />
           <Divider />
           <VehicleDetails selectedVehicle={selectedVehicle} />
           <CreateButton
-            handleClick={handleClick}
+            handleClick={handleCreateReservation}
             btnText="Reserve Space"
             sx={{ display: "flex", justifyContent: "center", pt: 7 }}
           />

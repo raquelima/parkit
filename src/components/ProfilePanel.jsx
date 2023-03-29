@@ -2,13 +2,13 @@ import ProfileDetails from "./profileDetails";
 import Panel from "./Panel";
 
 /**
- *
- * @param {*} user
- * @param {*} totalVehicles
- * @param {*} totalReservations
- * @param {*} openPanel
- * @param {*} setOpenPanel
- * @returns
+ * A functional component that renders the profile panel
+ * @param {Object} user - An object containing the logged in user's username, password and ID
+ * @param {number} totalVehicles - the total number of vehicles
+ * @param {number} totalReservations - the total number of reservations
+ * @param {boolean} openPanel - A boolean flag indicating whether the panel should be displayed
+ * @param {Function} setOpenPanel - A function that sets the value of openPanel
+ * @returns {JSX.Element} The ProfilePanel component
  */
 function ProfilePanel({
   user,
@@ -17,6 +17,9 @@ function ProfilePanel({
   openPanel,
   setOpenPanel,
 }) {
+  /**
+   * Closes panel
+   */
   const handleClosePanel = () => {
     setOpenPanel(false);
   };

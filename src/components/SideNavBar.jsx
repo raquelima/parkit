@@ -1,23 +1,23 @@
 import { Drawer, Toolbar, Typography, Divider } from "@mui/material";
 import SideNavBarList from "./SideNavBarList";
 import logo from "../assets/adobeLogoSmall.png";
-import { DRAWERWIDTH } from "../Constants";
-import { THEMECOLOR } from "../Constants";
+import { DRAWER_WIDTH } from "../Constants";
+import { THEME_COLOR } from "../Constants";
 
 /**
- *
- * @returns
+ * A functional component that renders a MUI Drawer component representing the side navigation bar
+ * @returns {JSX.Element} The SideNavBar component
  */
 function SideNavBar() {
   return (
     <Drawer
       sx={{
-        width: DRAWERWIDTH,
+        width: DRAWER_WIDTH,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: DRAWERWIDTH,
+          width: DRAWER_WIDTH,
           boxSizing: "border-box",
-          backgroundColor: THEMECOLOR,
+          backgroundColor: THEME_COLOR,
           color: "white",
         },
       }}

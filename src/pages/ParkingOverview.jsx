@@ -7,8 +7,12 @@ import ParkingSpotOverview from "../components/ParkingSpotOverview";
 import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
-import { THEMECOLOR } from "../Constants";
+import { THEME_COLOR } from "../Constants";
 
+/**
+ * This is a functional component that renders the parking overview
+ * @returns {JSX.Element} The ParkingOverview component
+ */
 function ParkingOverview() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
@@ -30,10 +34,15 @@ function ParkingOverview() {
   const [openPanel, setOpenPanel] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
+  //displays a snackbar
   const handleClickSnack = () => {
     setOpenSnackbar(true);
   };
 
+  /**
+   * Handles errors according to the error status
+   * @param {Object} e - An error object
+   */
   const handleError = (e) => {
     setLoading(false);
     if (e.message === "401") {
@@ -48,6 +57,7 @@ function ParkingOverview() {
     }
   };
 
+  //Fetches available parking spots
   const fetchAvailableParkingSpots = () => {
     fetchParkingSpotAvailability(client, reservationDate, halfDay, am)
       .then((result) => {
@@ -89,7 +99,7 @@ function ParkingOverview() {
         <CircularProgress />
       ) : (
         <Box>
-          <Typography fontWeight="bold" color={THEMECOLOR}>
+          <Typography fontWeight="bold" color={THEME_COLOR}>
             Parking Overview
           </Typography>
           <ParkingSpotOverview

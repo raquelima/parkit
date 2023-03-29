@@ -7,6 +7,7 @@ import {
   IconButton,
   CircularProgress,
   Alert,
+  Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { format } from "date-fns";
@@ -18,8 +19,13 @@ import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
+import fetchParkingSpots from "../api/fetchParkingSpots";
 import filterUpcomingReservations from "../utils/filterUpcomingReservations";
 
+/**
+ * This a functional component that renders the dashboard
+ * @returns {JSX.Element} The Dashboard component
+ */
 function Dashboard() {
   const client = useContext(SwaggerClientContext);
 
@@ -30,6 +36,7 @@ function Dashboard() {
 
   const [reservations, setReservations] = useState(null);
   const [availableParkingSpots, setAvailableParkingSpots] = useState(null);
+  const [parkingSpots, setParkingSpots] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -60,10 +67,28 @@ function Dashboard() {
     },
   ];
 
+  /**
+   * Filters the parking spots array with the given parking spot ID, returning the number of the parking spot
+   * @param {string} id - The parking spot ID to filter the array with
+   * @returns {number} The parking spot number
+   */
+  const getParkingSpotNumber = (id) => {
+    return parkingSpots
+      ?.filter((parkingSpot) => parkingSpot.id === id)
+      .map((parkingSpot) => {
+        return parkingSpot.number;
+      });
+  };
+
+  //Display snackbar
   const handleClickSnack = () => {
     setOpenSnackbar(true);
   };
 
+  /**
+   * Handles errors according to the error status
+   * @param {Object} e An error object
+   */
   const handleError = (e) => {
     setLoading(false);
     if (e.message === "401") {
@@ -77,6 +102,9 @@ function Dashboard() {
     }
   };
 
+  /**
+   * Fetches user reservations
+   */
   const fetchReservations = () => {
     fetchUserReservations(client)
       .then((result) => {
@@ -86,7 +114,11 @@ function Dashboard() {
       .catch(handleError);
   };
 
-  const handleClick = (id) => {
+  /**
+   * Cancels reservation by using the given ID then fetches reservations
+   * @param {string} id - The ID of the reservation to be cancelled
+   */
+  const handleCancelReservation = (id) => {
     cancelReservation(client, id)
       .then(() => {
         fetchReservations();
@@ -97,8 +129,15 @@ function Dashboard() {
       .catch(handleError);
   };
 
-  const filterAvailableParkingSpots = (parkingSpots) => {
-    return parkingSpots?.filter((parkingSpot) => !parkingSpot.unavailable);
+  /**
+   * Filters out disabled parking spots out of available parking spots array
+   * @param {Array} availableParkingSpots - An array of available parking spots
+   * @returns {Array} An array of available and not disabled parking spots
+   */
+  const filterDisabledParkingSpots = (availableParkingSpots) => {
+    return availableParkingSpots?.filter(
+      (parkingSpot) => !parkingSpot.unavailable
+    );
   };
 
   const upcomingReservationsColumns = [
@@ -132,11 +171,13 @@ function Dashboard() {
         `${reservations.row.vehicle?.make} ${reservations.row.vehicle?.model}`,
     },
     {
-      field: "parking_spot_id",
+      field: "parkingSpotNumber",
       headerName: "Parking spot",
       flex: 1,
       sortable: false,
       width: 200,
+      valueGetter: (reservations) =>
+        getParkingSpotNumber(reservations.row.parking_spot_id),
     },
     {
       field: "cancel",
@@ -145,13 +186,15 @@ function Dashboard() {
       width: 70,
       renderCell: (reservations) => {
         return (
-          <IconButton
-            aria-label="cancel reservation"
-            color="error"
-            onClick={() => handleClick(reservations.row.id)}
-          >
-            <CloseIcon />
-          </IconButton>
+          <Tooltip arrow title="Cancel Reservation">
+            <IconButton
+              aria-label="cancel reservation"
+              color="error"
+              onClick={() => handleCancelReservation(reservations.row.id)}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         );
       },
     },
@@ -159,11 +202,18 @@ function Dashboard() {
 
   useEffect(() => {
     fetchReservations();
-    fetchParkingSpotAvailability(client, today, true, am)
-      .then((result) => {
+
+    Promise.all([
+      fetchParkingSpotAvailability(client, today, true, am),
+      fetchParkingSpots(client),
+    ])
+      .then(([availableParkingSpots, parkingSpots]) => {
         setAvailableParkingSpots(
-          filterAvailableParkingSpots(result?.available_parking_spots)
+          filterDisabledParkingSpots(
+            availableParkingSpots?.available_parking_spots
+          )
         );
+        setParkingSpots(parkingSpots?.parking_spots);
         setLoading(false);
       })
       .catch(handleError);
@@ -191,9 +241,9 @@ function Dashboard() {
           {infoCards.map((card) => (
             <Grid key={card.label} item>
               <InfoCard
-                text={card.label}
+                label={card.label}
                 number={card.value}
-                button={card.button}
+                btnText={card.button}
                 path={card.path}
               />
             </Grid>

@@ -1,15 +1,16 @@
 import executeRequest from "./executeRequest";
 
 /**
- * Creates a reservation with the parameters below
- * @param {Object} client The API client
- * @param {string} parkingSpotId
- * @param {string} userId
- * @param {string} vehicleId
- * @param {Object} date
- * @param {Boolean} halfDay
- * @param {Boolean} am
- * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
+ * Creates a reservation with the specified parking spot ID, user ID, vehicle ID, date, halfDay and am using the given client
+ * @async
+ * @param {Object} client - The Swagger Client object
+ * @param {string} parkingSpotId - Identifies the parking spot to be reserved
+ * @param {string} userId - Identifies the user creating the reservation
+ * @param {string} vehicleId - Identifies the vehicle (owned by the reservation user) that is intended to be on the reserved parking spot during the time of the reservation
+ * @param {Object} date - The date on which this reservation is effective
+ * @param {boolean} halfDay - Is true when the reservation's duration is half-day
+ * @param {boolean} am - Is true when the reservation is a half-day reservation and the half day is in the first half of the day
+ * @returns {Promise<Object>} A promise that resolves to the response data from the API call
  */
 async function createReservation(
   client,

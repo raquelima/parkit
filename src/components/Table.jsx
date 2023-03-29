@@ -2,10 +2,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
 /**
- *
- * @param {*} data
- * @param {*} columns
- * @returns
+ * A functional component that renders a MUI DataGrid component representing a table
+ * @param {Array} data - An array of data to be displayed in the table
+ * @param {Array} columns - An array of columns to be displayed in the table
+ * @returns {JSX.Element} The Table component
  */
 function Table({ data, columns }) {
   return (

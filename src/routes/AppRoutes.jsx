@@ -4,6 +4,10 @@ import Reservations from "../pages/Reservations.jsx";
 import ParkingOverview from "../pages/ParkingOverview.jsx";
 import Vehicles from "../pages/Vehicles.jsx";
 
+/**
+ * This is a functional component that renders the application routes
+ * @returns {JSX.Element} The AppRoutes component
+ */
 function AppRoutes() {
   return (
     <Routes>

@@ -26,13 +26,21 @@ const listItems = [
 ];
 
 /**
- *
- * @returns
+ * A functional component that renders MUI List components representing the list of the side navigation bar
+ * @returns {JSX.Element} The SideNavBarList component
  */
 function SideNavBarList() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const location = useLocation();
 
+  /**
+   * Returns an object with button properties for a given item and index
+   * @param {Object} item - The item for which button properties are being generated
+   * @param {number} index - The index of the item in the list
+   * @returns {Object} An object with two properties:
+   *  selected: A boolean indicating if the item is currently selected based on the current location.
+   *  onClick: A function to set the selected index to the current index.
+   */
   const buttonProps = (item, index) => ({
     selected: location.pathname === item.path,
     onClick: () => setSelectedIndex(index),

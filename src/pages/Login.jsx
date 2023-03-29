@@ -4,8 +4,13 @@ import { TextField, Button, Box, Typography, Container } from "@mui/material";
 import { UserContext } from "../App";
 import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import logo from "../assets/adobeLogoSmall.png";
-import { THEMECOLOR } from "../Constants";
+import { THEME_COLOR } from "../Constants";
 
+/**
+ * This is a functional component that renders the login page
+ * @param {Object} user - An object containing the logged in user's username, password and ID
+ * @returns {JSX.Element} The Login component
+ */
 function Login({ user }) {
   const navigate = useNavigate();
 
@@ -18,14 +23,25 @@ function Login({ user }) {
     userId: "dGVzdEBhZG9iZS5jb20=",
   });
 
+  /**
+   * Takes user credentials from input and sets it in the state
+   * @param {Event} event - An onChange event
+   */
   const handleSaveCredentials = (event) => {
     setUserInput({ ...userInput, [event.target.name]: event.target.value });
   };
 
+  /**
+   * Displays snackbar
+   */
   const handleClickSnack = () => {
     setOpenSnackbar(true);
   };
 
+  /**
+   * Checks if entered credentials are correct, if they are sets user in the Local Storage and triggers rerender otherwise displays an error message
+   * @param {Event} event An onChange Event
+   */
   const handleSubmit = (event) => {
     event.preventDefault();
     if (
@@ -132,7 +148,7 @@ function Login({ user }) {
             <Button
               variant="contained"
               type="submit"
-              sx={{ backgroundColor: THEMECOLOR, width: "130px", mt: 5 }}
+              sx={{ backgroundColor: THEME_COLOR, width: "130px", mt: 5 }}
             >
               Login
             </Button>

@@ -2,11 +2,11 @@ import { Box, Typography } from "@mui/material";
 import profileImage from "../assets/profileImage.svg";
 
 /**
- *
- * @param {*} user
- * @param {*} totalVehicles
- * @param {*} totalReservations
- * @returns
+ * A functional component that renders profile details
+ * @param {Object} user - An object containing the logged in user's username, password and ID
+ * @param {number} totalVehicles - The total number of vehicles
+ * @param {number} totalReservations - The total number of reservations
+ * @returns {JSX.Element} The ProfileDetails component
  */
 function ProfileDetails({ user, totalVehicles, totalReservations }) {
   const userDetails = [
