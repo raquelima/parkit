@@ -23,6 +23,11 @@ const listItems = [
     path: "/parking_overview",
     icon: <DashboardIcon sx={{ color: "white" }} />,
   },
+  {
+    page: "Vehicle",
+    path: "/vehicles",
+    icon: <DriveEtaIcon sx={{ color: "white" }} />,
+  },
 ];
 
 /**
@@ -53,7 +58,7 @@ function SideNavBarList() {
           Booking
         </Typography>
         <List>
-          {listItems.map((item, index) => (
+          {listItems.slice(0, 3).map((item, index) => (
             <NavListitem
               key={item.page}
               to={item.path}
@@ -77,7 +82,7 @@ function SideNavBarList() {
             to="/vehicles"
             primary="Vehicles"
             icon={<DriveEtaIcon style={{ color: "white" }} />}
-            buttonProps={buttonProps(3)}
+            buttonProps={buttonProps(listItems[3], 3)}
           />
         </List>
       </Box>
