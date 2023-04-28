@@ -12,9 +12,9 @@ import { THEME_COLOR } from "../Constants";
 /**
  * A functional component that renders a MUI Drawer
  * @param {ReactElement} children - The children components to be rendered
- * @param {string} headerTitle - The pnale header title
+ * @param {string} headerTitle - The panel header title
  * @param {boolean} loading - A boolean flag indicating whether the parent component is loading
- * @param {boolean} openPanel - A boolean flag indicading whether the panel should be displayed
+ * @param {boolean} openPanel - A boolean flag indicating whether the panel should be displayed
  * @param {Function} handleClosePanel - A function to close the panel
  * @returns {JSX.Element} The Panel component
  */
@@ -32,6 +32,7 @@ function Panel({
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: 320,
+          zIndex: 1201,
         },
       }}
       variant="persistent"
@@ -42,7 +43,7 @@ function Panel({
         <Toolbar
           variant="dense"
           sx={{
-            minHeight: 44,
+            minHeight: 48,
             backgroundColor: THEME_COLOR,
             display: "flex",
             justifyContent: "space-between",

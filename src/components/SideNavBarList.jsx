@@ -34,7 +34,7 @@ const listItems = [
  * A functional component that renders MUI List components representing the list of the side navigation bar
  * @returns {JSX.Element} The SideNavBarList component
  */
-function SideNavBarList() {
+function SideNavBarList({ open }) {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const location = useLocation();
 
@@ -53,10 +53,17 @@ function SideNavBarList() {
 
   return (
     <List>
-      <Box sx={{ p: 1 }}>
-        <Typography variant="subtitle2" fontWeight={300} sx={{ pl: "18px" }}>
-          Booking
-        </Typography>
+      <Box sx={{ px: 1 }}>
+        {open && (
+          <Typography
+            variant="subtitle2"
+            fontWeight={300}
+            color="white"
+            sx={{ pl: "18px" }}
+          >
+            Booking
+          </Typography>
+        )}
         <List>
           {listItems.slice(0, 3).map((item, index) => (
             <NavListitem
@@ -69,13 +76,16 @@ function SideNavBarList() {
           ))}
         </List>
         <Divider />
-        <Typography
-          variant="subtitle2"
-          fontWeight={300}
-          sx={{ pl: "18px", pt: 1 }}
-        >
-          Management
-        </Typography>
+        {open && (
+          <Typography
+            variant="subtitle2"
+            fontWeight={300}
+            color="white"
+            sx={{ pl: "18px", pt: 1 }}
+          >
+            Management
+          </Typography>
+        )}
         <List>
           <NavListitem
             key="vehicles"

@@ -26,6 +26,7 @@ function NavListitem({ to, primary, icon, buttonProps }) {
           },
           ":hover": {
             backgroundColor: "rgba(255,48,48,0.12)",
+            borderRadius: "9px",
           },
         }}
       >

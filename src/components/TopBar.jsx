@@ -1,5 +1,8 @@
 import { useState, useContext, useEffect } from "react";
-import { AppBar, Toolbar } from "@mui/material";
+import { Toolbar, IconButton, Divider, Typography, Box } from "@mui/material";
+import MuiAppBar from "@mui/material/AppBar";
+import MenuIcon from "@mui/icons-material/Menu";
+import { styled } from "@mui/material/styles";
 import { SwaggerClientContext, UserContext } from "../App";
 import ProfilePanel from "./ProfilePanel";
 import AvatarMenu from "./AvatarMenu";
@@ -9,12 +12,31 @@ import fetchUserVehicles from "../api/fetchUserVehicles";
 import fetchUserReservations from "../api/fetchUserReservations";
 import { THEME_COLOR } from "../Constants";
 import { DRAWER_WIDTH } from "../Constants";
+import logo from "../assets/adobeLogoSmall.png";
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(["width", "margin"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: DRAWER_WIDTH,
+    width: `calc(100% - ${DRAWER_WIDTH}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
 
 /**
  * A functional component that renders a MUI AppBar component representing the top bar
  * @returns {JSX.Element} The TopBar component
  */
-function TopBar() {
+function TopBar({ open, setOpen }) {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
 
@@ -92,25 +114,49 @@ function TopBar() {
   return (
     <AppBar
       position="fixed"
+      open={open}
       sx={{
-        width: `calc(100% - ${DRAWER_WIDTH}px)`,
-        ml: `${DRAWER_WIDTH}px`,
         backgroundColor: THEME_COLOR,
       }}
     >
-      <Toolbar
-        variant="dense"
-        sx={{ justifyContent: "flex-end", minHeight: 44 }}
-      >
-        <AvatarMenu
-          profileUser={profileUser}
-          openMenu={openMenu}
-          handleOpenMenu={handleOpenMenu}
-          handleCloseMenu={handleCloseMenu}
-          anchorEl={anchorEl}
-          setOpenPanel={setOpenPanel}
-          logout={logout}
-        />
+      <Toolbar variant="dense">
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={() => setOpen(!open)}
+          edge="start"
+          sx={{
+            marginRight: 5,
+            ...(open && { display: "none" }),
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img src={logo} width={23} height={20} />
+            <Divider
+              orientation="vertical"
+              sx={{ backgroundColor: "white", mx: 1, height: "18px" }}
+            />
+            <Typography variant="h6">ParkIt</Typography>
+          </Box>
+          <AvatarMenu
+            profileUser={profileUser}
+            openMenu={openMenu}
+            handleOpenMenu={handleOpenMenu}
+            handleCloseMenu={handleCloseMenu}
+            anchorEl={anchorEl}
+            setOpenPanel={setOpenPanel}
+            logout={logout}
+          />
+        </Box>
       </Toolbar>
 
       <ProfilePanel
