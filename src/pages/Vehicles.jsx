@@ -7,7 +7,8 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { SwaggerClientContext, UserContext } from "../App";
 import Table from "../components/Table";
 import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
@@ -109,21 +110,28 @@ function Vehicles() {
       valueGetter: (vehicle) => (vehicle.row.ev ? "Yes" : "No"),
     },
     {
-      field: "delete",
-      headerName: " ",
+      field: "actions",
+      headerName: "Actions",
       sortable: false,
-      width: 70,
+      width: 100,
       renderCell: (vehicle) => {
         return (
-          <Tooltip arrow title="Remove Vehicle">
-            <IconButton
-              aria-label="remove vehicle"
-              color="error"
-              onClick={() => handleClick(vehicle.row.id)}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
+          <>
+            <Tooltip arrow title="edit vehicle">
+              <IconButton>
+                <ModeEditOutlineIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip arrow title="remove vehicle">
+              <IconButton
+                aria-label="remove vehicle"
+                color="error"
+                onClick={() => handleClick(vehicle.row.id)}
+              >
+                <DeleteOutlineIcon />
+              </IconButton>
+            </Tooltip>
+          </>
         );
       },
     },

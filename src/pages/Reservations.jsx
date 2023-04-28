@@ -8,7 +8,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { format } from "date-fns";
 import { SwaggerClientContext, UserContext } from "../App";
 import StatusChip from "../components/StatusChip";
@@ -193,7 +193,7 @@ function Reservations() {
     },
     {
       field: "cancel",
-      headerName: " ",
+      headerName: "Actions",
       sortable: false,
       width: 70,
       renderCell: (reservation) => {
@@ -209,7 +209,7 @@ function Reservations() {
                 color="error"
                 onClick={() => handleCancelReservation(reservation.row.id)}
               >
-                <CloseIcon />
+                <DeleteOutlineIcon />
               </IconButton>
             </Tooltip>
           );

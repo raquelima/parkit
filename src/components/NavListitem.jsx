@@ -14,12 +14,19 @@ import { Link } from "react-router-dom";
  * @param {Object} buttonProps - The button properties object
  * @returns {JSX.Element} The NavListItem component
  */
-function NavListitem({ to, primary, icon, buttonProps }) {
+function NavListitem({ to, target, primary, icon, buttonProps }) {
   return (
-    <ListItem component={Link} to={to} disablePadding sx={{ mb: "3px" }}>
+    <ListItem
+      component={Link}
+      to={to}
+      target={target}
+      disablePadding
+      sx={{ pb: "2px" }}
+    >
       <ListItemButton
         {...buttonProps}
         sx={{
+          paddingLeft: "12px",
           "&.Mui-selected": {
             backgroundColor: "rgba(255,48,48,0.12)",
             borderRadius: "9px",
@@ -30,10 +37,15 @@ function NavListitem({ to, primary, icon, buttonProps }) {
           },
         }}
       >
-        <ListItemIcon>{icon}</ListItemIcon>
+        {icon && <ListItemIcon sx={{ minWidth: "44px" }}>{icon}</ListItemIcon>}
         <ListItemText
           primary={primary}
-          primaryTypographyProps={{ color: "white", fontWeight: "300" }}
+          primaryTypographyProps={{
+            color: "white",
+            fontWeight: "300",
+            fontSize: 15,
+          }}
+          sx={{ lineHeight: 1, margin: 0 }}
         />
       </ListItemButton>
     </ListItem>

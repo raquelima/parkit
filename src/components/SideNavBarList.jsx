@@ -34,6 +34,26 @@ const listItems = [
     path: "/billing",
     icon: <PaymentsIcon sx={{ color: "white" }} />,
   },
+  {
+    page: "Parking policy",
+    path: "https://adobe.sharepoint.com/sites/BaselWorkplaceCommittee/SitePages/New-Office-Parking-Policy.aspx#automobile-parking",
+    icon: "",
+  },
+  {
+    page: "Help",
+    path: "https://adobe.sharepoint.com/sites/BaselWorkplaceCommittee/SitePages/New-Office-Parking-Help.aspx",
+    icon: "",
+  },
+  {
+    page: "Slack us (#parkit-support)",
+    path: "https://cq-dev.slack.com/archives/C04RF8TK1AT",
+    icon: "",
+  },
+  {
+    page: "Report issue",
+    path: "https://github.com/berufsbildung-basel/parkit-service/issues",
+    icon: "",
+  },
 ];
 
 /**
@@ -58,14 +78,14 @@ function SideNavBarList({ open }) {
   });
 
   return (
-    <List>
+    <List sx={{ height: "100%" }}>
       <Box sx={{ px: 1 }}>
         {open && (
           <Typography
             variant="subtitle2"
             fontWeight={300}
             color="white"
-            sx={{ pl: "18px" }}
+            sx={{ pl: "15px" }}
           >
             Booking
           </Typography>
@@ -87,7 +107,7 @@ function SideNavBarList({ open }) {
             variant="subtitle2"
             fontWeight={300}
             color="white"
-            sx={{ pl: "18px", pt: 1 }}
+            sx={{ pl: "15px", pt: 1 }}
           >
             Management
           </Typography>
@@ -103,6 +123,20 @@ function SideNavBarList({ open }) {
             />
           ))}
         </List>
+        {open && (
+          <List sx={{ position: "absolute", bottom: "0" }}>
+            {listItems.slice(5, 9).map((item, index) => (
+              <NavListitem
+                key={item.page}
+                to={item.path}
+                target="_blank"
+                primary={item.page}
+                icon={item.icon}
+                buttonProps={buttonProps(item, index)}
+              />
+            ))}
+          </List>
+        )}
       </Box>
     </List>
   );
