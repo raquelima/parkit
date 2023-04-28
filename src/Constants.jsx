@@ -1,4 +1,4 @@
-export const DRAWER_WIDTH = 240;
+export const DRAWER_WIDTH = 225;
 
 export const THEME_COLOR = "#303E4D";
 

@@ -3,6 +3,7 @@ import Dashboard from "../pages/Dashboard.jsx";
 import Reservations from "../pages/Reservations.jsx";
 import ParkingOverview from "../pages/ParkingOverview.jsx";
 import Vehicles from "../pages/Vehicles.jsx";
+import Billing from "../pages/Billing.jsx";
 
 /**
  * This is a functional component that renders the application routes
@@ -16,6 +17,7 @@ function AppRoutes() {
       <Route path="/reservations" element={<Reservations />} />
       <Route path="/parking_overview" element={<ParkingOverview />} />
       <Route path="/vehicles" element={<Vehicles />} />
+      <Route path="/billing" element={<Billing />} />
       <Route path="/*" element={<Dashboard />} />
     </Routes>
   );

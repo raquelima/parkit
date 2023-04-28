@@ -71,12 +71,6 @@ function Login({ user }) {
         height: "100%",
       }}
     >
-      <AutoHidingSnackbar
-        openSnackbar={openSnackbar}
-        setOpenSnackbar={setOpenSnackbar}
-        severity={"error"}
-        message={error}
-      />
       <Container component="main" maxWidth={false} sx={{ maxWidth: "450px" }}>
         <Box
           sx={{
@@ -155,6 +149,13 @@ function Login({ user }) {
           </Box>
         </Box>
       </Container>
+
+      <AutoHidingSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={"error"}
+        message={error}
+      />
     </Box>
   );
 }

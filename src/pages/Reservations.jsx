@@ -243,13 +243,6 @@ function Reservations() {
         />
       </Box>
 
-      <AutoHidingSnackbar
-        openSnackbar={openSnackbar}
-        setOpenSnackbar={setOpenSnackbar}
-        severity={error ? "error" : "success"}
-        message={error ? error : success}
-      />
-
       {loading ? (
         <CircularProgress />
       ) : reservations?.length ? (
@@ -259,6 +252,13 @@ function Reservations() {
           You have no reservations
         </Alert>
       )}
+
+      <AutoHidingSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
+      />
     </Box>
   );
 }

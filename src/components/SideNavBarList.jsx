@@ -5,6 +5,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
 import EventIcon from "@mui/icons-material/Event";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import PaymentsIcon from "@mui/icons-material/Payments";
 import NavListitem from "./NavListitem";
 
 const listItems = [
@@ -27,6 +28,11 @@ const listItems = [
     page: "Vehicle",
     path: "/vehicles",
     icon: <DriveEtaIcon sx={{ color: "white" }} />,
+  },
+  {
+    page: "Billing",
+    path: "/billing",
+    icon: <PaymentsIcon sx={{ color: "white" }} />,
   },
 ];
 
@@ -87,13 +93,15 @@ function SideNavBarList({ open }) {
           </Typography>
         )}
         <List>
-          <NavListitem
-            key="vehicles"
-            to="/vehicles"
-            primary="Vehicles"
-            icon={<DriveEtaIcon style={{ color: "white" }} />}
-            buttonProps={buttonProps(listItems[3], 3)}
-          />
+          {listItems.slice(3, 5).map((item, index) => (
+            <NavListitem
+              key={item.page}
+              to={item.path}
+              primary={item.page}
+              icon={item.icon}
+              buttonProps={buttonProps(item, index)}
+            />
+          ))}
         </List>
       </Box>
     </List>

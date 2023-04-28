@@ -222,12 +222,6 @@ function Dashboard() {
 
   return (
     <Box>
-      <AutoHidingSnackbar
-        openSnackbar={openSnackbar}
-        setOpenSnackbar={setOpenSnackbar}
-        severity={error ? "error" : "success"}
-        message={error ? error : success}
-      />
       <Box sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}>
         <Typography gutterBottom variant="h6" component="div">
           Information
@@ -237,6 +231,7 @@ function Dashboard() {
           btnText="Create reservation +"
         />
       </Box>
+
       <Grid container>
         <Grid container justifyContent="space-between">
           {infoCards.map((card) => (
@@ -251,6 +246,7 @@ function Dashboard() {
           ))}
         </Grid>
       </Grid>
+
       <Box sx={{ pt: 4 }}>
         <Typography variant="h6">Upcoming reservations</Typography>
 
@@ -267,6 +263,13 @@ function Dashboard() {
           </Alert>
         )}
       </Box>
+
+      <AutoHidingSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
+      />
     </Box>
   );
 }

@@ -148,12 +148,6 @@ function Vehicles() {
           btnText="Create vehicle +"
         />
       </Box>
-      <AutoHidingSnackbar
-        openSnackbar={openSnackbar}
-        setOpenSnackbar={setOpenSnackbar}
-        severity={error ? "error" : "success"}
-        message={error ? error : success}
-      />
       {loading ? (
         <CircularProgress />
       ) : vehicles?.length ? (
@@ -163,7 +157,6 @@ function Vehicles() {
           You have no vehicles registered
         </Alert>
       )}
-
       <CreateVehiclePanel
         client={client}
         openPanel={openPanel}
@@ -172,6 +165,12 @@ function Vehicles() {
         setError={setError}
         setSuccess={setSuccess}
         handleClickSnack={handleClickSnack}
+      />
+      <AutoHidingSnackbar
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        severity={error ? "error" : "success"}
+        message={error ? error : success}
       />
     </Box>
   );

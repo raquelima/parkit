@@ -95,6 +95,7 @@ function ParkingOverview() {
         setError={setError}
         handleClickSnack={handleClickSnack}
       />
+
       {loading ? (
         <CircularProgress />
       ) : (
@@ -127,6 +128,7 @@ function ParkingOverview() {
         handleClickSnack={handleClickSnack}
         fetchAvailableParkingSpots={fetchAvailableParkingSpots}
       />
+
       <AutoHidingSnackbar
         openSnackbar={openSnackbar}
         setOpenSnackbar={setOpenSnackbar}
