@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
  */
 function NavListitem({ to, primary, icon, buttonProps }) {
   return (
-    <ListItem component={Link} to={to} disablePadding>
+    <ListItem component={Link} to={to} disablePadding sx={{ mb: "3px" }}>
       <ListItemButton
         {...buttonProps}
         sx={{

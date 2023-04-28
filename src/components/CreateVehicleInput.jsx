@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 
 /**
- * A functional component that renders MUI Textfiels for the input of vehicle details
+ * A functional component that renders MUI Textfield for the input of vehicle details
  * @param {Function} handleSaveInput - A handler function that saves the user input
  * @param {boolean} ev - a boolean flag indicating whether the vehicle is electric
  * @param {Function} handleToggleSelection - A handler function that handles the selection of the time toggle buttons

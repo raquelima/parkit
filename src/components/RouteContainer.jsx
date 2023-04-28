@@ -3,7 +3,7 @@ import LoginRoutes from "../routes/LoginRoutes";
 import AppRoutes from "../routes/AppRoutes";
 import AppLayout from "./AppLayout";
 /**
- * A functional component that condionally renders the routes and layout of the application
+ * A functional component that conditionally renders the routes and layout of the application
  * @param {Object} user - An object containing the logged in user's username, password and ID
  * @returns {JSX.Element} The RouteContainer component
  */

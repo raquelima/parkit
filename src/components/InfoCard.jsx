@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
  * @param {number} number - A number to be displayed in the card
  * @param {string} btnText - The card button text
  * @param {string} path - The path that the card button must navigate to
- * @returns {JSX.Element} The InforCard component
+ * @returns {JSX.Element} The InfoCard component
  */
 function InfoCard({ label, number, btnText, path }) {
   const navigate = useNavigate();

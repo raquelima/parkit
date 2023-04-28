@@ -64,7 +64,7 @@ function CreateReservationPanel({
    * Sets the selected vehicle ID to the value of the event target's value property.
    * @param {Event} event - An onChange event
    */
-  const handlesetSelectedVehicleId = (event) => {
+  const handleSetSelectedVehicleId = (event) => {
     setSelectedVehicleId(event.target.value);
   };
 
@@ -144,14 +144,14 @@ function CreateReservationPanel({
             reservationTime={reservationTime}
             vehicles={vehicles}
             selectedVehicleId={selectedVehicleId}
-            handlesetSelectedVehicleId={handlesetSelectedVehicleId}
+            handleSetSelectedVehicleId={handleSetSelectedVehicleId}
           />
           <Divider />
           <VehicleDetails selectedVehicle={selectedVehicle} />
           <CreateButton
             handleClick={handleCreateReservation}
             btnText="Reserve Space"
-            sx={{ display: "flex", justifyContent: "center", pt: 7 }}
+            sx={{ display: "flex", justifyContent: "center", pt: 3 }}
           />
         </Box>
       }

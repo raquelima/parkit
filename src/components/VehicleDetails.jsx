@@ -8,7 +8,7 @@ import { Box, Typography } from "@mui/material";
 function VehicleDetails({ selectedVehicle }) {
   const vehicleDetails = [
     {
-      label: "Manufacture",
+      label: "Make",
       value: selectedVehicle?.make,
     },
     {
@@ -20,7 +20,7 @@ function VehicleDetails({ selectedVehicle }) {
       value: selectedVehicle?.ev ? "Yes" : "No",
     },
     {
-      label: "Plate number",
+      label: "Plate nr.",
       value: selectedVehicle?.license_plate_number,
     },
   ];

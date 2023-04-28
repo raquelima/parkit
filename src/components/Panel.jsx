@@ -28,10 +28,10 @@ function Panel({
   return (
     <Drawer
       sx={{
-        width: 320,
+        width: 290,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: 320,
+          width: 290,
           zIndex: 1201,
         },
       }}

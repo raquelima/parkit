@@ -10,7 +10,7 @@ import car from "../assets/car.svg";
  * @param {string} reservationTime - The reservation time
  * @param {Array} vehicles - An array with all user vehicles
  * @param {string} selectedVehicleId - The ID of the selected vehicle for the reservation
- * @param {Function} handlesetSelectedVehicleId - A handler function that sets the selectedVehicleId value when the user selects a vehicle
+ * @param {Function} handleSetSelectedVehicleId - A handler function that sets the selectedVehicleId value when the user selects a vehicle
  * @returns {JSX.Element} The ReservationDetails component
  */
 function ReservationDetails({
@@ -20,7 +20,7 @@ function ReservationDetails({
   reservationTime,
   vehicles,
   selectedVehicleId,
-  handlesetSelectedVehicleId,
+  handleSetSelectedVehicleId,
 }) {
   const reservationDetails = [
     {
@@ -45,16 +45,17 @@ function ReservationDetails({
     },
   ];
   return (
-    <Box sx={{ pb: 4 }}>
+    <Box sx={{ pb: 3 }}>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          py: 2,
+          pt: 2,
+          pb: 1,
         }}
       >
-        <img src={car} height="150px" />
+        <img src={car} height="120px" />
         <Typography fontWeight="bold" color="text.secondary">
           Nr. {selectedParkingSpot?.number}
         </Typography>
@@ -75,7 +76,7 @@ function ReservationDetails({
         {vehicles && (
           <Select
             value={selectedVehicleId}
-            onChange={handlesetSelectedVehicleId}
+            onChange={handleSetSelectedVehicleId}
           >
             {vehicles.map((vehicle) => (
               <MenuItem key={vehicle.id} value={vehicle.id}>

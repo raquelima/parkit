@@ -41,7 +41,7 @@ function DateTimePicker({
     { label: "FD", tooltip: "00:00 - 00:00" },
   ];
   /**
-   * When a date is selected the function checks whether the date is in the future and not more than two weeks in advance. It also closes the panel and unselects a selcted parking spot.
+   * When a date is selected the function checks whether the date is in the future and not more than two weeks in advance. It also closes the panel and unselects a selected parking spot.
    * @param {Object} newDate - The selected date object for the reservation
    */
   const handleDate = (newDate) => {
