@@ -222,7 +222,10 @@ function Dashboard() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}>
+      <Box
+        pb={{ md: 2, lg: 2 }}
+        sx={{ display: "flex", justifyContent: "space-between" }}
+      >
         <Typography gutterBottom variant="h6" component="div">
           Information
         </Typography>
@@ -235,14 +238,19 @@ function Dashboard() {
       <Grid container>
         <Grid container justifyContent="space-between">
           {infoCards.map((card) => (
-            <Grid key={card.label} item>
+            <Box
+              key={card.label}
+              component={Grid}
+              display={{ xs: "none", sm: "block" }}
+              item
+            >
               <InfoCard
                 label={card.label}
                 number={card.value}
                 btnText={card.button}
                 path={card.path}
               />
-            </Grid>
+            </Box>
           ))}
         </Grid>
       </Grid>

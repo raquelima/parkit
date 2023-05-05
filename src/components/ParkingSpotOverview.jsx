@@ -59,31 +59,32 @@ function ParkingSpotOverview({
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minHeight="70vh"
+      minHeight={{ xs: "35vh", sm: "35vh", md: "65vh", lg: "65vh" }}
+      mt={{ xs: 0, sm: 0, md: 5, lg: 5 }}
       sx={{
         border: 2,
         borderColor: "rgba(112,112,112,0.14)",
         borderRadius: 2,
-        mt: 2,
       }}
     >
-      <Box
-        minHeight="55vh"
-        minWidth="80vh"
-        sx={{ borderRadius: 2, backgroundColor: "rgba(145,158,171,0.12)" }}
-      >
+      <Box sx={{ borderRadius: 2, backgroundColor: "rgba(145,158,171,0.12)" }}>
         <Box
+          pt={{ xs: 2, sm: 2, md: 5, lg: 5 }}
           sx={{
             display: "flex",
             justifyContent: "center",
-            pt: 4,
           }}
         >
-          <img width="200px" src={logo} />
+          <Box width={{ xs: 120, sm: 120, md: 200, lg: 200 }}>
+            <img width="100%" src={logo} />
+          </Box>
         </Box>
         {parkingSpots ? (
           <Box>
-            <Box sx={{ pl: 12, pt: 5 }}>
+            <Box
+              px={{ xs: 0, sm: 0, md: 15, lg: 15 }}
+              py={{ xs: 2, sm: 2, md: 9, lg: 9 }}
+            >
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 {parkingSpots?.slice(0, 2).map((parkingSpot) => (
                   <ParkingSpot
@@ -123,9 +124,6 @@ function ParkingSpotOverview({
                   />
                 ))}
               </Box>
-            </Box>
-            <Box sx={{ pl: 2, pt: 11 }}>
-              <Typography>Ground floor</Typography>
             </Box>
           </Box>
         ) : (

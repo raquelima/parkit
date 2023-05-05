@@ -34,15 +34,13 @@ function ParkingSpot({
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <Box
+        height={{ xs: 80, sm: 80, md: 100, lg: 100 }}
+        width={{ xs: 55, sm: 55, md: 75, lg: 75 }}
+        margin={{ xs: "3px", sm: "3px", md: 1, lg: 1 }}
         sx={{
-          pb: "3px",
-          mr: 2,
-          mb: 2,
           bgcolor: bgColor,
           border: border,
           borderRadius: "9px",
-          height: "100px",
-          width: "75px",
           cursor: cursor,
           display: "flex",
           alignItems: "center",
@@ -60,7 +58,7 @@ function ParkingSpot({
         )}
         {disabled ? (
           <Tooltip title="Unavailable">
-            <BlockIcon color="error" fontSize="large" />
+            <BlockIcon color="error" fontSize="large" sx={{ pb: 1 }} />
           </Tooltip>
         ) : (
           number

@@ -13,7 +13,11 @@ function RouteContainer({ user }) {
   ) : (
     <Box sx={{ display: "flex" }}>
       <AppLayout />
-      <Box component="main" sx={{ flexGrow: 1, px: 9, pt: 10 }}>
+      <Box
+        component="main"
+        px={{ xs: 0, sm: 9, md: 9, lg: 9 }}
+        sx={{ flexGrow: 1, pt: 10 }}
+      >
         <AppRoutes />
       </Box>
     </Box>

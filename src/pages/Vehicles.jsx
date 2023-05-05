@@ -14,6 +14,7 @@ import Table from "../components/Table";
 import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import CreateButton from "../components/CreateButton";
 import CreateVehiclePanel from "../components/CreateVehiclePanel";
+import EditVehiclePanel from "../components/EditVehiclePanel";
 import fetchUserVehicles from "../api/fetchUserVehicles";
 import removeVehicle from "../api/removeVehicle";
 
@@ -25,9 +26,11 @@ function Vehicles() {
   const client = useContext(SwaggerClientContext);
   const setUser = useContext(UserContext);
 
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [vehicles, setVehicles] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [openPanel, setOpenPanel] = useState(false);
+  const [openCreatePanel, setOpenCreatePanel] = useState(false);
+  const [openEditPanel, setOpenEditPanel] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -56,7 +59,7 @@ function Vehicles() {
       });
   };
 
-  const handleClick = (id) => {
+  const handleRemoveVehicle = (id) => {
     removeVehicle(client, id)
       .then(() => {
         fetchVehicles();
@@ -78,6 +81,11 @@ function Vehicles() {
           handleClickSnack();
         }
       });
+  };
+
+  const handleOpenEdit = (vehicle) => {
+    setSelectedVehicle(vehicle);
+    setOpenEditPanel(true);
   };
 
   const vehiclesColumns = [
@@ -118,7 +126,10 @@ function Vehicles() {
         return (
           <>
             <Tooltip arrow title="edit vehicle">
-              <IconButton>
+              <IconButton
+                aria-label="edit vehicle"
+                onClick={() => handleOpenEdit(vehicle.row)}
+              >
                 <ModeEditOutlineIcon />
               </IconButton>
             </Tooltip>
@@ -126,7 +137,7 @@ function Vehicles() {
               <IconButton
                 aria-label="remove vehicle"
                 color="error"
-                onClick={() => handleClick(vehicle.row.id)}
+                onClick={() => handleRemoveVehicle(vehicle.row.id)}
               >
                 <DeleteOutlineIcon />
               </IconButton>
@@ -152,7 +163,7 @@ function Vehicles() {
         <Typography variant="h6">Your Vehicles</Typography>
 
         <CreateButton
-          handleClick={() => setOpenPanel(true)}
+          handleClick={() => setOpenCreatePanel(true)}
           btnText="Create vehicle +"
         />
       </Box>
@@ -167,9 +178,18 @@ function Vehicles() {
       )}
       <CreateVehiclePanel
         client={client}
-        openPanel={openPanel}
-        setOpenPanel={setOpenPanel}
+        openCreatePanel={openCreatePanel}
+        setOpenCreatePanel={setOpenCreatePanel}
         fetchVehicles={fetchVehicles}
+        setError={setError}
+        setSuccess={setSuccess}
+        handleClickSnack={handleClickSnack}
+      />
+      <EditVehiclePanel
+        client={client}
+        selectedVehicle={selectedVehicle}
+        openEditPanel={openEditPanel}
+        setOpenEditPanel={setOpenEditPanel}
         setError={setError}
         setSuccess={setSuccess}
         handleClickSnack={handleClickSnack}

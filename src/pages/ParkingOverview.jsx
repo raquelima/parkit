@@ -99,7 +99,7 @@ function ParkingOverview() {
       {loading ? (
         <CircularProgress />
       ) : (
-        <Box>
+        <Box pt={{ xs: 2, sm: 2 }}>
           <Typography fontWeight="bold" color={THEME_COLOR}>
             Parking Overview
           </Typography>

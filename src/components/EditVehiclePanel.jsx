@@ -7,44 +7,48 @@ import Panel from "./Panel";
 import createVehicle from "../api/createVehicle";
 
 /**
- * A functional component that renders a panel to create vehicles
+ * A functional component that renders a panel to edit a vehicle
  * @param {Object} client - The Swagger Client object
- * @param {boolean} openCreatePanel - A boolean flag indicating whether the panel should be displayed
- * @param {Function} setOpenCreatePanel - A function that sets the value of openCreatePanel
+ * @param {Object} selectedVehicle - The vehicle to be edited
+ * @param {boolean} openEditPanel - A boolean flag indicating whether the panel should be displayed
+ * @param {Function} setOpenEditPanel - A function that sets the value of openEditPanel
  * @param {Function} fetchVehicles - a function that fetches the user vehicles
  * @param {Function} setError - A function that sets an error message
  * @param {Function} setSuccess - A function that sets an success message
  * @param {Function} handleClickSnack - A function that displays a snackbar
  * @returns {JSX.Element} The CreateVehiclePanel component
  */
-function CreateVehiclePanel({
+function EditVehiclePanel({
   client,
-  openCreatePanel,
-  setOpenCreatePanel,
+  selectedVehicle,
+  openEditPanel,
+  setOpenEditPanel,
   fetchVehicles,
   setError,
   setSuccess,
   handleClickSnack,
 }) {
+  console.log(selectedVehicle?.ev);
   const setUser = useContext(UserContext);
 
-  const [newVehicle, setNewVehicle] = useState({});
-  const [ev, setEv] = useState(true);
+  const [vehicle, setVehicle] = useState(selectedVehicle);
+  const [ev, setEv] = useState(false);
 
   /**
    * Saves user input in the state
    * @param {Object} event
    */
   const handleSaveInput = (event) => {
-    setNewVehicle({ ...newVehicle, [event.target.name]: event.target.value });
+    console.log(vehicle);
+    setVehicle({ ...vehicle, [event.target.name]: event.target.value });
   };
 
   /**
    * Closes the panel and clears the state
    */
   const handleClosePanel = () => {
-    setOpenCreatePanel(false);
-    setNewVehicle(null);
+    setOpenEditPanel(false);
+    setVehicle(null);
   };
 
   /**
@@ -67,22 +71,21 @@ function CreateVehiclePanel({
   };
 
   /**
-   * Creates a vehicle
+   * Updates a vehicle
    */
-  const handleCreateVehicle = () => {
+  const handleUpdateVehicle = () => {
     createVehicle(
       client,
       ev,
-      newVehicle.licensePlateNumber,
-      newVehicle.make,
-      newVehicle.model
+      vehicle.licensePlateNumber,
+      vehicle.make,
+      vehicle.model
     )
       .then(() => {
-        fetchVehicles();
         setError(null);
-        setSuccess("Vehicle was created");
+        setSuccess("Vehicle was updated");
         handleClickSnack();
-        setOpenCreatePanel(false);
+        setOpenEditPanel(false);
       })
       .catch(handleError);
   };
@@ -104,21 +107,22 @@ function CreateVehiclePanel({
         <Box sx={{ px: 3 }}>
           <VehicleInput
             handleSaveInput={handleSaveInput}
-            ev={ev}
+            ev={selectedVehicle?.ev}
             handleToggleSelection={handleToggleSelection}
+            vehicle={vehicle}
           />
           <CreateButton
-            handleClick={handleCreateVehicle}
-            btnText="Add vehicle"
+            handleClick={handleUpdateVehicle}
+            btnText="Update vehicle"
             sx={{ display: "flex", justifyContent: "center", pt: 7 }}
           />
         </Box>
       }
-      headerTitle="Create Vehicle"
+      headerTitle="Edit Vehicle"
       loading={false}
-      openPanel={openCreatePanel}
+      openPanel={openEditPanel}
       handleClosePanel={handleClosePanel}
     />
   );
 }
-export default CreateVehiclePanel;
+export default EditVehiclePanel;
