@@ -26,5 +26,5 @@ async function setupViteDevServer() {
   server.printUrls();
 }
 
-await setupMockServer();
+setupMockServer();
 await setupViteDevServer();

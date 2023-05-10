@@ -64,17 +64,6 @@ api.register("validationFail", (c, res, ctx) => {
   );
 });
 
-api.registerSecurityHandler("BasicAuth", (c) => {
-  return (
-    c.request.headers["authorization"] ===
-    `Basic ${new Buffer("test@adobe.com:testPassword").toString("base64")}`
-  );
-});
-
-api.register("unauthorizedHandler", (c, res, ctx) => {
-  return res(ctx.status(401, "unauthorized"));
-});
-
 //User Endpoints
 api.register({
   listUsers: (c, res, ctx) => {
