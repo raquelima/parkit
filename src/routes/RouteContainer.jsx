@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import LoginRoutes from "../routes/LoginRoutes";
-import AppRoutes from "../routes/AppRoutes";
-import AppLayout from "./AppLayout";
+import LoginRoutes from "./LoginRoutes";
+import AppRoutes from "./AppRoutes";
+import AppLayout from "../components/layout/AppLayout";
 /**
  * A functional component that conditionally renders the routes and layout of the application
  * @param {Object} user - An object containing the logged in user's username, password and ID

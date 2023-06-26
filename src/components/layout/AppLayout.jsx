@@ -6,7 +6,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import TopBar from "./TopBar";
 import { styled } from "@mui/material/styles";
 import SideNavBarList from "./SideNavBarList";
-import { DRAWER_WIDTH, THEME_COLOR } from "../Constants";
+import { DRAWER_WIDTH, THEME_COLOR } from "../../Constants";
 
 const openedMixin = (theme) => ({
   width: DRAWER_WIDTH,

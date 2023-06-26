@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import useCreateSwaggerClient from "./hooks/useCreateSwaggerClient.jsx";
-import RouteContainer from "./components/RouteContainer";
+import RouteContainer from "./routes/RouteContainer.jsx";
 
 export const SwaggerClientContext = createContext();
 export const UserContext = createContext();

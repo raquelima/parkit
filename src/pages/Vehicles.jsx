@@ -121,6 +121,7 @@ function Vehicles() {
       field: "actions",
       headerName: "Actions",
       sortable: false,
+      disableExport: true,
       width: 100,
       renderCell: (vehicle) => {
         return (

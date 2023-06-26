@@ -21,6 +21,7 @@ import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpotAvailability from "../api/fetchParkingSpotAvailability";
 import fetchParkingSpots from "../api/fetchParkingSpots";
 import filterUpcomingReservations from "../utils/filterUpcomingReservations";
+import getParkingSpotNumberById from "../utils/getParkingSpotNumberById";
 
 /**
  * This a functional component that renders the dashboard
@@ -67,19 +68,6 @@ function Dashboard() {
       value: totalReservations,
     },
   ];
-
-  /**
-   * Filters the parking spots array with the given parking spot ID, returning the number of the parking spot
-   * @param {string} id - The parking spot ID to filter the array with
-   * @returns {number} The parking spot number
-   */
-  const getParkingSpotNumber = (id) => {
-    return parkingSpots
-      ?.filter((parkingSpot) => parkingSpot.id === id)
-      .map((parkingSpot) => {
-        return parkingSpot.number;
-      });
-  };
 
   //Display snackbar
   const handleClickSnack = () => {
@@ -178,7 +166,10 @@ function Dashboard() {
       sortable: false,
       width: 200,
       valueGetter: (reservations) =>
-        getParkingSpotNumber(reservations.row.parking_spot_id),
+        getParkingSpotNumberById(
+          parkingSpots,
+          reservations.row.parking_spot_id
+        ),
     },
     {
       field: "cancel",

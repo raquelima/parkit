@@ -18,6 +18,7 @@ import AutoHidingSnackbar from "../components/AutoHidingSnackbar";
 import fetchUserReservations from "../api/fetchUserReservations";
 import cancelReservation from "../api/cancelReservation";
 import fetchParkingSpots from "../api/fetchParkingSpots";
+import getParkingSpotNumberById from "../utils/getParkingSpotNumberById";
 
 /**
  * This is a functional component that renders the reservations page
@@ -38,19 +39,6 @@ function Reservations() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const now = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-  /**
-   * Filters the parking spots array with the given parking spot ID, returning the number of the parking spot
-   * @param {string} id - The parking spot ID to filter the array with
-   * @returns {number} The parking spot number
-   */
-  const getParkingSpotNumber = (id) => {
-    return parkingSpots
-      ?.filter((parkingSpot) => parkingSpot.id === id)
-      .map((parkingSpot) => {
-        return parkingSpot.number;
-      });
-  };
 
   /**
    * Checks the given reservation properties and assigns it a status
@@ -172,7 +160,7 @@ function Reservations() {
       sortable: false,
       width: 200,
       valueGetter: (reservation) =>
-        getParkingSpotNumber(reservation.row.parking_spot_id),
+        getParkingSpotNumberById(parkingSpots, reservation.row.parking_spot_id),
     },
     {
       field: "status",
@@ -195,6 +183,7 @@ function Reservations() {
       field: "cancel",
       headerName: "Actions",
       sortable: false,
+      disableExport: true,
       width: 70,
       renderCell: (reservation) => {
         const startTime = reservation.row.start_time;

@@ -7,7 +7,7 @@ import executeRequest from "./executeRequest";
  * @returns {Promise<Object>} A promise that resolves to the response data from the API call.
  */
 async function fetchUser(client) {
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
+  const userId = "dGVzdEBhZG9iZS5jb20=";
 
   return executeRequest(client, "users", "getUser", { id: userId });
 }

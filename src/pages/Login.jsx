@@ -21,6 +21,7 @@ function Login({ user }) {
 
   const [userInput, setUserInput] = useState({
     userId: "dGVzdEBhZG9iZS5jb20=",
+    role: "admin",
   });
 
   /**

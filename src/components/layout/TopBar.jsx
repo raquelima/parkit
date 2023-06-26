@@ -3,16 +3,16 @@ import { Toolbar, IconButton, Divider, Typography, Box } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
-import { SwaggerClientContext, UserContext } from "../App";
-import ProfilePanel from "./ProfilePanel";
-import AvatarMenu from "./AvatarMenu";
-import AutoHidingSnackbar from "./AutoHidingSnackbar";
-import fetchUser from "../api/fetchUser";
-import fetchUserVehicles from "../api/fetchUserVehicles";
-import fetchUserReservations from "../api/fetchUserReservations";
-import { THEME_COLOR } from "../Constants";
-import { DRAWER_WIDTH } from "../Constants";
-import logo from "../assets/adobeLogoSmall.png";
+import { SwaggerClientContext, UserContext } from "../../App";
+import ProfilePanel from "../ProfilePanel";
+import AvatarMenu from "../AvatarMenu";
+import AutoHidingSnackbar from "../AutoHidingSnackbar";
+import fetchUser from "../../api/fetchUser";
+import fetchUserVehicles from "../../api/fetchUserVehicles";
+import fetchUserReservations from "../../api/fetchUserReservations";
+import { THEME_COLOR } from "../../Constants";
+import { DRAWER_WIDTH } from "../../Constants";
+import logo from "../../assets/adobeLogoSmall.png";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",

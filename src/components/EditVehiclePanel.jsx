@@ -28,7 +28,6 @@ function EditVehiclePanel({
   setSuccess,
   handleClickSnack,
 }) {
-  console.log(selectedVehicle?.ev);
   const setUser = useContext(UserContext);
 
   const [vehicle, setVehicle] = useState(selectedVehicle);
@@ -39,7 +38,6 @@ function EditVehiclePanel({
    * @param {Object} event
    */
   const handleSaveInput = (event) => {
-    console.log(vehicle);
     setVehicle({ ...vehicle, [event.target.name]: event.target.value });
   };
 
