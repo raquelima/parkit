@@ -37,15 +37,15 @@ Project is created with:
 ### Installing
 
 ```bash
-git clone https://github.com/raquelima/IPA-Lima.git
-cd IPA-Lima
+git clone https://github.com/raquelima/parkit.git
+cd parkit
 npm install
 ```
 
 ### Running locally
 
 ```bash
-cd IPA-Lima
+cd parkit
 npm run dev
 ```
 
